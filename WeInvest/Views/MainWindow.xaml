@@ -12,10 +12,14 @@
     
     <Grid>
 
-        <Ellipse Margin="100,100,0,0" Fill="Yellow" Width="200" Height="200" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <vm:PieChart PieSeries="{Binding PieSeries}" CenterX="200" CenterY="200" Radius="100"/>
+        <Ellipse Margin="100,100,0,0" Fill="Transparent" Width="200" Height="200" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <vm:PieChart x:Name="piec" PieSeries="{Binding PieSeries}" CenterX="200" CenterY="200" Radius="100"/>
 
         <Button Content="Deposit" Command="{Binding DepositCommand}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20"/>
+
+        <Slider Minimum="0" Maximum="{Binding MaxAccountIndex}" Value="{Binding DisplayedAccountIndex}"
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="50" Width="250"
+                TickPlacement="BottomRight" IsSnapToTickEnabled="True"/>
 
 
 

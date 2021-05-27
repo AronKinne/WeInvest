@@ -24,8 +24,8 @@ namespace WeInvest.ViewModels {
         public int CenterY { get; set; }
         public double Radius { get; set; }
 
-        public Collection<KeyValuePair<Brush, float>> PieSeries {
-            get { return (Collection<KeyValuePair<Brush, float>>)GetValue(PieSeriesProperty); }
+        public ObservableCollection<KeyValuePair<Brush, float>> PieSeries {
+            get { return (ObservableCollection<KeyValuePair<Brush, float>>)GetValue(PieSeriesProperty); }
             set {
                 SetValue(PieSeriesProperty, value);
                 OnPropertyChanged();
@@ -34,7 +34,7 @@ namespace WeInvest.ViewModels {
 
         // Using a DependencyProperty as the backing store for PieSeries.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PieSeriesProperty =
-            DependencyProperty.Register("PieSeries", typeof(Collection<KeyValuePair<Brush, float>>), typeof(PieChart), new PropertyMetadata(null, OnPieSeriesChanged));
+            DependencyProperty.Register("PieSeries", typeof(ObservableCollection<KeyValuePair<Brush, float>>), typeof(PieChart), new PropertyMetadata(null, OnPieSeriesChanged));
 
         private static void OnPieSeriesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((PieChart)d).UpdateSectors();
@@ -68,6 +68,8 @@ namespace WeInvest.ViewModels {
         }
 
         private Geometry CreateSectorData(double offset, double angle) {
+            angle = Math.Min(angle, 2 * Math.PI - 0.001);
+
             var centerPoint = new Point(CenterX, CenterY);
 
             var startPoint = new Point(

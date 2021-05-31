@@ -2,7 +2,7 @@
 using System.Linq;
 
 namespace WeInvest.Models {
-    class Account {
+    public class Account {
 
         public Dictionary<Investor, float> ShareByInvestor { get; set; }
         public float Balance {

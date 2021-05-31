@@ -2,7 +2,7 @@
 using System.Windows.Media;
 
 namespace WeInvest.Models {
-    class Investor {
+    public class Investor {
 
         public string Name { get; set; }
         public Brush Color { get; set; }

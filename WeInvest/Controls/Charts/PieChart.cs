@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using WeInvest.Controls.Charts.Data;
 
-namespace WeInvest.ViewModels {
+namespace WeInvest.Controls.Charts {
     public class PieChart : Canvas, INotifyPropertyChanged {
 
         #region INotifyPropertyChanged members
@@ -20,12 +20,12 @@ namespace WeInvest.ViewModels {
 
         #endregion
 
-        public int CenterX { get; set; }
-        public int CenterY { get; set; }
-        public double Radius { get; set; }
+        public int CenterX { get; private set; }
+        public int CenterY { get; private set; }
+        public int Radius { get; private set; }
 
-        public ObservableCollection<KeyValuePair<Brush, float>> PieSeries {
-            get { return (ObservableCollection<KeyValuePair<Brush, float>>)GetValue(PieSeriesProperty); }
+        public ObservableCollection<PieData> PieSeries {
+            get { return (ObservableCollection<PieData>)GetValue(PieSeriesProperty); }
             set {
                 SetValue(PieSeriesProperty, value);
                 OnPropertyChanged();
@@ -34,7 +34,7 @@ namespace WeInvest.ViewModels {
 
         // Using a DependencyProperty as the backing store for PieSeries.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PieSeriesProperty =
-            DependencyProperty.Register("PieSeries", typeof(ObservableCollection<KeyValuePair<Brush, float>>), typeof(PieChart), new PropertyMetadata(null, OnPieSeriesChanged));
+            DependencyProperty.Register("PieSeries", typeof(ObservableCollection<PieData>), typeof(PieChart), new PropertyMetadata(null, OnPieSeriesChanged));
 
         private static void OnPieSeriesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((PieChart)d).UpdateSectors();
@@ -45,19 +45,32 @@ namespace WeInvest.ViewModels {
         }
 
         public PieChart() {
+            UpdateDimensions();
+        }
 
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo) {
+            base.OnRenderSizeChanged(sizeInfo);
+
+            UpdateDimensions();
+            UpdateSectors();
+        }
+
+        private void UpdateDimensions() {
+            this.CenterX = (int)(ActualWidth / 2);
+            this.CenterY = (int)(ActualHeight / 2);
+            this.Radius = Math.Min(CenterX, CenterY);
         }
 
         private void UpdateSectors() {
             Children.Clear();
 
-            float sum = 0;
-            foreach(KeyValuePair<Brush, float> pieData in PieSeries) {
+            double sum = 0;
+            foreach(PieData pieData in PieSeries) {
                 sum += pieData.Value;
             }
 
             double offset = 0;
-            foreach(KeyValuePair<Brush, float> pieData in PieSeries) {
+            foreach(PieData pieData in PieSeries) {
                 double angle = pieData.Value / sum * 2 * Math.PI;
                 Path sector = new Path();
                 sector.Data = CreateSectorData(offset, angle);

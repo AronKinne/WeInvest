@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace WeInvest.ViewModels.Utilities {
+namespace WeInvest.ViewModels.Commands {
     class RelayCommand : ICommand {
 
         private Action<object> _execute;

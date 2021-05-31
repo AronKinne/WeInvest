@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Media;
+using WeInvest.Controls.Charts.Data;
 using WeInvest.Models;
+using WeInvest.Utilities.Services;
+using WeInvest.ViewModels.Commands;
 using WeInvest.ViewModels.Dialogs;
-using WeInvest.ViewModels.Utilities;
 using WeInvest.Views.Dialogs;
 
 namespace WeInvest.ViewModels {
@@ -42,7 +43,9 @@ namespace WeInvest.ViewModels {
             }
         }
         public int MaxAccountIndex { get => InvestorGroup.AccountHistory.Count - 1; }
-        public ObservableCollection<KeyValuePair<Brush, float>> PieSeries { get; set; }
+
+        public ObservableCollection<PieData> PieSeries { get; set; }
+        public ObservableCollection<LineData> InvestorLineData { get; set; }
 
         #region Command Properties
 
@@ -51,6 +54,12 @@ namespace WeInvest.ViewModels {
         #endregion
 
         public MainWindowViewModel() {
+            this.InvestorLineData = new ObservableCollection<LineData>() {
+                new LineData(0, 10),
+                new LineData(1, 15),
+                new LineData(2, 5)
+            };
+
             this.InvestorGroup = new InvestorGroup();
             Investor stefan = InvestorGroup.AddInvestor("Stefan", Brushes.Coral);
             Investor aron = InvestorGroup.AddInvestor("Aron", Brushes.CornflowerBlue);
@@ -74,9 +83,9 @@ namespace WeInvest.ViewModels {
         }
 
         public void UpdatePieSeries() {
-            this.PieSeries = new ObservableCollection<KeyValuePair<Brush, float>>();
+            this.PieSeries = new ObservableCollection<PieData>();
             DisplayedAccount?.ToList().ForEach(entry => {
-                PieSeries.Add(new KeyValuePair<Brush, float>(entry.Key.Color, entry.Value));
+                PieSeries.Add(new PieData(entry.Key.Color, entry.Value));
             });
             OnPropertyChanged(nameof(PieSeries));
         }

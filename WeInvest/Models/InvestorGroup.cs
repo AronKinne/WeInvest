@@ -2,7 +2,7 @@
 using System.Windows.Media;
 
 namespace WeInvest.Models {
-    class InvestorGroup {
+    public class InvestorGroup {
 
         public List<Investor> Investors { get; private set; }
         public List<Account> AccountHistory { get; private set; }

@@ -3,8 +3,7 @@ using System.Windows.Media;
 using WeInvest.Models;
 
 namespace WeInvest.Tests.Models {
-    [TestFixture]
-    public class InvestorTests {
+    class InvestorTests {
 
         [Test]
         public void Deposit_FirstTime_ShouldReplaceFirstShareHistoryValue() {

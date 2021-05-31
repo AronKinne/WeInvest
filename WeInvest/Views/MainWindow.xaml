@@ -45,7 +45,7 @@
             <Button Content="Withdraw" Grid.Column="2"/>
         </StackPanel>
 
-        <charts:LineChart DataSeries="{Binding InvestorLineData}" Grid.Column="1" Margin="0,25" Background="LightGreen"/>
+        <charts:LineChart DataSeries="{Binding InvestorLineData}" LineThickness="3" LineColor="CornflowerBlue" Grid.Column="1" Margin="0,25" Background="LightGoldenrodYellow"/>
 
         <ListView Grid.Column="2" ItemsSource="{Binding PieSeries}" Margin="25" BorderBrush="Black" BorderThickness="2"/>
 

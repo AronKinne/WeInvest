@@ -45,7 +45,7 @@ namespace WeInvest.ViewModels {
         public int MaxAccountIndex { get => InvestorGroup.AccountHistory.Count - 1; }
 
         public ObservableCollection<PieData> PieSeries { get; set; }
-        public ObservableCollection<LineData> InvestorLineData { get; set; }
+        public ObservableCollection<OrderedLineData> InvestorLineData { get; set; }
 
         #region Command Properties
 
@@ -54,10 +54,12 @@ namespace WeInvest.ViewModels {
         #endregion
 
         public MainWindowViewModel() {
-            this.InvestorLineData = new ObservableCollection<LineData>() {
-                new LineData(0, 10),
-                new LineData(1, 15),
-                new LineData(2, 5)
+            this.InvestorLineData = new ObservableCollection<OrderedLineData>() {
+                new OrderedLineData(1, 10),
+                new OrderedLineData(2, 15),
+                new OrderedLineData(3, 25),
+                new OrderedLineData(4, 20),
+                new OrderedLineData(5, 5)
             };
 
             this.InvestorGroup = new InvestorGroup();

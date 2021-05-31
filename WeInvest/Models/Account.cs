@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WeInvest.Models {
@@ -17,7 +18,12 @@ namespace WeInvest.Models {
             }
         }
 
+        public Account() : this(new List<Investor>()) { }
+
         public Account(List<Investor> investors) {
+            if(investors == null)
+                throw new ArgumentNullException(nameof(investors));
+
             this.ShareByInvestor = new Dictionary<Investor, float>();
             foreach(Investor investor in investors) {
                 AddOwner(investor, investor.Share);

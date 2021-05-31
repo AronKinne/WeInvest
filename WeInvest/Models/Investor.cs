@@ -6,7 +6,7 @@ namespace WeInvest.Models {
 
         public string Name { get; set; }
         public Brush Color { get; set; }
-        public List<float> ShareHistory { get; private set; }
+        public List<float> ShareHistory { get; protected set; }
         public float Share { get => ShareHistory == null ? -1 : ShareHistory[ShareHistory.Count - 1]; }
 
         public Investor(string name, Brush color) {

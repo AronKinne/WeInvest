@@ -20,6 +20,9 @@ namespace WeInvest.Models {
         }
 
         public void Deposit(Investor investor, float amount) {
+            if(!Investors.Contains(investor))
+                throw new System.ArgumentException("This Investor is not part of this InvestorGroup. Add him first.", nameof(investor));
+
             investor.Deposit(amount);
             AccountHistory.Add(new Account(Investors));
         }

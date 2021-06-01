@@ -24,8 +24,10 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.RowSpan="2" Margin="25,25,25,0" Background="LightGoldenrodYellow">
-            <Slider DockPanel.Dock="Bottom" Minimum="0" Maximum="{Binding MaxAccountIndex}" Value="{Binding DisplayedAccountIndex}"
-                TickPlacement="BottomRight" IsSnapToTickEnabled="True" Margin="100,20"/>
+            <Slider DockPanel.Dock="Bottom" Margin="100,20"
+                    Minimum="0" Maximum="{Binding MaxAccountIndex}"
+                    Value="{Binding DisplayedAccountIndex}"
+                    TickPlacement="BottomRight" IsSnapToTickEnabled="True"/>
 
             <charts:PieChart PieSeries="{Binding PieSeries}" Margin="25"/>
         </DockPanel>
@@ -45,11 +47,44 @@
             <Button Content="Withdraw" Grid.Column="2"/>
         </StackPanel>
 
-        <charts:LineChart DataSeries="{Binding InvestorLineData}" LineThickness="3" LineColor="CornflowerBlue" Grid.Column="1" Margin="0,25" Background="LightGoldenrodYellow"/>
+        <charts:LineChart DataSeries="{Binding InvestorLineData}"
+                          LineThickness="3" LineColor="CornflowerBlue"
+                          Grid.Column="1" Margin="0,25" Background="LightGoldenrodYellow"/>
 
-        <ListView Grid.Column="2" ItemsSource="{Binding PieSeries}" Margin="25" BorderBrush="Black" BorderThickness="2"/>
+        <ListView Grid.Column="2" ItemsSource="{Binding Investors}"
+                  Margin="25" BorderBrush="Black" BorderThickness="2">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add..." Command="{Binding AddInvestorCommand}"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="10" Height="10" Fill="{Binding Color}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Header="Edit"/>
+                                <MenuItem Header="Remove"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
 
-        <ScrollViewer Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto" Margin="0,0,25,0">
+        <ScrollViewer Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="1"
+                      VerticalScrollBarVisibility="Hidden"
+                      HorizontalScrollBarVisibility="Auto" Margin="0,0,25,0">
             <Canvas Background="LightGoldenrodYellow" Width="1000"/>
         </ScrollViewer>
     </Grid>

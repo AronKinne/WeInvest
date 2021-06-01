@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace WeInvest.ViewModels.Dialogs {
-    abstract class DialogViewModelBase {
+    public abstract class DialogViewModelBase {
 
         public event EventHandler RequestCloseDialog;
 

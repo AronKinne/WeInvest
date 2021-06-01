@@ -26,6 +26,7 @@ namespace WeInvest.ViewModels {
         private Account _displayedAccount;
 
         public InvestorGroup InvestorGroup { get; set; }
+        public ObservableCollection<Investor> Investors { get => new ObservableCollection<Investor>(InvestorGroup?.Investors); }
 
         public int DisplayedAccountIndex {
             get => _displayedAccountIndex;
@@ -51,6 +52,8 @@ namespace WeInvest.ViewModels {
 
         public RelayCommand DepositCommand { get; set; }
 
+        public RelayCommand AddInvestorCommand { get; set; }
+
         #endregion
 
         public MainWindowViewModel() {
@@ -63,8 +66,8 @@ namespace WeInvest.ViewModels {
             };
 
             this.InvestorGroup = new InvestorGroup();
-            Investor stefan = InvestorGroup.AddInvestor("Stefan", Brushes.Coral);
-            Investor aron = InvestorGroup.AddInvestor("Aron", Brushes.CornflowerBlue);
+            Investor stefan = AddInvestor("Stefan", Brushes.Coral);
+            Investor aron = AddInvestor("Aron", Brushes.CornflowerBlue);
 
             this.DisplayedAccountIndex = 0;
 
@@ -76,7 +79,17 @@ namespace WeInvest.ViewModels {
 
             this.DepositCommand = new RelayCommand(Deposit);
 
+            this.AddInvestorCommand = new RelayCommand(AddInvestor);
+
             #endregion
+        }
+
+        private Investor AddInvestor(string name, Brush color) {
+            var investor = InvestorGroup.AddInvestor(name, color);
+
+            OnPropertyChanged(nameof(Investors));
+
+            return investor;
         }
 
         private void Deposit(Investor investor, float amount) {
@@ -100,6 +113,16 @@ namespace WeInvest.ViewModels {
             if(dialogService.ShowDialog() == true) {
                 System.Console.WriteLine();
             }
+        }
+
+        private void AddInvestor(object parameter) {
+            var dialogService = new DialogService<InvestorDialog, InvestorDialogViewModel>();
+
+            if(dialogService.ShowDialog() == true) {
+                Console.WriteLine();
+            }
+
+            AddInvestor($"Tester {Investors.Count + 1}", Brushes.Tomato);
         }
 
         #endregion

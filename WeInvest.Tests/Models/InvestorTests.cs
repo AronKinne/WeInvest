@@ -47,5 +47,20 @@ namespace WeInvest.Tests.Models {
 
             Assert.That(investor.Share, Is.EqualTo(amount1 + amount2));
         }
+
+        [Test]
+        public void ToString_WithMultipleShares() {
+            string name = "Tester";
+            float amount1 = 10;
+            float amount2 = 20;
+            Investor investor = new Investor("Tester", Brushes.Black);
+            string expected = $"{name} ({amount1}, {amount1 + amount2})";
+
+            investor.Deposit(amount1);
+            investor.Deposit(amount2);
+            string actual = investor.ToString();
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
     }
 }

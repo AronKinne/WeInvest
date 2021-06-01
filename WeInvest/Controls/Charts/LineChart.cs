@@ -88,11 +88,12 @@ namespace WeInvest.Controls.Charts {
         }
 
         public void Update() {
+            UpdateMinMax();
+            UpdateAxis();
+
             if(DataSeries.Count < 2)
                 return;
 
-            UpdateMinMax();
-            UpdateAxis();
             var orderedPoints = CreateOrderedPoints();
             UpdateLine(orderedPoints);
             UpdateLabels(orderedPoints);

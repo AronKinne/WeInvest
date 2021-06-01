@@ -27,8 +27,7 @@ namespace WeInvest.ViewModels {
         public ObservableCollection<Investor> Investors { get => new ObservableCollection<Investor>(InvestorGroup?.Investors); }
 
         public MainAccountControlViewModel MainAccountViewModel { get; set; }
-
-        public ObservableCollection<OrderedLineData> InvestorLineData { get; set; }
+        public InvestorChartControlViewModel InvestorChartViewModel { get; set; }
 
         #region Command Properties
 
@@ -39,20 +38,12 @@ namespace WeInvest.ViewModels {
         #endregion
 
         public MainWindowViewModel() {
-
-            this.InvestorLineData = new ObservableCollection<OrderedLineData>() {
-                new OrderedLineData(1, 10),
-                new OrderedLineData(2, 15),
-                new OrderedLineData(3, 25),
-                new OrderedLineData(4, 20),
-                new OrderedLineData(5, 5)
-            };
-
             this.InvestorGroup = new InvestorGroup();
             Investor stefan = AddInvestor("Stefan", Brushes.Coral);
             Investor aron = AddInvestor("Aron", Brushes.CornflowerBlue);
 
             this.MainAccountViewModel = new MainAccountControlViewModel(InvestorGroup);
+            this.InvestorChartViewModel = new InvestorChartControlViewModel(InvestorGroup);
 
             Deposit(stefan, 15);
             Deposit(aron, 85);
@@ -78,26 +69,29 @@ namespace WeInvest.ViewModels {
         private void Deposit(Investor investor, float amount) {
             InvestorGroup.Deposit(investor, amount);
             MainAccountViewModel.DisplayedAccountIndex = InvestorGroup.AccountHistory.Count - 1;
+
+            OnPropertyChanged(nameof(Investors));
         }
 
         #region Commands
 
         private void Deposit(object parameter) {
-            var dialogService = new DialogService<DepositDialog, DepositDialogViewModel>();
+            //var dialogService = new DialogService<DepositDialog, DepositDialogViewModel>();
 
-            if(dialogService.ShowDialog() == true) {
-                System.Console.WriteLine();
-            }
+            //if(dialogService.ShowDialog() == true) {
+            //    Console.WriteLine();
+            //}
 
-            Deposit(Investors[0], 15);
+            Random random = new Random();
+            Deposit(Investors[random.Next(Investors.Count)], random.Next(20, 50));
         }
 
         private void AddInvestor(object parameter) {
-            var dialogService = new DialogService<InvestorDialog, InvestorDialogViewModel>();
+            //var dialogService = new DialogService<InvestorDialog, InvestorDialogViewModel>();
 
-            if(dialogService.ShowDialog() == true) {
-                Console.WriteLine();
-            }
+            //if(dialogService.ShowDialog() == true) {
+            //    Console.WriteLine();
+            //}
 
             AddInvestor($"Tester {Investors.Count + 1}", Brushes.Tomato);
         }

@@ -27,6 +27,9 @@ namespace WeInvest.Models {
         public Investor AddInvestor(string name, Brush color) {
             Investor investor = new Investor(name, color);
             Investors.Add(investor);
+
+            OnPropertyChanged(nameof(Investors));
+
             return investor;
         }
 
@@ -36,7 +39,9 @@ namespace WeInvest.Models {
 
             investor.Deposit(amount);
             AccountHistory.Add(new Account(Investors));
+
             OnPropertyChanged(nameof(AccountHistory));
+            OnPropertyChanged(nameof(Investors));
         }
 
     }

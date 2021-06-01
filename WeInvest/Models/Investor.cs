@@ -25,6 +25,17 @@ namespace WeInvest.Models {
             ShareHistory.Add(Share + amount);
         }
 
+        public override string ToString() {
+            string output = Name + " (";
+
+            for(int i = 0; i < ShareHistory.Count; i++) {
+                var share = ShareHistory[i];
+                output += share + (i == ShareHistory.Count - 1 ? ")" : ", ");
+            }
+
+            return output;
+        }
+
 
     }
 }

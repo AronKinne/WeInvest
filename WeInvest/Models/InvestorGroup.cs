@@ -1,8 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Media;
 
 namespace WeInvest.Models {
-    public class InvestorGroup {
+    public class InvestorGroup : INotifyPropertyChanged {
+
+        #region INotifyPropertyChanged members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string name = null) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        #endregion
 
         public List<Investor> Investors { get; private set; }
         public List<Account> AccountHistory { get; private set; }
@@ -25,6 +36,7 @@ namespace WeInvest.Models {
 
             investor.Deposit(amount);
             AccountHistory.Add(new Account(Investors));
+            OnPropertyChanged(nameof(AccountHistory));
         }
 
     }

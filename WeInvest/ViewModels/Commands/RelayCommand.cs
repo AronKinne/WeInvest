@@ -2,7 +2,7 @@
 using System.Windows.Input;
 
 namespace WeInvest.ViewModels.Commands {
-    class RelayCommand : ICommand {
+    public class RelayCommand : ICommand {
 
         private Action<object> _execute;
         private Predicate<object> _canExecute;

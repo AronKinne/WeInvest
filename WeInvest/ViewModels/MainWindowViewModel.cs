@@ -6,11 +6,12 @@ using WeInvest.Controls.Charts.Data;
 using WeInvest.Models;
 using WeInvest.Utilities.Services;
 using WeInvest.ViewModels.Commands;
+using WeInvest.ViewModels.Controls;
 using WeInvest.ViewModels.Dialogs;
 using WeInvest.Views.Dialogs;
 
 namespace WeInvest.ViewModels {
-    class MainWindowViewModel : INotifyPropertyChanged {
+    public class MainWindowViewModel : INotifyPropertyChanged {
 
         #region INotifyPropertyChanged members
 
@@ -22,30 +23,11 @@ namespace WeInvest.ViewModels {
 
         #endregion
 
-        private int _displayedAccountIndex;
-        private Account _displayedAccount;
-
         public InvestorGroup InvestorGroup { get; set; }
         public ObservableCollection<Investor> Investors { get => new ObservableCollection<Investor>(InvestorGroup?.Investors); }
 
-        public int DisplayedAccountIndex {
-            get => _displayedAccountIndex;
-            set {
-                _displayedAccountIndex = Math.Max(0, Math.Min(value, InvestorGroup.AccountHistory.Count - 1));
-                if(InvestorGroup.AccountHistory?.Count > 0)
-                    DisplayedAccount = InvestorGroup.AccountHistory[DisplayedAccountIndex];
-            }
-        }
-        public Account DisplayedAccount {
-            get => _displayedAccount;
-            set {
-                _displayedAccount = value;
-                UpdatePieSeries();
-            }
-        }
-        public int MaxAccountIndex { get => InvestorGroup.AccountHistory.Count - 1; }
+        public MainAccountControlViewModel MainAccountViewModel { get; set; }
 
-        public ObservableCollection<PieData> PieSeries { get; set; }
         public ObservableCollection<OrderedLineData> InvestorLineData { get; set; }
 
         #region Command Properties
@@ -57,6 +39,7 @@ namespace WeInvest.ViewModels {
         #endregion
 
         public MainWindowViewModel() {
+
             this.InvestorLineData = new ObservableCollection<OrderedLineData>() {
                 new OrderedLineData(1, 10),
                 new OrderedLineData(2, 15),
@@ -69,7 +52,7 @@ namespace WeInvest.ViewModels {
             Investor stefan = AddInvestor("Stefan", Brushes.Coral);
             Investor aron = AddInvestor("Aron", Brushes.CornflowerBlue);
 
-            this.DisplayedAccountIndex = 0;
+            this.MainAccountViewModel = new MainAccountControlViewModel(InvestorGroup);
 
             Deposit(stefan, 15);
             Deposit(aron, 85);
@@ -94,15 +77,7 @@ namespace WeInvest.ViewModels {
 
         private void Deposit(Investor investor, float amount) {
             InvestorGroup.Deposit(investor, amount);
-            DisplayedAccountIndex = InvestorGroup.AccountHistory.Count - 1;
-        }
-
-        public void UpdatePieSeries() {
-            this.PieSeries = new ObservableCollection<PieData>();
-            DisplayedAccount?.ToList().ForEach(entry => {
-                PieSeries.Add(new PieData(entry.Key.Color, entry.Value));
-            });
-            OnPropertyChanged(nameof(PieSeries));
+            MainAccountViewModel.DisplayedAccountIndex = InvestorGroup.AccountHistory.Count - 1;
         }
 
         #region Commands
@@ -113,6 +88,8 @@ namespace WeInvest.ViewModels {
             if(dialogService.ShowDialog() == true) {
                 System.Console.WriteLine();
             }
+
+            Deposit(Investors[0], 15);
         }
 
         private void AddInvestor(object parameter) {

@@ -34,7 +34,7 @@ namespace WeInvest.Controls.Charts {
 
         // Using a DependencyProperty as the backing store for PieSeries.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PieSeriesProperty =
-            DependencyProperty.Register("PieSeries", typeof(ObservableCollection<PieData>), typeof(PieChart), new PropertyMetadata(null, OnPieSeriesChanged));
+            DependencyProperty.Register("PieSeries", typeof(ObservableCollection<PieData>), typeof(PieChart), new PropertyMetadata(new ObservableCollection<PieData>(), OnPieSeriesChanged));
 
         private static void OnPieSeriesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((PieChart)d).UpdateSectors();

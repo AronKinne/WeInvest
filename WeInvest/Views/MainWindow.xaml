@@ -5,13 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WeInvest"
         xmlns:charts="clr-namespace:WeInvest.Controls.Charts"
+        xmlns:vmc="clr-namespace:WeInvest.ViewModels.Controls"
+        xmlns:vc="clr-namespace:WeInvest.Views.Controls"
         mc:Ignorable="d"
         Title="WeInvest"
         Height="720" Width="1280"
         WindowStartupLocation="CenterScreen"
         DataContext="{StaticResource ViewModel}">
     
-    <Grid>    
+    <Grid>
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type vmc:MainAccountControlViewModel}">
+                <vc:MainAccountControl/>
+            </DataTemplate>
+        </Grid.Resources>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.5*" MinWidth="400"/>
             <ColumnDefinition/>
@@ -23,14 +31,7 @@
             <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.RowSpan="2" Margin="25,25,25,0" Background="LightGoldenrodYellow">
-            <Slider DockPanel.Dock="Bottom" Margin="100,20"
-                    Minimum="0" Maximum="{Binding MaxAccountIndex}"
-                    Value="{Binding DisplayedAccountIndex}"
-                    TickPlacement="BottomRight" IsSnapToTickEnabled="True"/>
-
-            <charts:PieChart PieSeries="{Binding PieSeries}" Margin="25"/>
-        </DockPanel>
+        <ContentPresenter Content="{Binding MainAccountViewModel}" Grid.RowSpan="2" Margin="25,25,25,0"/>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
             <StackPanel.Resources>

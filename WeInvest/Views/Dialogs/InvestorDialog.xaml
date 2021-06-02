@@ -5,8 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WeInvest.Views.Dialogs"
         mc:Ignorable="d"
-        Title="InvestorDialog" Height="450" Width="800">
+        Title="{Binding Title}"
+        Template="{StaticResource DialogTemplate}"
+        Style="{StaticResource DialogStyle}"
+        WindowStartupLocation="CenterScreen">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
         
+        <Label Content="Name:" FontWeight="Bold"/>
+        <TextBox Grid.Column="1" VerticalAlignment="Center" Margin="7,0"
+                 Text="{Binding InvestorName, UpdateSourceTrigger=PropertyChanged}"/>
+        <ComboBox Grid.Column="2" VerticalAlignment="Center"
+                  Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                  ItemsSource="{Binding BrushPool}"
+                  SelectedValue="{Binding InvestorColor}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Ellipse Width="15" Height="15" Fill="{Binding}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
     </Grid>
 </Window>

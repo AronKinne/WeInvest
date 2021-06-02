@@ -87,13 +87,12 @@ namespace WeInvest.ViewModels {
         }
 
         private void AddInvestor(object parameter) {
-            //var dialogService = new DialogService<InvestorDialog, InvestorDialogViewModel>();
+            var dialogService = new DialogService<InvestorDialog, InvestorDialogViewModel>();
 
-            //if(dialogService.ShowDialog() == true) {
-            //    Console.WriteLine();
-            //}
-
-            AddInvestor($"Tester {Investors.Count + 1}", Brushes.Tomato);
+            if(dialogService.ShowDialog() == true) {
+                var viewModel = dialogService.ViewModel;
+                AddInvestor(viewModel.InvestorName, viewModel.InvestorColor);
+            }
         }
 
         #endregion

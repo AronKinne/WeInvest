@@ -1,4 +1,6 @@
-﻿namespace WeInvest.Controls.Charts.Data {
+﻿using System;
+
+namespace WeInvest.Controls.Charts.Data {
     public abstract class ChartData<TKey, TValue> {
 
         public TKey Key { get; set; }
@@ -15,5 +17,8 @@
             return $"{{Key = { Key }, Value = { Value }}}";
         }
 
+        public static implicit operator ChartData<TKey, TValue>(OrderedLineData v) {
+            throw new NotImplementedException();
+        }
     }
 }

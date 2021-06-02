@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,24 +8,7 @@ using WeInvest.Controls.Charts.Data;
 using WeInvest.Utilities;
 
 namespace WeInvest.Controls.Charts {
-    public class LineChart : Canvas {
-
-        public ObservableCollection<OrderedLineData> DataSeries {
-            get { return (ObservableCollection<OrderedLineData>)GetValue(DataSeriesProperty); }
-            set { SetValue(DataSeriesProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for DataSeries.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DataSeriesProperty =
-            DependencyProperty.Register("DataSeries",
-                typeof(ObservableCollection<OrderedLineData>),
-                typeof(LineChart),
-                new PropertyMetadata(new ObservableCollection<OrderedLineData>(), OnDataSeriesChanged));
-
-        private static void OnDataSeriesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            ((LineChart)d).Update();
-        }
-
+    public class LineChart : XYChart<OrderedLineData> {
 
         public Brush LineColor {
             get { return (Brush)GetValue(LineColorProperty); }
@@ -41,38 +23,10 @@ namespace WeInvest.Controls.Charts {
             ((LineChart)d).Update();
         }
 
-
-        public int LineThickness {
-            get { return (int)GetValue(LineThicknessProperty); }
-            set { SetValue(LineThicknessProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for LineThickness.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty LineThicknessProperty =
-            DependencyProperty.Register("LineThickness", typeof(int), typeof(LineChart), new PropertyMetadata(1, OnLineThicknessChanged));
-
-        private static void OnLineThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            ((LineChart)d).Update();
-        }
-
-
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo) {
-            Update();
-        }
-
-        public int Padding { get; set; }
-        public int MinX { get; private set; }
-        public int MaxX { get; private set; }
-        public int MinY { get; private set; }
-        public int MaxY { get; private set; }
         public double MinYValue { get; private set; }
         public double MaxYValue { get; private set; }
 
         public Path Line { get; private set; }
-
-        public Line XAxis { get; private set; }
-        public Line YAxis { get; private set; }
-
         public List<Label> XLabels { get; private set; }
 
         static LineChart() {
@@ -85,9 +39,13 @@ namespace WeInvest.Controls.Charts {
             this.XLabels = new List<Label>();
 
             Update();
+
+
+            OrderedLineData linedata = new OrderedLineData(0, 1);
+            ChartData<object, object> chartData = linedata;
         }
 
-        public void Update() {
+        public override void Update() {
             UpdateMinMax();
             UpdateAxis();
 
@@ -99,7 +57,7 @@ namespace WeInvest.Controls.Charts {
             UpdateLabels(orderedPoints);
         }
 
-        private void UpdateMinMax() {
+        protected override void UpdateMinMax() {
             this.MinX = 0 + Padding;
             this.MaxX = (int)ActualWidth - Padding;
 
@@ -113,17 +71,6 @@ namespace WeInvest.Controls.Charts {
                 MinYValue = Math.Min(MinYValue, data.Value);
                 MaxYValue = Math.Max(MaxYValue, data.Value);
             }
-        }
-
-        private void UpdateAxis() {
-            Children.Remove(XAxis);
-            Children.Remove(YAxis);
-
-            XAxis = new Line() { X1 = MinX, Y1 = MinY, X2 = ActualWidth, Y2 = MinY, Stroke = Brushes.Black };
-            YAxis = new Line() { X1 = MinX, Y1 = MinY, X2 = MinX, Y2 = 0, Stroke = Brushes.Black };
-
-            Children.Add(XAxis);
-            Children.Add(YAxis);
         }
 
         private List<Point> CreateOrderedPoints() {

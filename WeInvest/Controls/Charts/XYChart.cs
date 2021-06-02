@@ -6,7 +6,7 @@ using System.Windows.Shapes;
 using WeInvest.Controls.Charts.Data;
 
 namespace WeInvest.Controls.Charts {
-    public abstract class XYChart<TData> : Canvas where TData : ChartData<object, object> {
+    public abstract class XYChart<TData> : Canvas where TData : IChartData {
 
         public ObservableCollection<TData> DataSeries {
             get { return (ObservableCollection<TData>)GetValue(DataSeriesProperty); }
@@ -56,7 +56,7 @@ namespace WeInvest.Controls.Charts {
 
 
         static XYChart() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(XYChart), new FrameworkPropertyMetadata(typeof(XYChart)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(XYChart<TData>), new FrameworkPropertyMetadata(typeof(XYChart<TData>)));
         }
 
         public XYChart() {

@@ -39,10 +39,6 @@ namespace WeInvest.Controls.Charts {
             this.XLabels = new List<Label>();
 
             Update();
-
-
-            OrderedLineData linedata = new OrderedLineData(0, 1);
-            ChartData<object, object> chartData = linedata;
         }
 
         public override void Update() {

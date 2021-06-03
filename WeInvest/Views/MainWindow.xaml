@@ -51,7 +51,9 @@
             <Button Content="Withdraw" Grid.Column="2"/>
         </StackPanel>
 
-        <!-- AreaChart here (Grid.Column="1") -->
+        <charts:AreaChart DataSeries="{Binding AreaDataSeries}"
+                          Grid.Column="1" Margin="0,25"
+                          Background="LightGoldenrodYellow"/>
 
         <ListView Grid.Column="2" ItemsSource="{Binding Investors}"
                   Margin="25" BorderBrush="Black" BorderThickness="2">

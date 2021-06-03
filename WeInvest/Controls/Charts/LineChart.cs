@@ -23,6 +23,21 @@ namespace WeInvest.Controls.Charts {
             ((LineChart)d).Update();
         }
 
+
+        public int LineThickness {
+            get { return (int)GetValue(LineThicknessProperty); }
+            set { SetValue(LineThicknessProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for LineThickness.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LineThicknessProperty =
+            DependencyProperty.Register("LineThickness", typeof(int), typeof(LineChart), new PropertyMetadata(1, OnLineThicknessChanged));
+
+        private static void OnLineThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((LineChart)d).Update();
+        }
+
+
         public double MinYValue { get; private set; }
         public double MaxYValue { get; private set; }
 

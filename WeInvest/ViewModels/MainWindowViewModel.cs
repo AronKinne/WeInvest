@@ -1,14 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Media;
 using WeInvest.Controls.Charts.Data;
 using WeInvest.Models;
-using WeInvest.Utilities.Services;
 using WeInvest.ViewModels.Commands;
 using WeInvest.ViewModels.Controls;
-using WeInvest.ViewModels.Dialogs;
-using WeInvest.Views.Dialogs;
 
 namespace WeInvest.ViewModels {
     public class MainWindowViewModel : INotifyPropertyChanged {
@@ -29,6 +27,8 @@ namespace WeInvest.ViewModels {
         public MainAccountControlViewModel MainAccountViewModel { get; set; }
         public InvestorChartControlViewModel InvestorChartViewModel { get; set; }
 
+        public ObservableCollection<OrderedAreaData> AreaDataSeries { get; set; }
+
         #region Command Properties
 
         public RelayCommand DepositCommand { get; set; }
@@ -38,6 +38,12 @@ namespace WeInvest.ViewModels {
         #endregion
 
         public MainWindowViewModel() {
+            this.AreaDataSeries = new ObservableCollection<OrderedAreaData>() {
+                new OrderedAreaData(1, new List<double> {10, 20, 30}),
+                new OrderedAreaData(2, new List<double> {90, 10, 100}),
+                new OrderedAreaData(3, new List<double> {50, 50, 100})
+            };
+
             this.InvestorGroup = new InvestorGroup();
             Investor stefan = AddInvestor("Stefan", Brushes.Coral);
             Investor aron = AddInvestor("Aron", Brushes.CornflowerBlue);

@@ -25,20 +25,6 @@ namespace WeInvest.Controls.Charts {
         }
 
 
-        public int LineThickness {
-            get { return (int)GetValue(LineThicknessProperty); }
-            set { SetValue(LineThicknessProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for LineThickness.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty LineThicknessProperty =
-            DependencyProperty.Register("LineThickness", typeof(int), typeof(XYChart<TData>), new PropertyMetadata(1, OnLineThicknessChanged));
-
-        private static void OnLineThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            ((XYChart<TData>)d).Update();
-        }
-
-
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo) {
             Update();
         }
@@ -82,6 +68,9 @@ namespace WeInvest.Controls.Charts {
 
             Children.Add(XAxis);
             Children.Add(YAxis);
+
+            Canvas.SetZIndex(XAxis, 1);
+            Canvas.SetZIndex(YAxis, 1);
         }
     }
 }

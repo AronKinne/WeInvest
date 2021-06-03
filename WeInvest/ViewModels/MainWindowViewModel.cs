@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Media;
 using WeInvest.Controls.Charts.Data;
 using WeInvest.Models;
+using WeInvest.Utilities;
 using WeInvest.ViewModels.Commands;
 using WeInvest.ViewModels.Controls;
 
@@ -24,10 +25,9 @@ namespace WeInvest.ViewModels {
         public InvestorGroup InvestorGroup { get; set; }
         public ObservableCollection<Investor> Investors { get => new ObservableCollection<Investor>(InvestorGroup?.Investors); }
 
-        public MainAccountControlViewModel MainAccountViewModel { get; set; }
+        public MainAccountPieControlViewModel MainAccountPieViewModel { get; set; }
+        public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; set; }
         public InvestorChartControlViewModel InvestorChartViewModel { get; set; }
-
-        public ObservableCollection<OrderedAreaData> AreaDataSeries { get; set; }
 
         #region Command Properties
 
@@ -38,17 +38,13 @@ namespace WeInvest.ViewModels {
         #endregion
 
         public MainWindowViewModel() {
-            this.AreaDataSeries = new ObservableCollection<OrderedAreaData>() {
-                new OrderedAreaData(1, new List<double> {10, 20, 30}),
-                new OrderedAreaData(2, new List<double> {90, 10, 100}),
-                new OrderedAreaData(3, new List<double> {50, 50, 100})
-            };
 
             this.InvestorGroup = new InvestorGroup();
             Investor stefan = AddInvestor("Stefan", Brushes.Coral);
             Investor aron = AddInvestor("Aron", Brushes.CornflowerBlue);
 
-            this.MainAccountViewModel = new MainAccountControlViewModel(InvestorGroup);
+            this.MainAccountPieViewModel = new MainAccountPieControlViewModel(InvestorGroup);
+            this.MainAccountAreaViewModel = new MainAccountAreaControlViewModel(InvestorGroup);
             this.InvestorChartViewModel = new InvestorChartControlViewModel(InvestorGroup);
 
             Deposit(stefan, 15);
@@ -74,7 +70,7 @@ namespace WeInvest.ViewModels {
 
         private void Deposit(Investor investor, float amount) {
             InvestorGroup.Deposit(investor, amount);
-            MainAccountViewModel.DisplayedAccountIndex = InvestorGroup.AccountHistory.Count - 1;
+            MainAccountPieViewModel.DisplayedAccountIndex = InvestorGroup.AccountHistory.Count - 1;
 
             OnPropertyChanged(nameof(Investors));
         }
@@ -89,7 +85,7 @@ namespace WeInvest.ViewModels {
             //}
 
             Random random = new Random();
-            Deposit(Investors[random.Next(Investors.Count)], random.Next(20, 50));
+            Deposit(Investors[random.Next(Investors.Count)], random.Next(5, 100));
         }
 
         private void AddInvestor(object parameter) {
@@ -99,7 +95,8 @@ namespace WeInvest.ViewModels {
             //    Console.WriteLine();
             //}
 
-            AddInvestor($"Tester {Investors.Count + 1}", Brushes.Tomato);
+            Random random = new Random();
+            AddInvestor($"Tester {Investors.Count + 1}", Utility.BrushesArray[random.Next(Utility.BrushesArray.Length)]);
         }
 
         #endregion

@@ -31,6 +31,20 @@ namespace WeInvest.Tests.Models {
         }
 
         [Test]
+        public void AddInvestor_WithExistingAccountHistory_ShouldAddInvestorToAccountHistory() {
+            InvestorGroup investorGroup = new InvestorGroup();
+            var investor1 = investorGroup.AddInvestor("Investor 1", Brushes.Black);
+
+            investorGroup.Deposit(investor1, 10);
+
+            Assert.That(investorGroup.CurrentAccount.ShareByInvestor.Keys.Count == 1);
+
+            investorGroup.AddInvestor("Investor 2", Brushes.Black);
+
+            Assert.That(investorGroup.CurrentAccount.ShareByInvestor.Keys.Count == 2);
+        }
+
+        [Test]
         public void Deposit_WithExistingInvestor_ShouldCreateNewAccount() {
             InvestorGroup investorGroup = new InvestorGroup();
             var investor = investorGroup.AddInvestor("Tester", Brushes.Black);

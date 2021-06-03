@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -9,6 +10,23 @@ using WeInvest.Utilities;
 
 namespace WeInvest.Controls.Charts {
     public class AreaChart : XYChart<OrderedAreaData> {
+
+        public ObservableCollection<Brush> OrderedColorList {
+            get { return (ObservableCollection<Brush>)GetValue(OrderedColorListProperty); }
+            set { SetValue(OrderedColorListProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for OrderedColorList.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OrderedColorListProperty =
+            DependencyProperty.Register("OrderedColorList",
+                typeof(ObservableCollection<Brush>),
+                typeof(AreaChart),
+                new PropertyMetadata(new ObservableCollection<Brush>(), OnOrderedColorListChanged));
+
+        private static void OnOrderedColorListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((AreaChart)d).Update();
+        }
+
 
         public List<Path> Areas { get; set; }
 
@@ -81,6 +99,8 @@ namespace WeInvest.Controls.Charts {
         }
 
         private void UpdateArea(Point[,] points) {
+            Random random = new Random();
+
             Areas.ForEach(p => Children.Remove(p));
             Areas = new List<Path>();
 
@@ -88,8 +108,10 @@ namespace WeInvest.Controls.Charts {
                 var area = new Path();
                 area.Data = CreateArea(points, layer);
 
-                Random random = new Random();
-                area.Fill = Utility.BrushesArray[random.Next(Utility.BrushesArray.Length)];
+                var color = Utility.BrushesArray[random.Next(Utility.BrushesArray.Length)];
+                if(OrderedColorList?.Count - 1 >= layer)
+                    color = OrderedColorList[layer];
+                area.Fill = color;
 
                 Areas.Add(area);
                 Children.Add(area);

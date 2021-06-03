@@ -69,11 +69,7 @@ namespace WeInvest.Controls.Charts {
         }
 
         protected override void UpdateMinMax() {
-            this.MinX = 0 + Padding;
-            this.MaxX = (int)ActualWidth - Padding;
-
-            this.MinY = (int)ActualHeight - Padding;
-            this.MaxY = 0 + Padding;
+            base.UpdateMinMax();
 
             this.MinYValue = double.PositiveInfinity;
             this.MaxYValue = double.NegativeInfinity;

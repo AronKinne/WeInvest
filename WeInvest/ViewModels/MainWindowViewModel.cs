@@ -76,14 +76,14 @@ namespace WeInvest.ViewModels {
         #region Commands
 
         private void Deposit(object parameter) {
-            //var dialogService = new DialogService<DepositDialog, DepositDialogViewModel>();
+            var dialogService = new DialogService<DepositDialog, DepositDialogViewModel>();
 
-            //if(dialogService.ShowDialog() == true) {
-            //    Console.WriteLine();
-            //}
+            if(dialogService.ShowDialog() == true) {
+                
+            }
 
-            Random random = new Random();
-            Deposit(Investors[random.Next(Investors.Count)], random.Next(20, 50));
+            //Random random = new Random();
+            //Deposit(Investors[random.Next(Investors.Count)], random.Next(20, 50));
         }
 
         private void AddInvestor(object parameter) {

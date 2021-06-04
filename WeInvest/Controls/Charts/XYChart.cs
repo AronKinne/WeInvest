@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -21,6 +22,20 @@ namespace WeInvest.Controls.Charts {
                 new PropertyMetadata(new ObservableCollection<TData>(), OnDataSeriesChanged));
 
         private static void OnDataSeriesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((XYChart<TData>)d).Update();
+        }
+
+
+        public Brush AxisColor {
+            get { return (Brush)GetValue(AxisColorProperty); }
+            set { SetValue(AxisColorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for AxisColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AxisColorProperty =
+            DependencyProperty.Register("AxisColor", typeof(Brush), typeof(XYChart<TData>), new PropertyMetadata(Brushes.Black, OnAxisColorChanged));
+
+        private static void OnAxisColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((XYChart<TData>)d).Update();
         }
 
@@ -63,8 +78,8 @@ namespace WeInvest.Controls.Charts {
             Children.Remove(XAxis);
             Children.Remove(YAxis);
 
-            XAxis = new Line() { X1 = MinX, Y1 = MinY, X2 = ActualWidth, Y2 = MinY, Stroke = Brushes.Black };
-            YAxis = new Line() { X1 = MinX, Y1 = MinY, X2 = MinX, Y2 = 0, Stroke = Brushes.Black };
+            XAxis = new Line() { X1 = MinX, Y1 = MinY, X2 = ActualWidth, Y2 = MinY, Stroke = AxisColor };
+            YAxis = new Line() { X1 = MinX, Y1 = MinY, X2 = MinX, Y2 = 0, Stroke = AxisColor };
 
             Children.Add(XAxis);
             Children.Add(YAxis);

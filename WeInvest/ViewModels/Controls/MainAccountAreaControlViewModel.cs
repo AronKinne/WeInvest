@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Media;
@@ -24,6 +23,8 @@ namespace WeInvest.ViewModels.Controls {
         public ObservableCollection<OrderedAreaData> AreaDataSeries { get; set; }
         public ObservableCollection<Brush> ColorList { get; set; }
 
+        public double AreaOpacity { get; set; }
+
         public MainAccountAreaControlViewModel(InvestorGroup investorGroup) {
             this.InvestorGroup = investorGroup;
             InvestorGroup.PropertyChanged += OnInvestorGroupPropertyChanged;
@@ -34,6 +35,8 @@ namespace WeInvest.ViewModels.Controls {
                 Brushes.LightSalmon,
                 Brushes.Aquamarine
             };
+
+            this.AreaOpacity = 1;
         }
 
         private void OnInvestorGroupPropertyChanged(object sender, PropertyChangedEventArgs e) {
@@ -56,7 +59,11 @@ namespace WeInvest.ViewModels.Controls {
 
         private void UpdateColorList() {
             ColorList = new ObservableCollection<Brush>();
-            InvestorGroup.Investors.ForEach(i => ColorList.Add(i.Color));
+            InvestorGroup.Investors.ForEach(i => {
+                var color = i.Color.Clone();
+                color.Opacity = AreaOpacity;
+                ColorList.Add(color);
+            });
 
             OnPropertyChanged(nameof(ColorList));
         }

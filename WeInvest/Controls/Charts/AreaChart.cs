@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using WeInvest.Controls.Charts.Data;
@@ -28,7 +29,8 @@ namespace WeInvest.Controls.Charts {
         }
 
 
-        public List<Path> Areas { get; set; }
+        public List<Path> Areas { get; private set; }
+        public List<Label> XLabels { get; private set; }
 
         static AreaChart() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(AreaChart), new FrameworkPropertyMetadata(typeof(AreaChart)));
@@ -38,6 +40,7 @@ namespace WeInvest.Controls.Charts {
             this.Padding = 20;
 
             this.Areas = new List<Path>();
+            this.XLabels = new List<Label>();
         }
 
         public override void Update() {
@@ -49,6 +52,7 @@ namespace WeInvest.Controls.Charts {
 
             var points = CreateBoundaryPoints();
             UpdateArea(points);
+            UpdateLabels(points);
         }
 
         private Point[,] CreateBoundaryPoints() {
@@ -147,6 +151,27 @@ namespace WeInvest.Controls.Charts {
             geometry.Figures.Add(figure);
 
             return geometry;
+        }
+
+        private void UpdateLabels(Point[,] points) {
+            XLabels.ForEach(l => Children.Remove(l));
+            XLabels = new List<Label>();
+
+            for(int i = 0; i < DataSeries.Count; i++) {
+                Label label = new Label() {
+                    Content = DataSeries[i].Key.ToString(),
+                    FontSize = Padding * .7,
+                    Foreground = AxisColor
+                };
+                label.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                Size size = label.DesiredSize;
+
+                Children.Add(label);
+                Canvas.SetLeft(label, points[0, i].X - size.Width / 2);
+                Canvas.SetTop(label, ActualHeight - Padding / 2 - size.Height / 2);
+
+                XLabels.Add(label);
+            }
         }
     }
 }

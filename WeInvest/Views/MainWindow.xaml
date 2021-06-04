@@ -54,7 +54,7 @@
             <Button Content="Withdraw" Grid.Column="2"/>
         </StackPanel>
 
-        <ContentPresenter Content="{Binding MainAccountAreaViewModel}" Grid.Column="1" Margin="25"/>
+        <ContentPresenter Content="{Binding MainAccountAreaViewModel}" Grid.Column="1" Margin="0,25"/>
         
         <ListView Grid.Column="2" ItemsSource="{Binding Investors}"
                   Margin="25" BorderBrush="Black" BorderThickness="2">

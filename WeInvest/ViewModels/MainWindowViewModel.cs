@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Media;
-using WeInvest.Controls.Charts.Data;
 using WeInvest.Models;
 using WeInvest.Utilities;
 using WeInvest.ViewModels.Commands;
@@ -44,7 +42,7 @@ namespace WeInvest.ViewModels {
             Investor aron = AddInvestor("Aron", Brushes.CornflowerBlue);
 
             this.MainAccountPieViewModel = new MainAccountPieControlViewModel(InvestorGroup);
-            this.MainAccountAreaViewModel = new MainAccountAreaControlViewModel(InvestorGroup);
+            this.MainAccountAreaViewModel = new MainAccountAreaControlViewModel(InvestorGroup) { AreaOpacity = 1 };
             this.InvestorChartViewModel = new InvestorChartControlViewModel(InvestorGroup);
 
             Deposit(stefan, 15);

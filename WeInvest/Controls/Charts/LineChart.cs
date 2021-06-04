@@ -138,7 +138,8 @@ namespace WeInvest.Controls.Charts {
             for(int i = 0; i < DataSeries.Count; i++) {
                 Label label = new Label() {
                     Content = DataSeries[i].Key.ToString(),
-                    FontSize = Padding * .7
+                    FontSize = Padding * .7,
+                    Foreground = AxisColor
                 };
                 label.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 Size size = label.DesiredSize;

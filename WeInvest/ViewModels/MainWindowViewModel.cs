@@ -2,13 +2,10 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Media;
-using WeInvest.Controls.Charts.Data;
 using WeInvest.Models;
-using WeInvest.Utilities.Services;
+using WeInvest.Utilities;
 using WeInvest.ViewModels.Commands;
 using WeInvest.ViewModels.Controls;
-using WeInvest.ViewModels.Dialogs;
-using WeInvest.Views.Dialogs;
 
 namespace WeInvest.ViewModels {
     public class MainWindowViewModel : INotifyPropertyChanged {
@@ -26,7 +23,8 @@ namespace WeInvest.ViewModels {
         public InvestorGroup InvestorGroup { get; set; }
         public ObservableCollection<Investor> Investors { get => new ObservableCollection<Investor>(InvestorGroup?.Investors); }
 
-        public MainAccountControlViewModel MainAccountViewModel { get; set; }
+        public MainAccountPieControlViewModel MainAccountPieViewModel { get; set; }
+        public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; set; }
         public InvestorChartControlViewModel InvestorChartViewModel { get; set; }
 
         #region Command Properties
@@ -38,11 +36,13 @@ namespace WeInvest.ViewModels {
         #endregion
 
         public MainWindowViewModel() {
+
             this.InvestorGroup = new InvestorGroup();
             Investor stefan = AddInvestor("Stefan", Brushes.Coral);
             Investor aron = AddInvestor("Aron", Brushes.CornflowerBlue);
 
-            this.MainAccountViewModel = new MainAccountControlViewModel(InvestorGroup);
+            this.MainAccountPieViewModel = new MainAccountPieControlViewModel(InvestorGroup);
+            this.MainAccountAreaViewModel = new MainAccountAreaControlViewModel(InvestorGroup) { AreaOpacity = 1 };
             this.InvestorChartViewModel = new InvestorChartControlViewModel(InvestorGroup);
 
             Deposit(stefan, 15);
@@ -68,7 +68,7 @@ namespace WeInvest.ViewModels {
 
         private void Deposit(Investor investor, float amount) {
             InvestorGroup.Deposit(investor, amount);
-            MainAccountViewModel.DisplayedAccountIndex = InvestorGroup.AccountHistory.Count - 1;
+            MainAccountPieViewModel.DisplayedAccountIndex = InvestorGroup.AccountHistory.Count - 1;
 
             OnPropertyChanged(nameof(Investors));
         }

@@ -5,7 +5,7 @@ using WeInvest.Controls.Charts.Data;
 using WeInvest.Models;
 
 namespace WeInvest.ViewModels.Controls {
-    public class MainAccountControlViewModel : INotifyPropertyChanged {
+    public class MainAccountPieControlViewModel : INotifyPropertyChanged {
 
         #region INotifyPropertyChanged members
 
@@ -41,7 +41,7 @@ namespace WeInvest.ViewModels.Controls {
         }
         public ObservableCollection<PieData> PieSeries { get; set; }
 
-        public MainAccountControlViewModel(InvestorGroup investorGroup) {
+        public MainAccountPieControlViewModel(InvestorGroup investorGroup) {
             this.InvestorGroup = investorGroup;
             InvestorGroup.PropertyChanged += OnInvestorGroupPropertyChanged;
 

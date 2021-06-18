@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Media;
 
@@ -27,6 +28,7 @@ namespace WeInvest.Models {
         public Investor AddInvestor(string name, Brush color) {
             Investor investor = new Investor(name, color);
             Investors.Add(investor);
+            AddInvestorToAccountHistory(investor);
 
             OnPropertyChanged(nameof(Investors));
 
@@ -42,6 +44,11 @@ namespace WeInvest.Models {
 
             OnPropertyChanged(nameof(AccountHistory));
             OnPropertyChanged(nameof(Investors));
+        }
+
+        private void AddInvestorToAccountHistory(Investor investor) {
+            AccountHistory.ForEach(a => a.AddOwner(investor, 0));
+            OnPropertyChanged(nameof(AccountHistory));
         }
 
     }

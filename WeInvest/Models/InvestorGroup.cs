@@ -38,7 +38,7 @@ namespace WeInvest.Models {
 
             investor.Deposit(amount);
             Account account = new Account();
-            account.AddInvestors(Investors);
+            account.AddOwners(Investors);
             AccountHistory.Add(account);
 
             OnPropertyChanged(nameof(AccountHistory));

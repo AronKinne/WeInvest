@@ -17,7 +17,7 @@ namespace WeInvest.Models {
             }
         }
 
-        public void AddInvestors(IEnumerable<Investor> investors) {
+        public void AddOwners(IEnumerable<Investor> investors) {
             this.ShareByInvestor = new Dictionary<Investor, float>();
             foreach(Investor investor in investors) {
                 AddOwner(investor, investor.Share);

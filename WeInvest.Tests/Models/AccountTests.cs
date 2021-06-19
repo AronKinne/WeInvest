@@ -37,23 +37,23 @@ namespace WeInvest.Tests.Models {
             _investorList[0].Deposit(amount1);
             _investorList[1].Deposit(amount2);
 
-            _account.AddInvestors(_investorList);
+            _account.AddOwners(_investorList);
 
             Assert.That(_account.Balance, Is.EqualTo(amount1 + amount2));
         }
 
         [Test]
-        public void AddInvestors_ShouldAdd() {
+        public void AddOwners_ShouldAdd() {
             Assert.That(_account.ShareByInvestor.Count, Is.EqualTo(0));
 
-            _account.AddInvestors(_investorList);
+            _account.AddOwners(_investorList);
 
             Assert.That(_account.ShareByInvestor.Count, Is.EqualTo(_investorList.Count));
         }
 
         [Test]
         public void AddOwner_WithExistingInvestor_ShouldNotAdd() {
-            _account.AddInvestors(new List<Investor>() { _investor });
+            _account.AddOwners(new List<Investor>() { _investor });
 
             _account.AddOwner(_investor, 10);
 
@@ -82,7 +82,7 @@ namespace WeInvest.Tests.Models {
             expected.Add(new KeyValuePair<Investor, float>(investor1, investor1.Share));
             expected.Add(new KeyValuePair<Investor, float>(investor2, investor2.Share));
 
-            _account.AddInvestors(new List<Investor>() {
+            _account.AddOwners(new List<Investor>() {
                 investor1,
                 investor2
             });

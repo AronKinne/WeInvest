@@ -120,9 +120,5 @@ namespace WeInvest.Controls.Charts {
             return geometry;
         }
 
-        private double DegreesToRadians(double angle) {
-            return (Math.PI / 180) * angle;
-        }
-
     }
 }

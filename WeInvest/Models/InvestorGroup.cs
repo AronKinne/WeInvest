@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Media;
 
@@ -16,17 +15,15 @@ namespace WeInvest.Models {
 
         #endregion
 
-        public List<Investor> Investors { get; private set; }
-        public List<Account> AccountHistory { get; private set; }
+        public IList<Investor> Investors { get; private set; } = new List<Investor>();
+        public IList<Account> AccountHistory { get; private set; } = new List<Account>();
         public Account CurrentAccount { get => AccountHistory == null ? null : AccountHistory[AccountHistory.Count - 1]; }
 
-        public InvestorGroup() {
-            this.Investors = new List<Investor>();
-            this.AccountHistory = new List<Account>();
-        }
-
-        public Investor AddInvestor(string name, Brush color) {
-            Investor investor = new Investor(name, color);
+        public Investor AddInvestor(string name, Brush brush) {
+            Investor investor = new Investor() {
+                Name = name,
+                Brush = brush
+            };
             Investors.Add(investor);
             AddInvestorToAccountHistory(investor);
 
@@ -40,14 +37,18 @@ namespace WeInvest.Models {
                 throw new System.ArgumentException("This Investor is not part of this InvestorGroup. Add him first.", nameof(investor));
 
             investor.Deposit(amount);
-            AccountHistory.Add(new Account(Investors));
+            Account account = new Account();
+            account.AddInvestors(Investors);
+            AccountHistory.Add(account);
 
             OnPropertyChanged(nameof(AccountHistory));
             OnPropertyChanged(nameof(Investors));
         }
 
         private void AddInvestorToAccountHistory(Investor investor) {
-            AccountHistory.ForEach(a => a.AddOwner(investor, 0));
+            foreach(var account in AccountHistory)
+                account.AddOwner(investor, 0);
+
             OnPropertyChanged(nameof(AccountHistory));
         }
 

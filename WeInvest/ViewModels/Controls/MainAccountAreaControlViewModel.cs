@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Media;
@@ -20,30 +21,25 @@ namespace WeInvest.ViewModels.Controls {
 
         public InvestorGroup InvestorGroup { get; set; }
 
-        public ObservableCollection<OrderedAreaData> AreaDataSeries { get; set; }
-        public ObservableCollection<Brush> ColorList { get; set; }
+        public IList<OrderedAreaData> AreaDataSeries { get; set; } = new ObservableCollection<OrderedAreaData>();
+        public IList<Brush> BrushList { get; set; } = new ObservableCollection<Brush>();
 
-        public double AreaOpacity { get; set; }
+        public double AreaOpacity { get; set; } = 1;
 
         public MainAccountAreaControlViewModel(InvestorGroup investorGroup) {
             this.InvestorGroup = investorGroup;
             InvestorGroup.PropertyChanged += OnInvestorGroupPropertyChanged;
 
-            this.AreaDataSeries = new ObservableCollection<OrderedAreaData>();
-            this.ColorList = new ObservableCollection<Brush>() {
-                Brushes.LightCoral,
-                Brushes.LightSalmon,
-                Brushes.Aquamarine
-            };
-
-            this.AreaOpacity = 1;
+            BrushList.Add(Brushes.LightCoral);
+            BrushList.Add(Brushes.LightSalmon);
+            BrushList.Add(Brushes.Aquamarine);
         }
 
         private void OnInvestorGroupPropertyChanged(object sender, PropertyChangedEventArgs e) {
             if(e.PropertyName == nameof(InvestorGroup.AccountHistory))
                 UpdateAreaDataSeries();
             if(e.PropertyName == nameof(InvestorGroup.Investors))
-                UpdateColorList();
+                UpdateBrushList();
         }
 
         private void UpdateAreaDataSeries() {
@@ -57,15 +53,16 @@ namespace WeInvest.ViewModels.Controls {
             OnPropertyChanged(nameof(AreaDataSeries));
         }
 
-        private void UpdateColorList() {
-            ColorList = new ObservableCollection<Brush>();
-            InvestorGroup.Investors.ForEach(i => {
-                var color = i.Color.Clone();
-                color.Opacity = AreaOpacity;
-                ColorList.Add(color);
-            });
+        private void UpdateBrushList() {
+            BrushList = new ObservableCollection<Brush>();
 
-            OnPropertyChanged(nameof(ColorList));
+            foreach(var investor in InvestorGroup.Investors) {
+                var brush = investor.Brush.Clone();
+                brush.Opacity = AreaOpacity;
+                BrushList.Add(brush);
+            }
+
+            OnPropertyChanged(nameof(BrushList));
         }
     }
 }

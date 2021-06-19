@@ -20,7 +20,7 @@
                     <Grid Margin="20">
                         <charts:LineChart DataSeries="{Binding ShareData}"
                                           Width="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"
-                                          LineColor="{Binding Investor.Color}"
+                                          LineBrush="{Binding Investor.Brush}"
                                           LineThickness="3"/>
                     </Grid>
                 </DataTemplate>

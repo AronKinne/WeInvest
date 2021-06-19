@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="LightGoldenrodYellow">
         <charts:AreaChart DataSeries="{Binding AreaDataSeries}"
-                          OrderedColorList="{Binding ColorList}"
+                          OrderedBrushList="{Binding BrushList}"
                           Margin="20"/>
     </Grid>
 </UserControl>

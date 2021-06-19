@@ -3,7 +3,7 @@ using System.Windows.Media;
 using WeInvest.Utilities;
 
 namespace WeInvest.Tests.Utilities {
-    class UtilityTests {
+    public class UtilityTests {
 
         [TestCase(5, 0, 10, 0, 100, 50)]
         [TestCase(12, 10, 20, 30, 40, 32)]

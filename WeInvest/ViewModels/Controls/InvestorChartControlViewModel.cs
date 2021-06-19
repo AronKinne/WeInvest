@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using WeInvest.Controls.Charts.Data;
 using WeInvest.Models;
@@ -18,7 +19,7 @@ namespace WeInvest.ViewModels.Controls {
 
         public InvestorGroup InvestorGroup { get; set; }
 
-        public ObservableCollection<InvestorData> DataSeries {
+        public IList<InvestorData> DataSeries {
             get {
                 if(InvestorGroup == null)
                     return null;
@@ -52,9 +53,9 @@ namespace WeInvest.ViewModels.Controls {
         public class InvestorData {
 
             public Investor Investor { get; set; }
-            public ObservableCollection<OrderedLineData> ShareData { get; set; }
+            public IList<OrderedLineData> ShareData { get; set; }
 
-            public InvestorData(Investor investor, ObservableCollection<OrderedLineData> shareData) {
+            public InvestorData(Investor investor, IList<OrderedLineData> shareData) {
                 this.Investor = investor;
                 this.ShareData = shareData;
             }

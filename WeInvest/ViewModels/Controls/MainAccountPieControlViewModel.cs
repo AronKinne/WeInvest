@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using WeInvest.Controls.Charts.Data;
@@ -17,7 +18,7 @@ namespace WeInvest.ViewModels.Controls {
 
         #endregion
 
-        private int _displayedAccountIndex;
+        private int _displayedAccountIndex = 0;
         private Account _displayedAccount;
 
         public InvestorGroup InvestorGroup { get; set; }
@@ -39,13 +40,11 @@ namespace WeInvest.ViewModels.Controls {
                 UpdatePieSeries();
             }
         }
-        public ObservableCollection<PieData> PieSeries { get; set; }
+        public IList<PieData> PieSeries { get; set; }
 
         public MainAccountPieControlViewModel(InvestorGroup investorGroup) {
             this.InvestorGroup = investorGroup;
             InvestorGroup.PropertyChanged += OnInvestorGroupPropertyChanged;
-
-            this.DisplayedAccountIndex = 0;
         }
 
         private void OnInvestorGroupPropertyChanged(object sender, PropertyChangedEventArgs e) {
@@ -56,9 +55,10 @@ namespace WeInvest.ViewModels.Controls {
 
         private void UpdatePieSeries() {
             this.PieSeries = new ObservableCollection<PieData>();
-            DisplayedAccount?.ToList().ForEach(entry => {
-                PieSeries.Add(new PieData(entry.Key.Color, entry.Value));
-            });
+            var accountList = DisplayedAccount?.ToList();
+            foreach(var entry in accountList)
+                PieSeries.Add(new PieData(entry.Key.Brush, entry.Value));
+
             OnPropertyChanged(nameof(PieSeries));
         }
 

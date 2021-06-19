@@ -12,25 +12,25 @@ using WeInvest.Utilities;
 namespace WeInvest.Controls.Charts {
     public class AreaChart : XYChart<OrderedAreaData> {
 
-        public ObservableCollection<Brush> OrderedColorList {
-            get { return (ObservableCollection<Brush>)GetValue(OrderedColorListProperty); }
-            set { SetValue(OrderedColorListProperty, value); }
+        public IList<Brush> OrderedBrushList {
+            get { return (IList<Brush>)GetValue(OrderedBrushListProperty); }
+            set { SetValue(OrderedBrushListProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for OrderedColorList.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty OrderedColorListProperty =
-            DependencyProperty.Register("OrderedColorList",
-                typeof(ObservableCollection<Brush>),
+        // Using a DependencyProperty as the backing store for OrderedBrushList.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OrderedBrushListProperty =
+            DependencyProperty.Register("OrderedBrushList",
+                typeof(IList<Brush>),
                 typeof(AreaChart),
-                new PropertyMetadata(new ObservableCollection<Brush>(), OnOrderedColorListChanged));
+                new PropertyMetadata(new ObservableCollection<Brush>(), OnOrderedBrushListChanged));
 
-        private static void OnOrderedColorListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        private static void OnOrderedBrushListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((AreaChart)d).Update();
         }
 
 
-        public List<Path> Areas { get; private set; }
-        public List<Label> XLabels { get; private set; }
+        public IList<Path> Areas { get; private set; } = new List<Path>();
+        public IList<Label> XLabels { get; private set; } = new List<Label>();
 
         static AreaChart() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(AreaChart), new FrameworkPropertyMetadata(typeof(AreaChart)));
@@ -38,9 +38,6 @@ namespace WeInvest.Controls.Charts {
 
         public AreaChart() {
             this.Padding = 20;
-
-            this.Areas = new List<Path>();
-            this.XLabels = new List<Label>();
         }
 
         public override void Update() {
@@ -66,7 +63,7 @@ namespace WeInvest.Controls.Charts {
 
                 var yValues = CreateBoundaryYValues(valueIndex);
                 if(yValues.Length != amtLayers)
-                    throw new FormatException("AreaChart -> DataSeries -> OrderedAreaData -> Value (List<double>): Every value within the DataSeries shall have the same length.");
+                    throw new FormatException("AreaChart -> DataSeries -> OrderedAreaData -> Value (IList<double>): Every value within the DataSeries shall have the same length.");
 
                 for(int layerIndex = 0; layerIndex < yValues.Length; layerIndex++) {
                     double realY = yValues[layerIndex];
@@ -84,7 +81,7 @@ namespace WeInvest.Controls.Charts {
             int amtLayers = DataSeries[index].Value.Count;
             var yValues = new double[amtLayers];
 
-            List<double> values = DataSeries[index].Value;
+            IList<double> values = DataSeries[index].Value;
 
             double sum = 0;
             foreach(var value in values)
@@ -105,17 +102,18 @@ namespace WeInvest.Controls.Charts {
         private void UpdateArea(Point[,] points) {
             Random random = new Random();
 
-            Areas.ForEach(p => Children.Remove(p));
+            foreach(var path in Areas)
+                Children.Remove(path);
             Areas = new List<Path>();
 
             for(int layer = 0; layer < points.GetLength(0); layer++) {
                 var area = new Path();
                 area.Data = CreateArea(points, layer);
 
-                var color = Utility.BrushesArray[random.Next(Utility.BrushesArray.Length)];
-                if(OrderedColorList?.Count - 1 >= layer)
-                    color = OrderedColorList[layer];
-                area.Fill = color;
+                var brush = Utility.BrushesArray[random.Next(Utility.BrushesArray.Length)];
+                if(OrderedBrushList?.Count - 1 >= layer)
+                    brush = OrderedBrushList[layer];
+                area.Fill = brush;
 
                 Areas.Add(area);
                 Children.Add(area);
@@ -154,14 +152,15 @@ namespace WeInvest.Controls.Charts {
         }
 
         private void UpdateLabels(Point[,] points) {
-            XLabels.ForEach(l => Children.Remove(l));
+            foreach(var label in XLabels)
+                Children.Remove(label);
             XLabels = new List<Label>();
 
             for(int i = 0; i < DataSeries.Count; i++) {
                 Label label = new Label() {
                     Content = DataSeries[i].Key.ToString(),
                     FontSize = Padding * .7,
-                    Foreground = AxisColor
+                    Foreground = AxisBrush
                 };
                 label.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 Size size = label.DesiredSize;

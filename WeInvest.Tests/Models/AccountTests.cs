@@ -4,13 +4,29 @@ using System.Windows.Media;
 using WeInvest.Models;
 
 namespace WeInvest.Tests.Models {
-    class AccountTests {
+    public class AccountTests {
+
+        private Account _account;
+        private Investor _investor;
+        private IList<Investor> _investorList;
+
+        [SetUp]
+        public void SetUp() {
+            _account = new Account();
+
+            _investor = new Investor() { Name = "Tester", Brush = Brushes.Black };
+
+            _investorList = new List<Investor>() {
+                new Investor() { Name = "1", Brush = Brushes.Black },
+                new Investor() { Name = "2", Brush = Brushes.White }
+            };
+        }   
 
         [Test]
         public void Balance_WithShareByInvestorBeeingNull_ShouldReturnZero() {
-            Account account = new Account() { ShareByInvestor = null };
+            _account.ShareByInvestor = null;
 
-            Assert.That(account.Balance, Is.EqualTo(0));
+            Assert.That(_account.Balance, Is.EqualTo(0));
         }
 
         [Test]
@@ -18,59 +34,60 @@ namespace WeInvest.Tests.Models {
             float amount1 = 10;
             float amount2 = 20;
 
-            Investor investor1 = new Investor("1", Brushes.Black);
-            investor1.Deposit(amount1);
-            Investor investor2 = new Investor("2", Brushes.White);
-            investor2.Deposit(amount2);
+            _investorList[0].Deposit(amount1);
+            _investorList[1].Deposit(amount2);
 
-            Account account = new Account(new List<Investor>() {
-                investor1, 
-                investor2
-            });
+            _account.AddInvestors(_investorList);
 
-            Assert.That(account.Balance, Is.EqualTo(amount1 + amount2));
+            Assert.That(_account.Balance, Is.EqualTo(amount1 + amount2));
+        }
+
+        [Test]
+        public void AddInvestors_ShouldAdd() {
+            Assert.That(_account.ShareByInvestor.Count, Is.EqualTo(0));
+
+            _account.AddInvestors(_investorList);
+
+            Assert.That(_account.ShareByInvestor.Count, Is.EqualTo(_investorList.Count));
         }
 
         [Test]
         public void AddOwner_WithExistingInvestor_ShouldNotAdd() {
-            Investor investor = new Investor("Tester", Brushes.Black);
-            Account account = new Account(new List<Investor>() { investor });
+            _account.AddInvestors(new List<Investor>() { _investor });
 
-            account.AddOwner(investor, 10);
+            _account.AddOwner(_investor, 10);
 
-            Assert.That(account.ShareByInvestor.Count, Is.EqualTo(1));
-            Assert.That(account.ShareByInvestor.ContainsKey(investor));
+            Assert.That(_account.ShareByInvestor.Count, Is.EqualTo(1));
+            Assert.That(_account.ShareByInvestor.ContainsKey(_investor));
         }
 
         [Test]
         public void AddOwner_WithNewInvestor_ShouldAdd() {
-            Account account = new Account();
-            Investor investor = new Investor("Tester", Brushes.Black);
             float balance = 10;
 
-            account.AddOwner(investor, balance);
+            _account.AddOwner(_investor, balance);
 
-            Assert.That(account.ShareByInvestor.Count, Is.EqualTo(1));
-            Assert.That(account.ShareByInvestor[investor], Is.EqualTo(balance));
+            Assert.That(_account.ShareByInvestor.Count, Is.EqualTo(1));
+            Assert.That(_account.ShareByInvestor[_investor], Is.EqualTo(balance));
         }
 
         [Test]
         public void ToList_WithValidInput_ShouldReturnKeyValuePairList() {
-            Investor investor1 = new Investor("1", Brushes.Black);
+            Investor investor1 = new Investor() { Name = "1", Brush = Brushes.Black };
             investor1.Deposit(10);
-            Investor investor2 = new Investor("2", Brushes.White);
+            Investor investor2 = new Investor() { Name = "2", Brush = Brushes.White };
             investor2.Deposit(20);
 
             var expected = new List<KeyValuePair<Investor, float>>();
             expected.Add(new KeyValuePair<Investor, float>(investor1, investor1.Share));
             expected.Add(new KeyValuePair<Investor, float>(investor2, investor2.Share));
 
-            Account account = new Account(new List<Investor>() { 
+            _account.AddInvestors(new List<Investor>() {
                 investor1,
                 investor2
             });
 
-            var actual = account.ToList();
+            var actual = _account.ToList();
 
             Assert.That(actual, Is.EqualTo(expected));
         }

@@ -2,7 +2,7 @@
 using WeInvest.ViewModels.Dialogs;
 
 namespace WeInvest.Utilities.Services {
-    class DialogService<TDialog, TViewModel> 
+    public class DialogService<TDialog, TViewModel> 
         where TDialog : Window, new()
         where TViewModel : DialogViewModelBase, new() {
 

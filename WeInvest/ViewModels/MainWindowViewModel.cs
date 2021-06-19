@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using System.Windows.Media;
 using WeInvest.Models;
 using WeInvest.Utilities.Services;
@@ -23,7 +25,7 @@ namespace WeInvest.ViewModels {
         #endregion
 
         public InvestorGroup InvestorGroup { get; set; }
-        public ObservableCollection<Investor> Investors { get => new ObservableCollection<Investor>(InvestorGroup?.Investors); }
+        public IList<Investor> Investors { get => new ObservableCollection<Investor>(InvestorGroup?.Investors); }
 
         public MainAccountPieControlViewModel MainAccountPieViewModel { get; set; }
         public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; set; }
@@ -31,9 +33,9 @@ namespace WeInvest.ViewModels {
 
         #region Command Properties
 
-        public RelayCommand DepositCommand { get; set; }
+        public ICommand DepositCommand { get; set; }
 
-        public RelayCommand AddInvestorCommand { get; set; }
+        public ICommand AddInvestorCommand { get; set; }
 
         #endregion
 
@@ -60,8 +62,8 @@ namespace WeInvest.ViewModels {
             #endregion
         }
 
-        private Investor AddInvestor(string name, Brush color) {
-            var investor = InvestorGroup.AddInvestor(name, color);
+        private Investor AddInvestor(string name, Brush brush) {
+            var investor = InvestorGroup.AddInvestor(name, brush);
 
             OnPropertyChanged(nameof(Investors));
 
@@ -93,7 +95,7 @@ namespace WeInvest.ViewModels {
 
             if(dialogService.ShowDialog() == true) {
                 var viewModel = dialogService.ViewModel;
-                AddInvestor(viewModel.InvestorName, viewModel.InvestorColor);
+                AddInvestor(viewModel.InvestorName, viewModel.InvestorBrush);
             }
         }
 

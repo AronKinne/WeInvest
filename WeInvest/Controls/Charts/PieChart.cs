@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -24,8 +25,8 @@ namespace WeInvest.Controls.Charts {
         public int CenterY { get; private set; }
         public int Radius { get; private set; }
 
-        public ObservableCollection<PieData> PieSeries {
-            get { return (ObservableCollection<PieData>)GetValue(PieSeriesProperty); }
+        public IList<PieData> PieSeries {
+            get { return (IList<PieData>)GetValue(PieSeriesProperty); }
             set {
                 SetValue(PieSeriesProperty, value);
                 OnPropertyChanged();
@@ -34,7 +35,7 @@ namespace WeInvest.Controls.Charts {
 
         // Using a DependencyProperty as the backing store for PieSeries.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PieSeriesProperty =
-            DependencyProperty.Register("PieSeries", typeof(ObservableCollection<PieData>), typeof(PieChart), new PropertyMetadata(new ObservableCollection<PieData>(), OnPieSeriesChanged));
+            DependencyProperty.Register("PieSeries", typeof(IList<PieData>), typeof(PieChart), new PropertyMetadata(new ObservableCollection<PieData>(), OnPieSeriesChanged));
 
         private static void OnPieSeriesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((PieChart)d).UpdateSectors();

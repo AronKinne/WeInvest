@@ -22,7 +22,7 @@
         <ComboBox Grid.Column="2" VerticalAlignment="Center"
                   Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
                   ItemsSource="{Binding BrushPool}"
-                  SelectedValue="{Binding InvestorColor}">
+                  SelectedValue="{Binding InvestorBrush}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <Ellipse Width="15" Height="15" Fill="{Binding}"/>

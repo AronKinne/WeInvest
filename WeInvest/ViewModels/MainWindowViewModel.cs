@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media;
 using WeInvest.Models;
+using WeInvest.Utilities.Factories;
 using WeInvest.Utilities.Services;
 using WeInvest.ViewModels.Commands;
 using WeInvest.ViewModels.Controls;
@@ -40,8 +42,10 @@ namespace WeInvest.ViewModels {
         #endregion
 
         public MainWindowViewModel() {
+            var serviceProvider = ServiceProviderFactory.Create();
+            var investorGroupFactory = serviceProvider.GetRequiredService<IFactory<InvestorGroup>>();
 
-            this.InvestorGroup = new InvestorGroup();
+            this.InvestorGroup = investorGroupFactory.Create();
             Investor stefan = AddInvestor("Stefan", Brushes.Coral);
             Investor aron = AddInvestor("Aron", Brushes.CornflowerBlue);
 

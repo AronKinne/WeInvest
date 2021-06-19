@@ -1,13 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
+using WeInvest.Utilities.Services;
 
 namespace WeInvest.Models {
     public class Investor {
 
+        private readonly IListConvertingService _listConvertingService;
+        private readonly IBrushConvertingService _brushConvertingService;
+
+        public int Id { get; set; }
         public string Name { get; set; }
-        public Brush Brush { get; set; }
+        public string ColorHex { get; set; }
+        public string ShareHistoryString {
+            get => _listConvertingService.ListToString<float>(ShareHistory);
+            set => ShareHistory = _listConvertingService.StringToList<float>(value); 
+        }
+
+        public Brush Brush {
+            get => _brushConvertingService.StringToBrush(ColorHex);
+            set => ColorHex = _brushConvertingService.BrushToString(value);
+        }
         public IList<float> ShareHistory { get; protected set; } = new List<float>() { 0 };
         public float Share { get => ShareHistory == null ? -1 : ShareHistory[ShareHistory.Count - 1]; }
+
+        public Investor(IListConvertingService listConvertingService, IBrushConvertingService brushConvertingService) {
+            _listConvertingService = listConvertingService;
+            _brushConvertingService = brushConvertingService;
+        }
 
         public void Deposit(float amount) {
             if(ShareHistory.Count == 1 && Share == 0) {

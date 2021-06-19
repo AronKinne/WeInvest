@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Media;
+using WeInvest.Utilities.Factories;
 
 namespace WeInvest.Models {
     public class InvestorGroup : INotifyPropertyChanged {
@@ -15,15 +16,21 @@ namespace WeInvest.Models {
 
         #endregion
 
+        private readonly IFactory<Investor> _investorFactory;
+
         public IList<Investor> Investors { get; private set; } = new List<Investor>();
         public IList<Account> AccountHistory { get; private set; } = new List<Account>();
         public Account CurrentAccount { get => AccountHistory == null ? null : AccountHistory[AccountHistory.Count - 1]; }
 
+        public InvestorGroup(IFactory<Investor> investorFactory) {
+            _investorFactory = investorFactory;
+        }
+
         public Investor AddInvestor(string name, Brush brush) {
-            Investor investor = new Investor() {
-                Name = name,
-                Brush = brush
-            };
+            Investor investor = _investorFactory.Create();
+            investor.Name = name;
+            investor.Brush = brush;
+
             Investors.Add(investor);
             AddInvestorToAccountHistory(investor);
 

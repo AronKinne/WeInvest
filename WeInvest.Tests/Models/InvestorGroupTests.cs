@@ -1,16 +1,23 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 using System;
 using System.Windows.Media;
 using WeInvest.Models;
+using WeInvest.Utilities.Factories;
 
 namespace WeInvest.Tests.Models {
     public class InvestorGroupTests {
 
+        private InvestorFactory _investorFactory;
         private InvestorGroup _investorGroup;
 
         [SetUp]
         public void SetUp() {
-            _investorGroup = new InvestorGroup();
+            var serviceProvider = ServiceProviderFactory.Create();
+            _investorFactory = serviceProvider.GetRequiredService<IFactory<Investor>>() as InvestorFactory;
+
+            var investorGroupFactory = serviceProvider.GetRequiredService<IFactory<InvestorGroup>>();
+            _investorGroup = investorGroupFactory.Create();
         }
 
         [Test]
@@ -32,7 +39,7 @@ namespace WeInvest.Tests.Models {
             var newInvestor = _investorGroup.AddInvestor(name, color);
 
             Assert.That(newInvestor.Name, Is.EqualTo(name));
-            Assert.That(newInvestor.Brush, Is.EqualTo(color));
+            Assert.That<string>(newInvestor.Brush.ToString(), Is.EqualTo(color.ToString()));
         }
 
         [Test]
@@ -63,7 +70,7 @@ namespace WeInvest.Tests.Models {
         [Test]
         public void Deposit_WithUnknownInvestor_ShouldThrowException() {
             _investorGroup.AddInvestor("I exist", Brushes.Black);
-            Investor stranger = new Investor() { Name = "Stranger", Brush = Brushes.Black };
+            Investor stranger = _investorFactory.Create("Stranger", Brushes.Black);
 
             Assert.Throws<ArgumentException>(() => _investorGroup.Deposit(stranger, 10));
         }

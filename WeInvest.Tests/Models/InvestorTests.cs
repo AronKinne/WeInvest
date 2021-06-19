@@ -1,6 +1,8 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 using System.Windows.Media;
 using WeInvest.Models;
+using WeInvest.Utilities.Factories;
 
 namespace WeInvest.Tests.Models {
     public class InvestorTests {
@@ -9,7 +11,43 @@ namespace WeInvest.Tests.Models {
 
         [SetUp]
         public void SetUp() {
-            _investor = new Investor() { Name = "Tester", Brush = Brushes.Black };
+            var serviceProvider = ServiceProviderFactory.Create();
+            var investorFactory = serviceProvider.GetRequiredService<IFactory<Investor>>();
+
+            _investor = investorFactory.Create();
+            _investor.Name = "Tester";
+            _investor.Brush = Brushes.Black;
+        }
+
+        [Test]
+        public void ShareHistoryString_Get() {
+            _investor.Deposit(50);
+            _investor.Deposit(20);
+            string expected = "50 70";
+
+            Assert.That(_investor.ShareHistoryString, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void ShareHistoryString_Set_ShouldSetShareHistory() {
+            _investor.ShareHistoryString = "50 70";
+
+            Assert.That(_investor.ShareHistory.Count, Is.EqualTo(2));
+            Assert.That(_investor.ShareHistory[0], Is.EqualTo(50));
+            Assert.That(_investor.ShareHistory[1], Is.EqualTo(70));
+        }
+
+        [Test]
+        public void Brush_Get_ShouldGetBrushFromColorHex() {
+            Assert.That(_investor.Brush.ToString(), Is.EqualTo(Brushes.Black.ToString()));
+        }
+
+        [Test]
+        public void Brush_Set_ShouldSetColorHex() {
+            var expected = "#FFFFFFFF";
+            _investor.Brush = Brushes.White;
+
+            Assert.That(_investor.ColorHex, Is.EqualTo(expected));
         }
 
         [Test]

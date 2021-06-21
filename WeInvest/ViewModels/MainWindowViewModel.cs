@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using System.Windows.Media;
-using WeInvest.Controls.Charts.Data;
 using WeInvest.Models;
 using WeInvest.Utilities.Services;
 using WeInvest.ViewModels.Commands;
@@ -24,25 +25,28 @@ namespace WeInvest.ViewModels {
         #endregion
 
         public InvestorGroup InvestorGroup { get; set; }
-        public ObservableCollection<Investor> Investors { get => new ObservableCollection<Investor>(InvestorGroup?.Investors); }
+        public IList<Investor> Investors { get => new ObservableCollection<Investor>(InvestorGroup?.Investors); }
 
-        public MainAccountControlViewModel MainAccountViewModel { get; set; }
+        public MainAccountPieControlViewModel MainAccountPieViewModel { get; set; }
+        public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; set; }
         public InvestorChartControlViewModel InvestorChartViewModel { get; set; }
 
         #region Command Properties
 
-        public RelayCommand DepositCommand { get; set; }
+        public ICommand DepositCommand { get; set; }
 
-        public RelayCommand AddInvestorCommand { get; set; }
+        public ICommand AddInvestorCommand { get; set; }
 
         #endregion
 
         public MainWindowViewModel() {
+
             this.InvestorGroup = new InvestorGroup();
             Investor stefan = AddInvestor("Stefan", Brushes.Coral);
             Investor aron = AddInvestor("Aron", Brushes.CornflowerBlue);
 
-            this.MainAccountViewModel = new MainAccountControlViewModel(InvestorGroup);
+            this.MainAccountPieViewModel = new MainAccountPieControlViewModel(InvestorGroup);
+            this.MainAccountAreaViewModel = new MainAccountAreaControlViewModel(InvestorGroup) { AreaOpacity = 1 };
             this.InvestorChartViewModel = new InvestorChartControlViewModel(InvestorGroup);
 
             Deposit(stefan, 15);
@@ -58,8 +62,8 @@ namespace WeInvest.ViewModels {
             #endregion
         }
 
-        private Investor AddInvestor(string name, Brush color) {
-            var investor = InvestorGroup.AddInvestor(name, color);
+        private Investor AddInvestor(string name, Brush brush) {
+            var investor = InvestorGroup.AddInvestor(name, brush);
 
             OnPropertyChanged(nameof(Investors));
 
@@ -68,7 +72,7 @@ namespace WeInvest.ViewModels {
 
         private void Deposit(Investor investor, float amount) {
             InvestorGroup.Deposit(investor, amount);
-            MainAccountViewModel.DisplayedAccountIndex = InvestorGroup.AccountHistory.Count - 1;
+            MainAccountPieViewModel.DisplayedAccountIndex = InvestorGroup.AccountHistory.Count - 1;
 
             OnPropertyChanged(nameof(Investors));
         }
@@ -76,14 +80,14 @@ namespace WeInvest.ViewModels {
         #region Commands
 
         private void Deposit(object parameter) {
-            var dialogService = new DialogService<DepositDialog, DepositDialogViewModel>();
+            //var dialogService = new DialogService<DepositDialog, DepositDialogViewModel>();
 
-            if(dialogService.ShowDialog() == true) {
-                
-            }
+            //if(dialogService.ShowDialog() == true) {
 
-            //Random random = new Random();
-            //Deposit(Investors[random.Next(Investors.Count)], random.Next(20, 50));
+            //}
+
+            Random random = new Random();
+            Deposit(Investors[random.Next(Investors.Count)], random.Next(20, 50));
         }
 
         private void AddInvestor(object parameter) {
@@ -91,7 +95,7 @@ namespace WeInvest.ViewModels {
 
             if(dialogService.ShowDialog() == true) {
                 var viewModel = dialogService.ViewModel;
-                AddInvestor(viewModel.InvestorName, viewModel.InvestorColor);
+                AddInvestor(viewModel.InvestorName, viewModel.InvestorBrush);
             }
         }
 

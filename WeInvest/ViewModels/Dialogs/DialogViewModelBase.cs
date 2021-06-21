@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Input;
 using WeInvest.ViewModels.Commands;
 
 namespace WeInvest.ViewModels.Dialogs {
@@ -7,7 +8,7 @@ namespace WeInvest.ViewModels.Dialogs {
         public event EventHandler RequestCloseDialog;
 
         public string OkayButtonContent { get; set; } = "Okay";
-        public RelayCommand OkayButtonCommand { get; protected set; }
+        public ICommand OkayButtonCommand { get; protected set; }
 
         public DialogViewModelBase() {
             this.OkayButtonCommand = new RelayCommand(Okay, CanOkay);

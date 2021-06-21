@@ -7,7 +7,7 @@ namespace WeInvest.ViewModels.Dialogs {
         public string Title { get; set; }
 
         public string InvestorName { get; set; }
-        public Brush InvestorColor { get; set; }
+        public Brush InvestorBrush { get; set; }
         public Brush[] BrushPool { get; set; }
 
         public InvestorDialogViewModel() {
@@ -26,7 +26,7 @@ namespace WeInvest.ViewModels.Dialogs {
         }
 
         protected override bool CanOkay(object parameter) {
-            return !string.IsNullOrWhiteSpace(InvestorName) && InvestorColor != null;
+            return !string.IsNullOrWhiteSpace(InvestorName) && InvestorBrush != null;
         }
 
     }

@@ -18,8 +18,11 @@
     
     <Grid>
         <Grid.Resources>
-            <DataTemplate DataType="{x:Type vmc:MainAccountControlViewModel}">
-                <vc:MainAccountControl/>
+            <DataTemplate DataType="{x:Type vmc:MainAccountPieControlViewModel}">
+                <vc:MainAccountPieControl/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vmc:MainAccountAreaControlViewModel}">
+                <vc:MainAccountAreaControl/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type vmc:InvestorChartControlViewModel}">
                 <vc:InvestorChartControl/>
@@ -67,8 +70,8 @@
             <Button Content="Withdraw" Grid.Column="2"/>
         </StackPanel>
 
-        <!-- AreaChart here (Grid.Column="1") -->
-
+        <ContentPresenter Content="{Binding MainAccountAreaViewModel}" Grid.Column="1" Margin="0,25"/>
+        
         <ListView Grid.Column="2" Grid.Row="1" ItemsSource="{Binding Investors}"
                   Margin="25" BorderBrush="Black" BorderThickness="2">
             <ListView.ContextMenu>
@@ -80,7 +83,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="10" Height="10" Fill="{Binding Color}" Margin="0,0,5,0"/>
+                        <Ellipse Width="10" Height="10" Fill="{Binding Brush}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding}"/>
                     </StackPanel>
                 </DataTemplate>

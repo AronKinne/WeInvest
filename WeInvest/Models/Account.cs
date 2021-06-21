@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace WeInvest.Models {
     public class Account {
 
-        public Dictionary<Investor, float> ShareByInvestor { get; set; }
+        public IDictionary<Investor, float> ShareByInvestor { get; set; } = new Dictionary<Investor, float>();
         public float Balance {
             get {
                 if(ShareByInvestor == null)
@@ -18,12 +17,7 @@ namespace WeInvest.Models {
             }
         }
 
-        public Account() : this(new List<Investor>()) { }
-
-        public Account(List<Investor> investors) {
-            if(investors == null)
-                throw new ArgumentNullException(nameof(investors));
-
+        public void AddOwners(IEnumerable<Investor> investors) {
             this.ShareByInvestor = new Dictionary<Investor, float>();
             foreach(Investor investor in investors) {
                 AddOwner(investor, investor.Share);
@@ -37,7 +31,7 @@ namespace WeInvest.Models {
             ShareByInvestor.Add(investor, balance);
         }
 
-        public List<KeyValuePair<Investor, float>> ToList() {
+        public IList<KeyValuePair<Investor, float>> ToList() {
             return ShareByInvestor.ToList();
         }
 

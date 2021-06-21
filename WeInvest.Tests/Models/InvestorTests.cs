@@ -3,62 +3,63 @@ using System.Windows.Media;
 using WeInvest.Models;
 
 namespace WeInvest.Tests.Models {
-    class InvestorTests {
+    public class InvestorTests {
+
+        private Investor _investor;
+
+        [SetUp]
+        public void SetUp() {
+            _investor = new Investor() { Name = "Tester", Brush = Brushes.Black };
+        }
 
         [Test]
         public void Deposit_FirstTime_ShouldReplaceFirstShareHistoryValue() {
-            Investor investor = new Investor("Tester", Brushes.Black);
             float amount = 10;
 
-            investor.Deposit(amount);
+            _investor.Deposit(amount);
 
-            Assert.That(investor.ShareHistory.Count, Is.EqualTo(1));
-            Assert.That(investor.ShareHistory[0], Is.EqualTo(amount));
+            Assert.That(_investor.ShareHistory.Count, Is.EqualTo(1));
+            Assert.That(_investor.ShareHistory[0], Is.EqualTo(amount));
         }
 
         [Test]
         public void Deposit_SecondTime_ShouldAddUp() {
-            Investor investor = new Investor("Tester", Brushes.Black);
             float amount1 = 10;
             float amount2 = 20;
 
-            investor.Deposit(amount1);
-            investor.Deposit(amount2);
+            _investor.Deposit(amount1);
+            _investor.Deposit(amount2);
 
-            Assert.That(investor.ShareHistory.Count, Is.EqualTo(2));
-            Assert.That(investor.ShareHistory[1], Is.EqualTo(amount1 + amount2));
+            Assert.That(_investor.ShareHistory.Count, Is.EqualTo(2));
+            Assert.That(_investor.ShareHistory[1], Is.EqualTo(amount1 + amount2));
         }
 
         [Test]
         public void Share_NoDeposit_ShouldReturnZero() {
-            Investor investor = new Investor("Tester", Brushes.Black);
-
-            Assert.That(investor.Share, Is.EqualTo(0));
+            Assert.That(_investor.Share, Is.EqualTo(0));
         }
 
         [Test]
         public void Share_WithDeposit_ShouldReturnLastValueInShareHistory() {
-            Investor investor = new Investor("Tester", Brushes.Black);
             float amount1 = 10;
             float amount2 = 20;
 
-            investor.Deposit(amount1);
-            investor.Deposit(amount2);
+            _investor.Deposit(amount1);
+            _investor.Deposit(amount2);
 
-            Assert.That(investor.Share, Is.EqualTo(amount1 + amount2));
+            Assert.That(_investor.Share, Is.EqualTo(amount1 + amount2));
         }
 
         [Test]
         public void ToString_WithMultipleShares() {
-            string name = "Tester";
+            string name = _investor.Name;
             float amount1 = 10;
             float amount2 = 20;
-            Investor investor = new Investor("Tester", Brushes.Black);
             string expected = $"{name} ({amount1}, {amount1 + amount2})";
 
-            investor.Deposit(amount1);
-            investor.Deposit(amount2);
-            string actual = investor.ToString();
+            _investor.Deposit(amount1);
+            _investor.Deposit(amount2);
+            string actual = _investor.ToString();
 
             Assert.That(actual, Is.EqualTo(expected));
         }

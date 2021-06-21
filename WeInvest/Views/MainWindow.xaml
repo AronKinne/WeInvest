@@ -41,7 +41,7 @@
             <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
 
-        <ContentPresenter Content="{Binding MainAccountViewModel}" Grid.Row="1" Grid.RowSpan="2" Margin="25,25,25,0"/>
+        <ContentPresenter Content="{Binding MainAccountPieViewModel}" Grid.Row="1" Grid.RowSpan="2" Margin="25,25,25,0"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <StackPanel.Resources>
@@ -70,7 +70,7 @@
             <Button Content="Withdraw" Grid.Column="2"/>
         </StackPanel>
 
-        <ContentPresenter Content="{Binding MainAccountAreaViewModel}" Grid.Column="1" Margin="0,25"/>
+        <ContentPresenter Content="{Binding MainAccountAreaViewModel}" Grid.Column="1" Grid.Row="1" Margin="0,25"/>
         
         <ListView Grid.Column="2" Grid.Row="1" ItemsSource="{Binding Investors}"
                   Margin="25" BorderBrush="Black" BorderThickness="2">

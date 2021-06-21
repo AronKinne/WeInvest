@@ -23,6 +23,8 @@ namespace WeInvest.SQLite.Services {
 
         public async Task<T> CreateAsync(T entity) {
             using(var connection = _connectionFactory.Create()) {
+                connection.Open();
+
                 return await connection.QueryFirstOrDefaultAsync<T>($"{GenerateCreateQuery()} SELECT * FROM {_tableName} WHERE Id = SCOPE_IDENTITY()", entity);
             }
         }

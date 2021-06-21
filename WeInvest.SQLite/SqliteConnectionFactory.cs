@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using System.Configuration;
 
 namespace WeInvest.SQLite {
     public class SqliteConnectionFactory {
@@ -10,7 +11,9 @@ namespace WeInvest.SQLite {
         }
 
         public SqliteConnection Create() {
-            return new SqliteConnection(ConnectionStringId);
+            var connection = new SqliteConnection(ConfigurationManager.ConnectionStrings[ConnectionStringId].ConnectionString);
+            //connection.Open();
+            return connection;
         }
     
     }

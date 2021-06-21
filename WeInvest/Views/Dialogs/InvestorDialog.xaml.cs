@@ -10,14 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WeInvest.Views.Dialogs {
+namespace WeInvest.Views.Dialogs
+{
     /// <summary>
     /// Interaktionslogik für InvestorDialog.xaml
     /// </summary>
-    public partial class InvestorDialog : Window {
-        public InvestorDialog() {
+    public partial class InvestorDialog : Window
+    {
+        public InvestorDialog()
+        {
             InitializeComponent();
         }
     }

@@ -9,7 +9,10 @@
         xmlns:vc="clr-namespace:WeInvest.Views.Controls"
         mc:Ignorable="d"
         Title="WeInvest"
-        Height="720" Width="1280"
+        Height="720" Width="1280" Background="{StaticResource SecondaryBrush}"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        BorderThickness="2"
         WindowStartupLocation="CenterScreen"
         DataContext="{StaticResource ViewModel}">
     
@@ -29,20 +32,33 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
 
-        <ContentPresenter Content="{Binding MainAccountViewModel}" Grid.RowSpan="2" Margin="25,25,25,0"/>
+        <ContentPresenter Content="{Binding MainAccountViewModel}" Grid.Row="1" Grid.RowSpan="2" Margin="25,25,25,0"/>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="Button">
-                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="FontSize" Value="12"/>
                     <Setter Property="Padding" Value="15,4"/>
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="Margin" Value="15,0"/>
+                    <Setter Property="Background" Value="{StaticResource PrimaryBrush1}"/>
+                    <Setter Property="FontFamily" Value="{StaticResource Font}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="100" Height="30" CornerRadius="12" Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Foreground" Value="White"/>
                 </Style>
             </StackPanel.Resources>
 
@@ -53,7 +69,7 @@
 
         <!-- AreaChart here (Grid.Column="1") -->
 
-        <ListView Grid.Column="2" ItemsSource="{Binding Investors}"
+        <ListView Grid.Column="2" Grid.Row="1" ItemsSource="{Binding Investors}"
                   Margin="25" BorderBrush="Black" BorderThickness="2">
             <ListView.ContextMenu>
                 <ContextMenu>
@@ -84,10 +100,20 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <ScrollViewer Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="1"
+        <ScrollViewer Grid.ColumnSpan="2" Grid.Row="2" Grid.Column="1"
                       VerticalScrollBarVisibility="Hidden"
                       HorizontalScrollBarVisibility="Auto" Margin="0,0,25,0">
             <ContentControl Content="{Binding InvestorChartViewModel}"/>
         </ScrollViewer>
+        <TextBlock Text="Weinvest"
+                   Background="{StaticResource PrimaryBrush1}"
+                   FontFamily="{StaticResource Font}"
+                   Grid.ColumnSpan="3"
+                   Foreground="White"
+                   VerticalAlignment="Center"
+                   Height="25"
+                   FontWeight="Medium"/>
+
+
     </Grid>
 </Window>

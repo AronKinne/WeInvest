@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using WeInvest.Utilities.Services;
+using WeInvest.Domain.Services;
 
 namespace WeInvest.SQLite.Services {
     public abstract class GenericDataService<T> : IDataService<T> {

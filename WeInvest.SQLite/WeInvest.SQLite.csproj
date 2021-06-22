@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WeInvest\WeInvest.csproj" />
+    <ProjectReference Include="..\WeInvest.Domain\WeInvest.Domain.csproj" />
   </ItemGroup>
 
 </Project>

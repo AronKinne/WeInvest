@@ -1,0 +1,94 @@
+﻿<Window x:Class="WeInvest.WPF.Views.Dialogs.DepositDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WeInvest.WPF.Views.Dialogs"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="{StaticResource SecondaryBrush}"
+        WindowStartupLocation="CenterScreen"
+        BorderThickness="2"
+        Title="DepositDialog" Height="225" Width="600">
+        
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Background="{StaticResource PrimaryBrush1}"
+            Grid.ColumnSpan="2">
+
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Deposit" 
+                       Foreground="White" 
+                       Grid.Column="0" 
+                       VerticalAlignment="Center" 
+                       FontFamily="dosis" 
+                       FontWeight="Medium"
+                       Margin="10,0,0,0"/>
+            
+        </Grid>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" Height="100" Margin="0,0,0,30">
+
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryBrush1}"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="FontFamily" Value="{StaticResource Font}"/>
+                </Style>
+            </Grid.Resources>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                
+            </Grid.RowDefinitions>
+
+
+            <Label Content="Investor:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Label Content="Amount:" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+            <TextBox Style="{StaticResource PrimaryTextBox}"
+                     Grid.Column="1"
+                     Margin="0,0,10,0"/>
+
+            <TextBox Style="{StaticResource PrimaryTextBox}"
+                     Grid.Column="1" Grid.Row="1"
+                     Margin="0,0,10,0"/>
+
+
+
+        </Grid>
+
+        <Button Content="Apply"
+                Style="{StaticResource PrimaryButton}"
+                Grid.Row="2"/>
+
+        <Button Content="Cancel"
+                Style="{StaticResource PrimaryButton}"
+                IsCancel="True"
+                Grid.Column="1" Grid.Row="2"/>
+
+    </Grid>
+</Window>

@@ -2,10 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
-using WeInvest.Models;
+using WeInvest.Domain.Factories;
+using WeInvest.Domain.Models;
+using WeInvest.Domain.Services;
 using WeInvest.SQLite.Services;
-using WeInvest.Utilities.Factories;
-using WeInvest.Utilities.Services;
 
 namespace ConsoleApp1 {
     class Program {
@@ -25,7 +25,7 @@ namespace ConsoleApp1 {
             //Console.WriteLine(investorService.GetAsync(1).Result);
 
             // GETALL
-            //Console.WriteLine(investorService.GetAllAsync().Result.Count());
+            Console.WriteLine(investorService.GetAllAsync().Result.Count());
 
             // DELETE
             //investorService.DeleteAsync(1).Wait();

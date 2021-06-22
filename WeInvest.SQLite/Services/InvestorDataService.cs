@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using WeInvest.Models;
+using WeInvest.Domain.Models;
 
 namespace WeInvest.SQLite.Services {
     public class InvestorDataService : GenericDataService<Investor> {

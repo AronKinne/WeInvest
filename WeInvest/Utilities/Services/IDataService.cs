@@ -7,7 +7,7 @@ namespace WeInvest.Utilities.Services {
         Task<T> CreateAsync(T entity);
         Task<T> GetAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();
-        Task UpdateAsync(T entity);
+        Task<T> UpdateAsync(int id, T entity);
         Task DeleteAsync(int id);
 
     }

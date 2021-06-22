@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Windows.Media;
+using WeInvest.Utilities.Factories;
 using WeInvest.Utilities.Services;
 
 namespace WeInvest.Models {
@@ -22,6 +24,13 @@ namespace WeInvest.Models {
         }
         public IList<float> ShareHistory { get; protected set; } = new List<float>() { 0 };
         public float Share { get => ShareHistory == null ? -1 : ShareHistory[ShareHistory.Count - 1]; }
+
+        public Investor() {
+            var serviceProvider = ServiceProviderFactory.Create();
+
+            _listConvertingService = serviceProvider.GetService<IListConvertingService>();
+            _brushConvertingService = serviceProvider.GetService<IBrushConvertingService>();
+        }
 
         public Investor(IListConvertingService listConvertingService, IBrushConvertingService brushConvertingService) {
             _listConvertingService = listConvertingService;

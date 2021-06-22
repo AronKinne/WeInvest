@@ -1,19 +1,17 @@
-﻿using Microsoft.Data.Sqlite;
-using System.Configuration;
+﻿using System.Configuration;
+using System.Data.SQLite;
 
 namespace WeInvest.SQLite {
-    public class SqliteConnectionFactory {
+    public class SQLiteConnectionFactory {
 
         public string ConnectionStringId { get; set; }
 
-        public SqliteConnectionFactory(string connectionStringId) {
+        public SQLiteConnectionFactory(string connectionStringId) {
             ConnectionStringId = connectionStringId;
         }
 
-        public SqliteConnection Create() {
-            var connection = new SqliteConnection(ConfigurationManager.ConnectionStrings[ConnectionStringId].ConnectionString);
-            //connection.Open();
-            return connection;
+        public SQLiteConnection Create() {
+            return new SQLiteConnection(ConfigurationManager.ConnectionStrings[ConnectionStringId].ConnectionString);
         }
     
     }

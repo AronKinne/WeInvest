@@ -11,21 +11,19 @@ using WeInvest.Utilities.Services;
 namespace WeInvest.SQLite.Services {
     public abstract class GenericDataService<T> : IDataService<T> {
 
-        private readonly SqliteConnectionFactory _connectionFactory;
+        private readonly SQLiteConnectionFactory _connectionFactory;
         private readonly string _tableName;
         private readonly IEnumerable<PropertyInfo> _usedProperties;
 
         protected GenericDataService(string tableName, string connectionStringId, IEnumerable<PropertyInfo> usedProperties) {
             _tableName = tableName;
-            _connectionFactory = new SqliteConnectionFactory(connectionStringId);
+            _connectionFactory = new SQLiteConnectionFactory(connectionStringId);
             _usedProperties = usedProperties;
         }
 
         public async Task<T> CreateAsync(T entity) {
             using(var connection = _connectionFactory.Create()) {
-                connection.Open();
-
-                return await connection.QueryFirstOrDefaultAsync<T>($"{GenerateCreateQuery()} SELECT * FROM {_tableName} WHERE Id = SCOPE_IDENTITY()", entity);
+                return await connection.QuerySingleAsync<T>($"{GenerateCreateQuery()}; SELECT * FROM {_tableName} WHERE Id = last_insert_rowid();", entity);
             }
         }
 
@@ -48,13 +46,13 @@ namespace WeInvest.SQLite.Services {
 
         public async Task<IEnumerable<T>> GetAllAsync() {
             using(var connection = _connectionFactory.Create()) {
-                return await connection.QueryAsync<T>($"SELECT * {_tableName}");
+                return await connection.QueryAsync<T>($"SELECT * FROM {_tableName}");
             }
         }
 
-        public async Task UpdateAsync(T entity) {
+        public async Task<T> UpdateAsync(int id, T entity) {
             using(var connection = _connectionFactory.Create()) {
-                await connection.ExecuteAsync(GenerateUpdateQuery(), entity);
+                return await connection.QuerySingleAsync<T>($"{GenerateUpdateQuery(id)}; SELECT * FROM {_tableName} WHERE Id = {id}", entity);
             }
         }
 
@@ -74,8 +72,7 @@ namespace WeInvest.SQLite.Services {
 
             query
                 .Remove(query.Length - 2, 2)
-                .Append(")")
-                .Append("VALUES (");
+                .Append(") VALUES (");
 
             properties.ForEach(p => query.Append($"@{p}, "));
 
@@ -86,7 +83,7 @@ namespace WeInvest.SQLite.Services {
             return query.ToString();
         }
 
-        protected string GenerateUpdateQuery() {
+        protected string GenerateUpdateQuery(int id) {
             var query = new StringBuilder($"UPDATE {_tableName} SET ");
 
             foreach(var property in GeneratePropertyList()) {
@@ -96,7 +93,7 @@ namespace WeInvest.SQLite.Services {
 
             query
                 .Remove(query.Length - 2, 2)
-                .Append(" WHERE Id = @Id");
+                .Append($" WHERE Id = {id}");
 
             return query.ToString();
         }

@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeInvest", "WeInvest\WeInvest.csproj", "{B2FA5BCE-AE92-4762-B4B6-2BBF7F560EBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeInvest.WPF", "WeInvest.WPF\WeInvest.WPF.csproj", "{B2FA5BCE-AE92-4762-B4B6-2BBF7F560EBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeInvest.Tests", "WeInvest.Tests\WeInvest.Tests.csproj", "{BFEE9B6E-E952-4681-81DE-4AF1C1F45A87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeInvest.Domain.Tests", "WeInvest.Domain.Tests\WeInvest.Domain.Tests.csproj", "{BFEE9B6E-E952-4681-81DE-4AF1C1F45A87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeInvest.Domain", "WeInvest.Domain\WeInvest.Domain.csproj", "{BCA987DB-8D5F-4E2C-A841-CB249EC6BBC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeInvest.WPF.Tests", "WeInvest.WPF.Tests\WeInvest.WPF.Tests.csproj", "{161954FE-C6C4-4BC5-B120-7EE1813D570A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{BFEE9B6E-E952-4681-81DE-4AF1C1F45A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFEE9B6E-E952-4681-81DE-4AF1C1F45A87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFEE9B6E-E952-4681-81DE-4AF1C1F45A87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA987DB-8D5F-4E2C-A841-CB249EC6BBC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA987DB-8D5F-4E2C-A841-CB249EC6BBC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA987DB-8D5F-4E2C-A841-CB249EC6BBC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA987DB-8D5F-4E2C-A841-CB249EC6BBC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{161954FE-C6C4-4BC5-B120-7EE1813D570A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{161954FE-C6C4-4BC5-B120-7EE1813D570A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{161954FE-C6C4-4BC5-B120-7EE1813D570A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{161954FE-C6C4-4BC5-B120-7EE1813D570A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

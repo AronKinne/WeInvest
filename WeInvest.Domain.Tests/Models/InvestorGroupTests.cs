@@ -71,7 +71,10 @@ namespace WeInvest.Domain.Tests.Models {
         [Test]
         public void Deposit_WithUnknownInvestor_ShouldThrowException() {
             _investorGroup.AddInvestor("I exist", Brushes.Black);
-            Investor stranger = _investorFactory.Create("Stranger", Brushes.Black);
+            Investor stranger = _investorFactory.Create(new {
+                Name = "Stranger",
+                Brush = Brushes.Black
+            });
 
             Assert.Throws<ArgumentException>(() => _investorGroup.Deposit(stranger, 10));
         }

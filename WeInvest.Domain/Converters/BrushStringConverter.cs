@@ -1,11 +1,11 @@
 ﻿using System.Windows.Media;
 
-namespace WeInvest.Domain.Services {
-    public class BrushConvertingService : IBrushConvertingService {
+namespace WeInvest.Domain.Converters {
+    public class BrushStringConverter : IBrushStringConverter {
 
         private readonly BrushConverter _brushConverter;
 
-        public BrushConvertingService() {
+        public BrushStringConverter() {
             _brushConverter = new BrushConverter();
         }
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WeInvest.Domain.Services {
-    public class ListConvertingService : IListConvertingService {
+namespace WeInvest.Domain.Converters {
+    public class ListStringConverter : IListStringConverter {
 
         public char Separator { get; set; } = ' ';
 

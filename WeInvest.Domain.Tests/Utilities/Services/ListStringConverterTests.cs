@@ -1,14 +1,14 @@
 ﻿using NUnit.Framework;
-using WeInvest.Domain.Services;
+using WeInvest.Domain.Converters;
 
 namespace WeInvest.Domain.Tests.Utilities.Services {
-    public class ListConvertingServiceTests {
+    public class ListStringConverterTests {
 
-        private ListConvertingService _service;
+        private ListStringConverter _service;
 
         [SetUp]
         public void SetUp() {
-            _service = new ListConvertingService();
+            _service = new ListStringConverter();
         }
 
         [Test]

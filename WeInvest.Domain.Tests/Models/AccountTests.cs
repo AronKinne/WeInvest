@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Windows.Media;
 using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
@@ -22,9 +23,15 @@ namespace WeInvest.Domain.Tests.Models {
 
             _account = new Account();
 
-            _investorTester = _investorFactory.Create("Tester", Brushes.Black);
-            _investor1 = _investorFactory.Create("1", Brushes.Black);
-            _investor2 = _investorFactory.Create("2", Brushes.White);
+            _investorTester = _investorFactory.Create(new {
+                Name = "Tester",
+                Brush = Brushes.Black });
+            _investor1 = _investorFactory.Create(new {
+                Name = "1",
+                Brush = Brushes.Black });
+            _investor2 = _investorFactory.Create(new { 
+                Name = "2",
+                Brush = Brushes.White });
 
             _investorList = new List<Investor>() { _investor1, _investor2 };
         }

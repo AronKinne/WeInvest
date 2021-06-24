@@ -13,5 +13,8 @@ namespace WeInvest.Domain.Factories {
             return new InvestorGroup(_investorFactory);
         }
 
+        public InvestorGroup Create(object parameter) {
+            return Create();
+        }
     }
 }

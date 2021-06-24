@@ -1,15 +1,15 @@
 ﻿using NUnit.Framework;
 using System.Windows.Media;
-using WeInvest.Domain.Services;
+using WeInvest.Domain.Converters;
 
 namespace WeInvest.Domain.Tests.Utilities.Services {
-    public class BrushConvertingServiceTests {
+    public class BrushStringConverterTests {
 
-        private BrushConvertingService _service;
+        private BrushStringConverter _service;
 
         [SetUp]
         public void SetUp() {
-            _service = new BrushConvertingService();
+            _service = new BrushStringConverter();
         }
 
         [Test]

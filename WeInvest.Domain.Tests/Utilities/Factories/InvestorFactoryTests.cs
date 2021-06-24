@@ -28,7 +28,10 @@ namespace WeInvest.Domain.Tests.Utilities.Factories {
             string name = "Tester";
             var brush = Brushes.Black;
 
-            var result = _investorFactory.Create(name, brush);
+            var result = _investorFactory.Create(new {
+                Name = name,
+                Brush = brush
+            });
 
             Assert.That(result.Name, Is.EqualTo(name));
             Assert.That(result.Brush.ToString(), Is.EqualTo(brush.ToString()));

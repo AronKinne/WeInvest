@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
-using WeInvest.Domain.Services;
+using WeInvest.Domain.Converters;
 
 namespace WeInvest.Domain.Models {
     public class Investor {
 
-        private readonly IListConvertingService _listConvertingService;
-        private readonly IBrushConvertingService _brushConvertingService;
+        private readonly IListStringConverter _listConvertingService;
+        private readonly IBrushStringConverter _brushConvertingService;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -24,11 +24,11 @@ namespace WeInvest.Domain.Models {
         public float Share { get => ShareHistory == null ? -1 : ShareHistory[ShareHistory.Count - 1]; }
 
         public Investor() {
-            _listConvertingService = new ListConvertingService();
-            _brushConvertingService = new BrushConvertingService();
+            _listConvertingService = new ListStringConverter();
+            _brushConvertingService = new BrushStringConverter();
         }
 
-        public Investor(IListConvertingService listConvertingService, IBrushConvertingService brushConvertingService) {
+        public Investor(IListStringConverter listConvertingService, IBrushStringConverter brushConvertingService) {
             _listConvertingService = listConvertingService;
             _brushConvertingService = brushConvertingService;
         }

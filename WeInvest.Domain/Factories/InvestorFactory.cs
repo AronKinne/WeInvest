@@ -1,14 +1,14 @@
 ﻿using System.Windows.Media;
+using WeInvest.Domain.Converters;
 using WeInvest.Domain.Models;
-using WeInvest.Domain.Services;
 
 namespace WeInvest.Domain.Factories {
     public class InvestorFactory : IFactory<Investor> {
 
-        private readonly IListConvertingService _listConvertingService;
-        private readonly IBrushConvertingService _brushConvertingService;
+        private readonly IListStringConverter _listConvertingService;
+        private readonly IBrushStringConverter _brushConvertingService;
 
-        public InvestorFactory(IListConvertingService listConvertingService, IBrushConvertingService brushConvertingService) {
+        public InvestorFactory(IListStringConverter listConvertingService, IBrushStringConverter brushConvertingService) {
             _listConvertingService = listConvertingService;
             _brushConvertingService = brushConvertingService;
         }
@@ -17,12 +17,11 @@ namespace WeInvest.Domain.Factories {
             return new Investor(_listConvertingService, _brushConvertingService);
         }
 
-        public Investor Create(string name, Brush brush) {
+        public Investor Create(object parameter) {
             Investor investor = Create();
-            investor.Name = name;
-            investor.Brush = brush;
+            investor.Name = parameter.GetProperty<string>("Name");
+            investor.Brush = parameter.GetProperty<Brush>("Brush");
             return investor;
         }
-
     }
 }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
+using WeInvest.Domain.Converters;
 using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
 using WeInvest.Domain.Services;
@@ -13,7 +14,7 @@ namespace ConsoleApp1 {
             AppDomain.CurrentDomain.SetData("DataDirectory", Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName);
 
             IDataService<Investor> investorService = new InvestorDataService();
-            var investorFactory = new InvestorFactory(new ListConvertingService(), new BrushConvertingService());
+            var investorFactory = new InvestorFactory(new ListStringConverter(), new BrushStringConverter());
 
             // CREATE
             //Console.WriteLine(investorService.CreateAsync(investorFactory.Create("Tester", Brushes.Black)).Result.Id);

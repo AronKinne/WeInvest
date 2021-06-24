@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WeInvest.Domain\WeInvest.Domain.csproj" />
+    <ProjectReference Include="..\WeInvest.SQLite\WeInvest.SQLite.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -23,7 +23,7 @@ namespace WeInvest.WPF.ViewModels.Commands {
         }
 
         public bool CanExecute(object parameter) {
-            return _canExecute == null ? true : _canExecute(parameter);
+            return _canExecute?.Invoke(parameter) ?? true;
         }
 
         public void Execute(object parameter) {

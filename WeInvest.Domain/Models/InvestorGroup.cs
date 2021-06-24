@@ -31,12 +31,16 @@ namespace WeInvest.Domain.Models {
             investor.Name = name;
             investor.Brush = brush;
 
+            AddInvestor(investor);
+
+            return investor;
+        }
+
+        public void AddInvestor(Investor investor) {
             Investors.Add(investor);
             AddInvestorToAccountHistory(investor);
 
             OnPropertyChanged(nameof(Investors));
-
-            return investor;
         }
 
         public void Deposit(Investor investor, float amount) {

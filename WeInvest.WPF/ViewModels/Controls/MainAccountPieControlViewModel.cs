@@ -40,7 +40,7 @@ namespace WeInvest.WPF.ViewModels.Controls {
                 UpdatePieSeries();
             }
         }
-        public IList<PieData> PieSeries { get; set; }
+        public IList<PieData> PieSeries { get; set; } = new ObservableCollection<PieData>();
 
         public MainAccountPieControlViewModel(InvestorGroup investorGroup) {
             this.InvestorGroup = investorGroup;

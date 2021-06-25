@@ -20,6 +20,9 @@ namespace WeInvest.Domain.Converters {
         }
 
         public IList<T> StringToList<T>(string value) where T : IConvertible {
+            if(string.IsNullOrEmpty(value))
+                return new List<T>();
+
             string[] tokens = value.Split(Separator);
             T[] items = new T[tokens.Length];
 

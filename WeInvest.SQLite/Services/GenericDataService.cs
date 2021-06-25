@@ -11,9 +11,9 @@ using WeInvest.Domain.Services;
 namespace WeInvest.SQLite.Services {
     public abstract class GenericDataService<T> : IDataService<T> {
 
-        private readonly SQLiteConnectionFactory _connectionFactory;
-        private readonly string _tableName;
-        private readonly IEnumerable<PropertyInfo> _usedProperties;
+        protected readonly SQLiteConnectionFactory _connectionFactory;
+        protected readonly string _tableName;
+        protected readonly IEnumerable<PropertyInfo> _usedProperties;
 
         protected GenericDataService(string tableName, string connectionStringId, IEnumerable<PropertyInfo> usedProperties) {
             _tableName = tableName;
@@ -23,7 +23,8 @@ namespace WeInvest.SQLite.Services {
 
         public async Task<T> CreateAsync(T entity) {
             using(var connection = _connectionFactory.Create()) {
-                return await connection.QuerySingleAsync<T>($"{GenerateCreateQuery()}; SELECT * FROM {_tableName} WHERE Id = last_insert_rowid();", entity);
+                var created = await connection.QuerySingleAsync($"{GenerateCreateQuery()}; SELECT * FROM {_tableName} WHERE Id = last_insert_rowid();", entity);
+                return CreateEntity(created);
             }
         }
 
@@ -35,27 +36,37 @@ namespace WeInvest.SQLite.Services {
 
         public async Task<T> GetAsync(int id) {
             using(var connection = _connectionFactory.Create()) {
-                var output = await connection.QueryFirstOrDefaultAsync<T>($"SELECT * FROM {_tableName} WHERE Id = @Id", new { Id = id });
+                var result = await connection.QueryFirstOrDefaultAsync($"SELECT * FROM {_tableName} WHERE Id = @Id", new { Id = id });
 
-                if(output == null)
+                if(result == null)
                     throw new KeyNotFoundException($"{_tableName} with id [{id}] could not be found.");
 
-                return output;
+                return CreateEntity(result);
             }
         }
 
         public async Task<IEnumerable<T>> GetAllAsync() {
             using(var connection = _connectionFactory.Create()) {
-                return await connection.QueryAsync<T>($"SELECT * FROM {_tableName}");
+                var rows = await connection.QueryAsync($"SELECT * FROM {_tableName}");
+                return CreateEntityEnumerable(rows);
             }
         }
 
         public async Task<T> UpdateAsync(int id, T entity) {
             using(var connection = _connectionFactory.Create()) {
-                return await connection.QuerySingleAsync<T>($"{GenerateUpdateQuery(id)}; SELECT * FROM {_tableName} WHERE Id = {id}", entity);
+                var result = await connection.QuerySingleAsync($"{GenerateUpdateQuery(id)}; SELECT * FROM {_tableName} WHERE Id = {id}", entity);
+                return CreateEntity(result);
             }
         }
 
+        protected abstract T CreateEntity(dynamic dynamicObject);
+
+        private IEnumerable<T> CreateEntityEnumerable(IEnumerable<dynamic> rows) {
+            var output = new List<T>();
+            foreach(var row in rows)
+                output.Add(CreateEntity(row));
+            return output;
+        }
 
         protected List<string> GeneratePropertyList() {
             return (from property in _usedProperties

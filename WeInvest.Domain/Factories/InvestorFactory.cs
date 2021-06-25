@@ -19,8 +19,18 @@ namespace WeInvest.Domain.Factories {
 
         public Investor Create(object parameter) {
             Investor investor = Create();
-            investor.Name = parameter.GetProperty<string>("Name");
-            investor.Brush = parameter.GetProperty<Brush>("Brush");
+
+            investor.Id = parameter.GetProperty<int>(nameof(Investor.Id));
+            investor.Name = parameter.GetProperty<string>(nameof(Investor.Name));
+
+            var colorHex = parameter.GetProperty<string>(nameof(Investor.ColorHex));
+            if(parameter.HasProperty(nameof(Investor.Brush)))
+                colorHex = _brushConvertingService.BrushToString(parameter.ForceGetProperty<Brush>(nameof(Investor.Brush)));
+            investor.ColorHex = colorHex;
+
+            if(parameter.HasProperty(nameof(Investor.ShareHistoryString)))
+                investor.ShareHistoryString = parameter.ForceGetProperty<string>(nameof(Investor.ShareHistoryString));
+
             return investor;
         }
     }

@@ -5,7 +5,7 @@ using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
 using WeInvest.WPF.Utilities;
 
-namespace WeInvest.Domain.Tests.Utilities.Factories {
+namespace WeInvest.Domain.Tests.Factories {
     public class InvestorFactoryTests {
 
         private InvestorFactory _investorFactory;

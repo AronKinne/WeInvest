@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using WeInvest.Domain.Converters;
 
-namespace WeInvest.Domain.Tests.Utilities.Services {
+namespace WeInvest.Domain.Tests.Converters {
     public class ListStringConverterTests {
 
         private ListStringConverter _service;

@@ -12,7 +12,7 @@ namespace WeInvest.Domain.Models {
         public string Name { get; set; }
         public string ColorHex { get; set; }
         public string ShareHistoryString {
-            get => _listConvertingService.ListToString<float>(ShareHistory);
+            get => _listConvertingService.ListToString(ShareHistory);
             set => ShareHistory = _listConvertingService.StringToList<float>(value); 
         }
 
@@ -22,11 +22,6 @@ namespace WeInvest.Domain.Models {
         }
         public IList<float> ShareHistory { get; protected set; } = new List<float>() { 0 };
         public float Share { get => ShareHistory == null ? -1 : ShareHistory[ShareHistory.Count - 1]; }
-
-        public Investor() {
-            _listConvertingService = new ListStringConverter();
-            _brushConvertingService = new BrushStringConverter();
-        }
 
         public Investor(IListStringConverter listConvertingService, IBrushStringConverter brushConvertingService) {
             _listConvertingService = listConvertingService;

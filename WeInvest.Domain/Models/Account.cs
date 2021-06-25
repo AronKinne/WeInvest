@@ -1,8 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WeInvest.Domain.Converters;
+using WeInvest.Domain.Services;
 
 namespace WeInvest.Domain.Models {
     public class Account {
+
+        private readonly IDictionaryStringConverter _dictionaryStringConverter;
+        private readonly IDataService<Investor> _investorService;
+
+        public int Id { get; set; }
+        public string ShareByInvestorString {
+            get {
+                var shareById = new Dictionary<int, float>();
+                foreach(var entry in ShareByInvestor)
+                    shareById.Add(entry.Key.Id, entry.Value);
+
+                return _dictionaryStringConverter.DictionaryToString(shareById);
+            }
+            set {
+                ShareByInvestor = new Dictionary<Investor, float>();
+
+                var shareById = _dictionaryStringConverter.StringToDictionary<int, float>(value);
+                foreach(var entry in shareById) {
+                    var investor = _investorService.GetAsync(entry.Key).Result;
+                    ShareByInvestor.Add(investor, entry.Value);
+                }
+            }
+        }
 
         public IDictionary<Investor, float> ShareByInvestor { get; set; } = new Dictionary<Investor, float>();
         public float Balance {
@@ -15,6 +40,11 @@ namespace WeInvest.Domain.Models {
                     sum += entry.Value;
                 return sum;
             }
+        }
+
+        public Account(IDictionaryStringConverter dictionaryStringConverter, IDataService<Investor> investorService) {
+            _dictionaryStringConverter = dictionaryStringConverter;
+            _investorService = investorService;
         }
 
         public void AddOwners(IEnumerable<Investor> investors) {

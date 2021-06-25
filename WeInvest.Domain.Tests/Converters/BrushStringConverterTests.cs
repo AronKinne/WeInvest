@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using WeInvest.Domain.Converters;
 
-namespace WeInvest.Domain.Tests.Utilities.Services {
+namespace WeInvest.Domain.Tests.Converters {
     public class BrushStringConverterTests {
 
         private BrushStringConverter _service;

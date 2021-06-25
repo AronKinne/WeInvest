@@ -17,13 +17,15 @@ namespace WeInvest.Domain.Models {
         #endregion
 
         private readonly IFactory<Investor> _investorFactory;
+        private readonly IFactory<Account> _accountFactory;
 
         public IList<Investor> Investors { get; private set; } = new List<Investor>();
         public IList<Account> AccountHistory { get; private set; } = new List<Account>();
         public Account CurrentAccount { get => AccountHistory == null ? null : AccountHistory[AccountHistory.Count - 1]; }
 
-        public InvestorGroup(IFactory<Investor> investorFactory) {
+        public InvestorGroup(IFactory<Investor> investorFactory, IFactory<Account> accountFactory) {
             _investorFactory = investorFactory;
+            _accountFactory = accountFactory;
         }
 
         public Investor AddInvestor(string name, Brush brush) {
@@ -48,7 +50,7 @@ namespace WeInvest.Domain.Models {
                 throw new System.ArgumentException("This Investor is not part of this InvestorGroup. Add him first.", nameof(investor));
 
             investor.Deposit(amount);
-            Account account = new Account();
+            Account account = _accountFactory.Create();
             account.AddOwners(Investors);
             AccountHistory.Add(account);
 

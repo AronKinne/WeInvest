@@ -5,11 +5,11 @@ using WeInvest.Domain.Converters;
 namespace WeInvest.Domain.Tests.Converters {
     public class BrushStringConverterTests {
 
-        private BrushStringConverter _service;
+        private BrushStringConverter _converter;
 
         [SetUp]
         public void SetUp() {
-            _service = new BrushStringConverter();
+            _converter = new BrushStringConverter();
         }
 
         [Test]
@@ -17,7 +17,7 @@ namespace WeInvest.Domain.Tests.Converters {
             Brush brush = Brushes.Black;
             string expected = "#FF000000";
 
-            var actual = _service.BrushToString(brush);
+            var actual = _converter.BrushToString(brush);
 
             Assert.That(actual, Is.EqualTo(expected));
         }
@@ -27,7 +27,7 @@ namespace WeInvest.Domain.Tests.Converters {
             string hex = "#FF000000";
             Brush expected = Brushes.Black;
 
-            var actual = _service.StringToBrush(hex);
+            var actual = _converter.StringToBrush(hex);
 
             Assert.That(actual.ToString(), Is.EqualTo(expected.ToString()));
         }

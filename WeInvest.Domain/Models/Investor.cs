@@ -5,27 +5,27 @@ using WeInvest.Domain.Converters;
 namespace WeInvest.Domain.Models {
     public class Investor {
 
-        private readonly IListStringConverter _listConvertingService;
-        private readonly IBrushStringConverter _brushConvertingService;
+        private readonly IListStringConverter _listStringConverter;
+        private readonly IBrushStringConverter _brushStringConverter;
 
         public int Id { get; set; }
         public string Name { get; set; }
         public string ColorHex { get; set; }
         public string ShareHistoryString {
-            get => _listConvertingService.ListToString(ShareHistory);
-            set => ShareHistory = _listConvertingService.StringToList<float>(value); 
+            get => _listStringConverter.ListToString(ShareHistory);
+            set => ShareHistory = _listStringConverter.StringToList<float>(value); 
         }
 
         public Brush Brush {
-            get => _brushConvertingService.StringToBrush(ColorHex);
-            set => ColorHex = _brushConvertingService.BrushToString(value);
+            get => _brushStringConverter.StringToBrush(ColorHex);
+            set => ColorHex = _brushStringConverter.BrushToString(value);
         }
         public IList<float> ShareHistory { get; protected set; } = new List<float>() { 0 };
         public float Share { get => ShareHistory == null ? -1 : ShareHistory[ShareHistory.Count - 1]; }
 
         public Investor(IListStringConverter listConvertingService, IBrushStringConverter brushConvertingService) {
-            _listConvertingService = listConvertingService;
-            _brushConvertingService = brushConvertingService;
+            _listStringConverter = listConvertingService;
+            _brushStringConverter = brushConvertingService;
         }
 
         public void Deposit(float amount) {

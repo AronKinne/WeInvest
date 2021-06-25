@@ -1,64 +1,115 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Moq;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Windows.Media;
-using WeInvest.Domain.Factories;
+using WeInvest.Domain.Converters;
 using WeInvest.Domain.Models;
-using WeInvest.WPF.Utilities;
 
 namespace WeInvest.Domain.Tests.Models {
     public class InvestorTests {
 
-        private Investor _investor;
+        private Mock<IBrushStringConverter> _mockBrushStringConverter;
+        private Investor _emptyInvestor;
 
         [SetUp]
         public void SetUp() {
-            var serviceProvider = ServiceProviderFactory.Create();
-            var investorFactory = serviceProvider.GetRequiredService<IFactory<Investor>>();
-
-            _investor = investorFactory.Create();
-            _investor.Name = "Tester";
-            _investor.Brush = Brushes.Black;
+            _mockBrushStringConverter = new Mock<IBrushStringConverter>();
+            _emptyInvestor = new Investor(null, _mockBrushStringConverter.Object) {
+                Name = "Tester",
+                Brush = Brushes.Black
+            };
         }
 
         [Test]
         public void ShareHistoryString_Get() {
-            _investor.Deposit(50);
-            _investor.Deposit(20);
-            string expected = "50 70";
+            var amounts = new float[] { 50, 20 };
+            string expected = $"{amounts[0]} {amounts[0] + amounts[1]}";
 
-            Assert.That(_investor.ShareHistoryString, Is.EqualTo(expected));
+            var mockListStringConverter = new Mock<IListStringConverter>();
+            mockListStringConverter
+                .Setup(c => c.ListToString(new List<float>() {
+                    amounts[0],
+                    amounts[0] + amounts[1]
+                }))
+                .Returns(expected);
+
+            var investor = new Investor(mockListStringConverter.Object, _mockBrushStringConverter.Object);
+
+            investor.Deposit(amounts[0]);
+            investor.Deposit(amounts[1]);
+
+            Assert.That(investor.ShareHistoryString, Is.EqualTo(expected));
+
+            mockListStringConverter.VerifyAll();
         }
 
         [Test]
         public void ShareHistoryString_Set_ShouldSetShareHistory() {
-            _investor.ShareHistoryString = "50 70";
+            var amounts = new float[] { 50, 20 };
+            string stringValue = $"{amounts[0]} {amounts[0] + amounts[1]}";
 
-            Assert.That(_investor.ShareHistory.Count, Is.EqualTo(2));
-            Assert.That(_investor.ShareHistory[0], Is.EqualTo(50));
-            Assert.That(_investor.ShareHistory[1], Is.EqualTo(70));
+            var mockListStringConverter = new Mock<IListStringConverter>();
+            mockListStringConverter
+                .Setup(c => c.StringToList<float>(stringValue))
+                .Returns(new List<float>() {
+                    amounts[0],
+                    amounts[0] + amounts[1]
+                });
+
+            var investor = new Investor(mockListStringConverter.Object, _mockBrushStringConverter.Object);
+
+            investor.ShareHistoryString = stringValue;
+
+            Assert.That(investor.ShareHistory.Count, Is.EqualTo(2));
+            Assert.That(investor.ShareHistory[0], Is.EqualTo(amounts[0]));
+            Assert.That(investor.ShareHistory[1], Is.EqualTo(amounts[0] + amounts[1]));
+
+            mockListStringConverter.VerifyAll();
         }
 
         [Test]
         public void Brush_Get_ShouldGetBrushFromColorHex() {
-            Assert.That(_investor.Brush.ToString(), Is.EqualTo(Brushes.Black.ToString()));
+            var hex = "#ff000000";
+            var expected = Brushes.Black;
+
+            _mockBrushStringConverter
+                .Setup(c => c.StringToBrush(hex))
+                .Returns(expected);
+
+            var investor = new Investor(null, _mockBrushStringConverter.Object);
+            investor.ColorHex = hex;
+
+            Assert.That(investor.Brush, Is.EqualTo(expected));
+
+            _mockBrushStringConverter.VerifyAll();
         }
 
         [Test]
         public void Brush_Set_ShouldSetColorHex() {
+            var brush = Brushes.White;
             var expected = "#FFFFFFFF";
-            _investor.Brush = Brushes.White;
 
-            Assert.That(_investor.ColorHex, Is.EqualTo(expected));
+            _mockBrushStringConverter
+                .Setup(c => c.BrushToString(brush))
+                .Returns(expected);
+
+            var investor = new Investor(null, _mockBrushStringConverter.Object);
+
+            investor.Brush = brush;
+
+            Assert.That(investor.ColorHex, Is.EqualTo(expected));
+
+            _mockBrushStringConverter.VerifyAll();
         }
 
         [Test]
         public void Deposit_FirstTime_ShouldReplaceFirstShareHistoryValue() {
             float amount = 10;
 
-            _investor.Deposit(amount);
+            _emptyInvestor.Deposit(amount);
 
-            Assert.That(_investor.ShareHistory.Count, Is.EqualTo(1));
-            Assert.That(_investor.ShareHistory[0], Is.EqualTo(amount));
+            Assert.That(_emptyInvestor.ShareHistory.Count, Is.EqualTo(1));
+            Assert.That(_emptyInvestor.ShareHistory[0], Is.EqualTo(amount));
         }
 
         [Test]
@@ -66,16 +117,16 @@ namespace WeInvest.Domain.Tests.Models {
             float amount1 = 10;
             float amount2 = 20;
 
-            _investor.Deposit(amount1);
-            _investor.Deposit(amount2);
+            _emptyInvestor.Deposit(amount1);
+            _emptyInvestor.Deposit(amount2);
 
-            Assert.That(_investor.ShareHistory.Count, Is.EqualTo(2));
-            Assert.That(_investor.ShareHistory[1], Is.EqualTo(amount1 + amount2));
+            Assert.That(_emptyInvestor.ShareHistory.Count, Is.EqualTo(2));
+            Assert.That(_emptyInvestor.ShareHistory[1], Is.EqualTo(amount1 + amount2));
         }
 
         [Test]
         public void Share_NoDeposit_ShouldReturnZero() {
-            Assert.That(_investor.Share, Is.EqualTo(0));
+            Assert.That(_emptyInvestor.Share, Is.EqualTo(0));
         }
 
         [Test]
@@ -83,22 +134,22 @@ namespace WeInvest.Domain.Tests.Models {
             float amount1 = 10;
             float amount2 = 20;
 
-            _investor.Deposit(amount1);
-            _investor.Deposit(amount2);
+            _emptyInvestor.Deposit(amount1);
+            _emptyInvestor.Deposit(amount2);
 
-            Assert.That(_investor.Share, Is.EqualTo(amount1 + amount2));
+            Assert.That(_emptyInvestor.Share, Is.EqualTo(amount1 + amount2));
         }
 
         [Test]
         public void ToString_WithMultipleShares() {
-            string name = _investor.Name;
+            string name = _emptyInvestor.Name;
             float amount1 = 10;
             float amount2 = 20;
             string expected = $"{name} ({amount1}, {amount1 + amount2})";
 
-            _investor.Deposit(amount1);
-            _investor.Deposit(amount2);
-            string actual = _investor.ToString();
+            _emptyInvestor.Deposit(amount1);
+            _emptyInvestor.Deposit(amount2);
+            string actual = _emptyInvestor.ToString();
 
             Assert.That(actual, Is.EqualTo(expected));
         }

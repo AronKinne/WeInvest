@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
-using WeInvest.WPF.Utilities;
 
 namespace WeInvest.Domain.Tests.Factories {
     public class InvestorGroupFactoryTests {
@@ -11,8 +9,7 @@ namespace WeInvest.Domain.Tests.Factories {
 
         [SetUp]
         public void SetUp() {
-            var serviceProvider = ServiceProviderFactory.Create();
-            _investorGroupFactory = serviceProvider.GetRequiredService<IFactory<InvestorGroup>>() as InvestorGroupFactory;
+            _investorGroupFactory = new InvestorGroupFactory(null, null);
         }
 
         [Test]

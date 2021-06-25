@@ -1,19 +1,27 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Moq;
 using NUnit.Framework;
 using System.Windows.Media;
+using WeInvest.Domain.Converters;
 using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
-using WeInvest.WPF.Utilities;
 
 namespace WeInvest.Domain.Tests.Factories {
     public class InvestorFactoryTests {
 
+        private Mock<IBrushStringConverter> _mockBrushStringConverter;
         private InvestorFactory _investorFactory;
 
         [SetUp]
         public void SetUp() {
-            var serviceProvider = ServiceProviderFactory.Create();
-            _investorFactory = serviceProvider.GetRequiredService<IFactory<Investor>>() as InvestorFactory;
+            _mockBrushStringConverter = new Mock<IBrushStringConverter>();
+            _mockBrushStringConverter
+                .Setup(c => c.BrushToString(Brushes.Black))
+                .Returns("#ff000000");
+            _mockBrushStringConverter
+                .Setup(c => c.StringToBrush("#ff000000"))
+                .Returns(Brushes.Black);
+
+            _investorFactory = new InvestorFactory(null, _mockBrushStringConverter.Object);
         }
 
         [Test]
@@ -35,6 +43,8 @@ namespace WeInvest.Domain.Tests.Factories {
 
             Assert.That(result.Name, Is.EqualTo(name));
             Assert.That(result.Brush.ToString(), Is.EqualTo(brush.ToString()));
+
+            _mockBrushStringConverter.VerifyAll();
         }
     
     }

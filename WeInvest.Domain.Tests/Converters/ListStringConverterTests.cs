@@ -4,11 +4,11 @@ using WeInvest.Domain.Converters;
 namespace WeInvest.Domain.Tests.Converters {
     public class ListStringConverterTests {
 
-        private ListStringConverter _service;
+        private ListStringConverter _converter;
 
         [SetUp]
         public void SetUp() {
-            _service = new ListStringConverter();
+            _converter = new ListStringConverter();
         }
 
         [Test]
@@ -16,7 +16,7 @@ namespace WeInvest.Domain.Tests.Converters {
             var list = new int[0];
             string expected = "";
 
-            var actual = _service.ListToString<int>(list);
+            var actual = _converter.ListToString(list);
 
             Assert.That(actual, Is.EqualTo(expected));
         }
@@ -26,7 +26,7 @@ namespace WeInvest.Domain.Tests.Converters {
             var list = new float[] { 2, 10, 5, 9.5f };
             string expected = "2 10 5 9,5";
 
-            var actual = _service.ListToString<float>(list);
+            var actual = _converter.ListToString(list);
 
             Assert.That(actual, Is.EqualTo(expected));
         }
@@ -36,7 +36,7 @@ namespace WeInvest.Domain.Tests.Converters {
             var values = "2 10 5 9,5";
             var expected = new float[] { 2, 10, 5, 9.5f };
 
-            var actual = _service.StringToList<float>(values);
+            var actual = _converter.StringToList<float>(values);
 
             Assert.That(actual, Is.EqualTo(expected));
         }

@@ -9,24 +9,25 @@ using WeInvest.Domain.Models;
 namespace WeInvest.Domain.Tests.Models {
     public class InvestorGroupTests {
 
+        private Mock<IBrushStringConverter> _mockBrushStringConverter;
         private Mock<IFactory<Investor>> _mockInvestorFactory;
         private Mock<IFactory<Account>> _mockAccountFactory;
         private InvestorGroup _investorGroup;
 
         [SetUp]
         public void SetUp() {
-            var mockBrushStringConverter = new Mock<IBrushStringConverter>();
-            mockBrushStringConverter
+            _mockBrushStringConverter = new Mock<IBrushStringConverter>();
+            _mockBrushStringConverter
                 .Setup(c => c.BrushToString(Brushes.Black))
                 .Returns("#ff000000");
-            mockBrushStringConverter
+            _mockBrushStringConverter
                 .Setup(c => c.StringToBrush("#ff000000"))
                 .Returns(Brushes.Black);
 
             _mockInvestorFactory = new Mock<IFactory<Investor>>();
             _mockInvestorFactory
                 .Setup(f => f.Create())
-                .Returns(() => new Investor(null, mockBrushStringConverter.Object));
+                .Returns(() => new Investor(null, _mockBrushStringConverter.Object));
 
             _mockAccountFactory = new Mock<IFactory<Account>>();
             _mockAccountFactory
@@ -51,7 +52,7 @@ namespace WeInvest.Domain.Tests.Models {
         }
 
         [Test]
-        public void AddInvestor_WithValidInput_ShouldReturnNewInvestor() {
+        public void AddInvestor_WithNameAndBrush_ShouldReturnNewInvestor() {
             string name = "Tester";
             Brush brush = Brushes.Black;
 
@@ -61,6 +62,16 @@ namespace WeInvest.Domain.Tests.Models {
             Assert.That(newInvestor.Brush, Is.EqualTo(brush));
 
             _mockInvestorFactory.VerifyAll();
+            _mockBrushStringConverter.VerifyAll();
+        }
+
+        [Test]
+        public void AddInvestor_WithInvestor_ShouldAddInvestor() {
+            var investor = new Investor(null, _mockBrushStringConverter.Object);
+
+            _investorGroup.AddInvestor(investor);
+
+            Assert.That(_investorGroup.Investors.Contains(investor));
         }
 
         [Test]
@@ -77,6 +88,7 @@ namespace WeInvest.Domain.Tests.Models {
 
             _mockInvestorFactory.VerifyAll();
             _mockAccountFactory.VerifyAll();
+            _mockBrushStringConverter.Verify(c => c.BrushToString(Brushes.Black), Times.Exactly(2));
         }
 
         [Test]
@@ -92,12 +104,13 @@ namespace WeInvest.Domain.Tests.Models {
 
             _mockInvestorFactory.VerifyAll();
             _mockAccountFactory.VerifyAll();
+            _mockBrushStringConverter.Verify(c => c.BrushToString(Brushes.Black), Times.Once);
         }
 
         [Test]
         public void Deposit_WithUnknownInvestor_ShouldThrowException() {
             _investorGroup.AddInvestor("I exist", Brushes.Black);
-            Investor stranger = new Investor(null, new Mock<IBrushStringConverter>().Object) {
+            Investor stranger = new Investor(null, _mockBrushStringConverter.Object) {
                 Name = "Stranger",
                 Brush = Brushes.Black
             };
@@ -105,6 +118,7 @@ namespace WeInvest.Domain.Tests.Models {
             Assert.Throws<ArgumentException>(() => _investorGroup.Deposit(stranger, 10));
 
             _mockInvestorFactory.VerifyAll();
+            _mockBrushStringConverter.Verify(c => c.BrushToString(Brushes.Black), Times.Exactly(2));
         }
     }
 }

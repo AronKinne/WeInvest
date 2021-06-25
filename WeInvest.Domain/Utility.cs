@@ -11,6 +11,7 @@ namespace WeInvest.Domain {
 
             return (T)Convert.ChangeType(value, typeof(T));
         }
+
         public static T ForceGetProperty<T>(this object obj, string propertyName) {
             return (T)(obj?.GetType().GetProperty(propertyName)?.GetValue(obj, null));
         }

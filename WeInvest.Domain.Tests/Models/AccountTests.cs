@@ -80,7 +80,7 @@ namespace WeInvest.Domain.Tests.Models {
                     { 1, amounts[1] }
                 });
 
-            var mockInvestorService = new Mock<IDataService<Investor>>();
+            var mockInvestorService = new Mock<IDataAccess<Investor>>();
             mockInvestorService
                 .Setup(s => s.GetAsync(It.IsAny<int>()))
                 .Returns<int>(i => Task.FromResult(_investorList[i]));

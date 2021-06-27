@@ -39,7 +39,7 @@ namespace WeInvest.WPF.ViewModels {
 
         public IFactory<Investor> InvestorFactory { get; set; }
 
-        public IDataService<Investor> InvestorDataService { get; set; }
+        public IDataAccess<Investor> InvestorDataService { get; set; }
 
         #region Command Properties
 
@@ -61,7 +61,7 @@ namespace WeInvest.WPF.ViewModels {
 
             this.InvestorFactory = serviceProvider.GetRequiredService<IFactory<Investor>>();
 
-            this.InvestorDataService = serviceProvider.GetRequiredService<IDataService<Investor>>();
+            this.InvestorDataService = serviceProvider.GetRequiredService<IDataAccess<Investor>>();
 
             foreach(var investor in InvestorDataService.GetAllAsync().Result) {
                 InvestorGroup.AddInvestor(investor);

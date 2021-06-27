@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Reflection;
 using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
+using WeInvest.SQLite.Services;
 
-namespace WeInvest.SQLite.Services {
-    public class AccountDataService : GenericDataService<Account> {
+namespace WeInvest.SQLite.DataAccess {
+    public class AccountDataAccess : GenericDataAccess<Account> {
 
         private readonly IFactory<Account> _accountFactory;
 
-        public AccountDataService(IFactory<Account> accountFactory) : base(
-            "Account",
+        public AccountDataAccess(IFactory<IDbConnection> connectionFactory, IQueryService queryService, IFactory<Account> accountFactory) : base(
+            connectionFactory,
+            queryService,
             "SQLite",
+            "Account",
             new List<PropertyInfo>() {
                 typeof(Account).GetProperty(nameof(Account.ShareByInvestorString))
             }) {

@@ -1,42 +1,53 @@
-﻿using Dapper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using WeInvest.Domain.Factories;
 using WeInvest.Domain.Services;
+using WeInvest.SQLite.Services;
 
-namespace WeInvest.SQLite.Services {
-    public abstract class GenericDataService<T> : IDataService<T> {
+namespace WeInvest.SQLite.DataAccess {
+    public abstract class GenericDataAccess<T> : IDataAccess<T> {
 
-        protected readonly SQLiteConnectionFactory _connectionFactory;
+        protected readonly IFactory<IDbConnection> _connectionFactory;
+        protected readonly IQueryService _queryService;
+        protected readonly string _connectionString;
         protected readonly string _tableName;
         protected readonly IEnumerable<PropertyInfo> _usedProperties;
 
-        protected GenericDataService(string tableName, string connectionStringId, IEnumerable<PropertyInfo> usedProperties) {
+        protected GenericDataAccess(
+            IFactory<IDbConnection> connectionFactory,
+            IQueryService queryService,
+            string connectionString,
+            string tableName,
+            IEnumerable<PropertyInfo> usedProperties) {
+
+            _connectionFactory = connectionFactory;
+            _queryService = queryService;
+            _connectionString = connectionString;
             _tableName = tableName;
-            _connectionFactory = new SQLiteConnectionFactory(connectionStringId);
             _usedProperties = usedProperties;
         }
 
         public async Task<T> CreateAsync(T entity) {
-            using(var connection = _connectionFactory.Create()) {
-                var created = await connection.QuerySingleAsync($"{GenerateCreateQuery()}; SELECT * FROM {_tableName} WHERE Id = last_insert_rowid();", entity);
+            using(var connection = _connectionFactory.Create(_connectionString)) {
+                var created = await _queryService.QuerySingleAsync(connection, $"{GenerateCreateQuery()}; SELECT * FROM {_tableName} WHERE Id = last_insert_rowid();", entity);
                 return CreateEntity(created);
             }
         }
 
         public async Task DeleteAsync(int id) {
-            using(var connection = _connectionFactory.Create()) {
-                await connection.ExecuteAsync($"DELETE FROM {_tableName} WHERE Id = @Id", new { Id = id });
+            using(var connection = _connectionFactory.Create(_connectionString)) {
+                await _queryService.ExecuteAsync(connection, $"DELETE FROM {_tableName} WHERE Id = @Id", new { Id = id });
             }
         }
 
         public async Task<T> GetAsync(int id) {
-            using(var connection = _connectionFactory.Create()) {
-                var result = await connection.QueryFirstOrDefaultAsync($"SELECT * FROM {_tableName} WHERE Id = @Id", new { Id = id });
+            using(var connection = _connectionFactory.Create(_connectionString)) {
+                var result = await _queryService.QueryFirstOrDefaultAsync(connection, $"SELECT * FROM {_tableName} WHERE Id = @Id", new { Id = id });
 
                 if(result == null)
                     throw new KeyNotFoundException($"{_tableName} with id [{id}] could not be found.");
@@ -46,15 +57,15 @@ namespace WeInvest.SQLite.Services {
         }
 
         public async Task<IEnumerable<T>> GetAllAsync() {
-            using(var connection = _connectionFactory.Create()) {
-                var rows = await connection.QueryAsync($"SELECT * FROM {_tableName}");
+            using(var connection = _connectionFactory.Create(_connectionString)) {
+                var rows = await _queryService.QueryAsync(connection, $"SELECT * FROM {_tableName}");
                 return CreateEntityEnumerable(rows);
             }
         }
 
         public async Task<T> UpdateAsync(int id, T entity) {
-            using(var connection = _connectionFactory.Create()) {
-                var result = await connection.QuerySingleAsync($"{GenerateUpdateQuery(id)}; SELECT * FROM {_tableName} WHERE Id = {id}", entity);
+            using(var connection = _connectionFactory.Create(_connectionString)) {
+                var result = await _queryService.QuerySingleAsync(connection, $"{GenerateUpdateQuery(id)}; SELECT * FROM {_tableName} WHERE Id = {id}", entity);
                 return CreateEntity(result);
             }
         }

@@ -4,7 +4,7 @@ using WeInvest.Domain.Converters;
 using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
 using WeInvest.Domain.Services;
-using WeInvest.SQLite.Services;
+using WeInvest.SQLite.DataAccess;
 
 namespace WeInvest.WPF.Utilities {
     public class ServiceProviderFactory {
@@ -16,8 +16,8 @@ namespace WeInvest.WPF.Utilities {
             services.AddSingleton<IBrushStringConverter, BrushStringConverter>();
             services.AddSingleton<IDictionaryStringConverter, DictionaryStringConverter>();
 
-            services.AddSingleton<IDataService<Investor>, InvestorDataService>();
-            services.AddSingleton<IDataService<Account>, AccountDataService>();
+            services.AddSingleton<IDataAccess<Investor>, InvestorDataAccess>();
+            services.AddSingleton<IDataAccess<Account>, AccountDataAccess>();
 
             services.AddSingleton<IFactory<Investor>, InvestorFactory>();
             services.AddSingleton<IFactory<InvestorGroup>, InvestorGroupFactory>();

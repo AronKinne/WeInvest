@@ -6,6 +6,8 @@ using WeInvest.Domain.Converters;
 using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
 using WeInvest.Domain.Services;
+using WeInvest.SQLite.DataAccess;
+using WeInvest.SQLite.Factories;
 using WeInvest.SQLite.Services;
 
 namespace ConsoleApp1 {
@@ -15,8 +17,10 @@ namespace ConsoleApp1 {
 
             #region Investor
 
+            var connectionFactory = new SQLiteConnectionFactory();
+            var queryService = new DapperQueryService();
             var investorFactory = new InvestorFactory(new ListStringConverter(), new BrushStringConverter());
-            IDataService<Investor> investorService = new InvestorDataService(investorFactory);
+            IDataAccess<Investor> investorService = new InvestorDataAccess(connectionFactory, queryService, investorFactory);
 
             // CREATE
             //Console.WriteLine(investorService.CreateAsync(investorFactory.Create(new { Name = "Tester", Brush = Brushes.Black })).Result.Id);
@@ -37,7 +41,7 @@ namespace ConsoleApp1 {
 
             #region Account
 
-            IDataService<Account> accountService = new AccountDataService(new AccountFactory(new DictionaryStringConverter(new ListStringConverter()), investorService));
+            IDataAccess<Account> accountService = new AccountDataAccess(connectionFactory, queryService, new AccountFactory(new DictionaryStringConverter(new ListStringConverter()), investorService));
             var accountFactory = new AccountFactory(new DictionaryStringConverter(new ListStringConverter()), investorService);
 
             // CREATE

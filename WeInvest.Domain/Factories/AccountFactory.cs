@@ -6,9 +6,9 @@ namespace WeInvest.Domain.Factories {
     public class AccountFactory : IFactory<Account> {
 
         private readonly IDictionaryStringConverter _dictionaryStringConverter;
-        private readonly IDataService<Investor> _investorService;
+        private readonly IDataAccess<Investor> _investorService;
 
-        public AccountFactory(IDictionaryStringConverter dictionaryStringConverter, IDataService<Investor> investorService) {
+        public AccountFactory(IDictionaryStringConverter dictionaryStringConverter, IDataAccess<Investor> investorService) {
             _dictionaryStringConverter = dictionaryStringConverter;
             _investorService = investorService;
         }

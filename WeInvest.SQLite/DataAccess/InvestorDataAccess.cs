@@ -1,18 +1,20 @@
-﻿using Dapper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Reflection;
-using System.Threading.Tasks;
 using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
+using WeInvest.SQLite.Services;
 
-namespace WeInvest.SQLite.Services {
-    public class InvestorDataService : GenericDataService<Investor> {
+namespace WeInvest.SQLite.DataAccess {
+    public class InvestorDataAccess : GenericDataAccess<Investor> {
 
         private readonly IFactory<Investor> _investorFactory;
 
-        public InvestorDataService(IFactory<Investor> investorFactory) : base(
-            "Investor",
+        public InvestorDataAccess(IFactory<IDbConnection> connectionFactory, IQueryService queryService, IFactory<Investor> investorFactory) : base(
+            connectionFactory,
+            queryService,
             "SQLite",
+            "Investor",
             new List<PropertyInfo>() {
                 typeof(Investor).GetProperty(nameof(Investor.Name)),
                 typeof(Investor).GetProperty(nameof(Investor.ColorHex)),

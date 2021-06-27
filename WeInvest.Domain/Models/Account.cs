@@ -7,7 +7,7 @@ namespace WeInvest.Domain.Models {
     public class Account {
 
         private readonly IDictionaryStringConverter _dictionaryStringConverter;
-        private readonly IDataService<Investor> _investorService;
+        private readonly IDataAccess<Investor> _investorService;
 
         public int Id { get; set; }
         public string ShareByInvestorString {
@@ -42,7 +42,7 @@ namespace WeInvest.Domain.Models {
             }
         }
 
-        public Account(IDictionaryStringConverter dictionaryStringConverter, IDataService<Investor> investorService) {
+        public Account(IDictionaryStringConverter dictionaryStringConverter, IDataAccess<Investor> investorService) {
             _dictionaryStringConverter = dictionaryStringConverter;
             _investorService = investorService;
         }

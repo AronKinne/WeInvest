@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 namespace WeInvest.Domain.Services {
-    public interface IDataService<T> {
+    public interface IDataAccess<T> {
 
         Task<T> CreateAsync(T entity);
         Task<T> GetAsync(int id);

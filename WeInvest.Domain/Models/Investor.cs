@@ -23,9 +23,9 @@ namespace WeInvest.Domain.Models {
         public IList<float> ShareHistory { get; protected set; } = new List<float>() { 0 };
         public float Share { get => ShareHistory == null ? -1 : ShareHistory[ShareHistory.Count - 1]; }
 
-        public Investor(IListStringConverter listConvertingService, IBrushStringConverter brushConvertingService) {
-            _listStringConverter = listConvertingService;
-            _brushStringConverter = brushConvertingService;
+        public Investor(IListStringConverter listStringConverter, IBrushStringConverter brushStringConverter) {
+            _listStringConverter = listStringConverter;
+            _brushStringConverter = brushStringConverter;
         }
 
         public void Deposit(float amount) {

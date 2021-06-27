@@ -7,13 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeInvest.WPF", "WeInvest.WP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeInvest.Domain.Tests", "WeInvest.Domain.Tests\WeInvest.Domain.Tests.csproj", "{BFEE9B6E-E952-4681-81DE-4AF1C1F45A87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeInvest.Domain", "WeInvest.Domain\WeInvest.Domain.csproj", "{BCA987DB-8D5F-4E2C-A841-CB249EC6BBC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeInvest.Domain", "WeInvest.Domain\WeInvest.Domain.csproj", "{BCA987DB-8D5F-4E2C-A841-CB249EC6BBC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeInvest.WPF.Tests", "WeInvest.WPF.Tests\WeInvest.WPF.Tests.csproj", "{161954FE-C6C4-4BC5-B120-7EE1813D570A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeInvest.WPF.Tests", "WeInvest.WPF.Tests\WeInvest.WPF.Tests.csproj", "{161954FE-C6C4-4BC5-B120-7EE1813D570A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeInvest.SQLite", "WeInvest.SQLite\WeInvest.SQLite.csproj", "{7FC40DE0-2AA5-44FD-9373-6E2DBBBA97C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{6B11CC34-D773-461F-A15C-8E40C484183D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeInvest.SQLite.TestsConsole", "WeInvest.SQLite.TestsConsole\WeInvest.SQLite.TestsConsole.csproj", "{6B11CC34-D773-461F-A15C-8E40C484183D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeInvest.SQLite.Tests", "WeInvest.SQLite.Tests\WeInvest.SQLite.Tests.csproj", "{431D8E8B-73AB-425C-8F7D-0589290949A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{6B11CC34-D773-461F-A15C-8E40C484183D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B11CC34-D773-461F-A15C-8E40C484183D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B11CC34-D773-461F-A15C-8E40C484183D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{431D8E8B-73AB-425C-8F7D-0589290949A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{431D8E8B-73AB-425C-8F7D-0589290949A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{431D8E8B-73AB-425C-8F7D-0589290949A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{431D8E8B-73AB-425C-8F7D-0589290949A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

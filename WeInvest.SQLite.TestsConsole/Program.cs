@@ -10,7 +10,7 @@ using WeInvest.SQLite.DataAccess;
 using WeInvest.SQLite.Factories;
 using WeInvest.SQLite.Services;
 
-namespace ConsoleApp1 {
+namespace WeInvest.SQLite.TestsConsole {
     class Program {
         static void Main(string[] args) {
             AppDomain.CurrentDomain.SetData("DataDirectory", Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName);

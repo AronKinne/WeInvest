@@ -1,5 +1,5 @@
 ﻿namespace WeInvest.WPF.ViewModels.Dialogs {
-    class DepositDialogViewModel : DialogViewModelBase {
+    public class DepositDialogViewModel : DialogViewModelBase {
 
         public DepositDialogViewModel() {
 

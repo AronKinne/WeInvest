@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using WeInvest.WPF.Utilities;
 
-namespace WeInvest.WPF.ViewModels.Commands {
+namespace WeInvest.WPF.Commands {
     public class AsyncRelayCommand : ICommand {
 
         private Func<object, Task> _execute;

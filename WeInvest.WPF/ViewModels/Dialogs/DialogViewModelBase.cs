@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using WeInvest.WPF.ViewModels.Commands;
+using WeInvest.WPF.Commands;
 
 namespace WeInvest.WPF.ViewModels.Dialogs {
     public abstract class DialogViewModelBase {

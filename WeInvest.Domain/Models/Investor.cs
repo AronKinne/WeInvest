@@ -28,15 +28,6 @@ namespace WeInvest.Domain.Models {
             _brushStringConverter = brushStringConverter;
         }
 
-        public void Deposit(float amount) {
-            if(ShareHistory.Count == 1 && Share == 0) {
-                ShareHistory[0] = amount;
-                return;
-            }
-
-            ShareHistory.Add(Share + amount);
-        }
-
         public override string ToString() {
             string output = Name + " (";
 

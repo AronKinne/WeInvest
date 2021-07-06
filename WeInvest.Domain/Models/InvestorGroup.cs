@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Media;
 using WeInvest.Domain.Factories;
+using WeInvest.Domain.Services;
 
 namespace WeInvest.Domain.Models {
     public class InvestorGroup : INotifyPropertyChanged {
@@ -18,14 +19,16 @@ namespace WeInvest.Domain.Models {
 
         private readonly IFactory<Investor> _investorFactory;
         private readonly IFactory<Account> _accountFactory;
+        private readonly ITransactionService _transactionService;
 
         public IList<Investor> Investors { get; private set; } = new List<Investor>();
         public IList<Account> AccountHistory { get; private set; } = new List<Account>();
         public Account CurrentAccount { get => AccountHistory == null ? null : AccountHistory[AccountHistory.Count - 1]; }
 
-        public InvestorGroup(IFactory<Investor> investorFactory, IFactory<Account> accountFactory) {
+        public InvestorGroup(IFactory<Investor> investorFactory, IFactory<Account> accountFactory, ITransactionService transactionService) {
             _investorFactory = investorFactory;
             _accountFactory = accountFactory;
+            _transactionService = transactionService;
         }
 
         public Investor AddInvestor(string name, Brush brush) {
@@ -49,7 +52,7 @@ namespace WeInvest.Domain.Models {
             if(!Investors.Contains(investor))
                 throw new System.ArgumentException("This Investor is not part of this InvestorGroup. Add him first.", nameof(investor));
 
-            investor.Deposit(amount);
+            _transactionService.Deposit(investor, amount);
             Account account = _accountFactory.Create();
             account.AddOwners(Investors);
             AccountHistory.Add(account);

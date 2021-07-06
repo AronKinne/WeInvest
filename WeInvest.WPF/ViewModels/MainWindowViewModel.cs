@@ -1,18 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media;
 using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
 using WeInvest.Domain.Services;
+using WeInvest.WPF.Commands;
+using WeInvest.WPF.Commands.Builders;
+using WeInvest.WPF.Services;
 using WeInvest.WPF.Utilities;
-using WeInvest.WPF.Utilities.Services;
-using WeInvest.WPF.ViewModels.Commands;
 using WeInvest.WPF.ViewModels.Controls;
 using WeInvest.WPF.ViewModels.Dialogs;
 using WeInvest.WPF.Views.Dialogs;
@@ -30,98 +25,48 @@ namespace WeInvest.WPF.ViewModels {
 
         #endregion
 
+        private readonly IFactory<InvestorGroup> _investorGroupFactory;
+
+        private readonly IDataAccess<Investor> _investorDataAccess;
+
+        private readonly IBuilder<DepositCommand> _depositCommandBuilder;
+        private readonly IBuilder<AddInvestorCommand> _addInvestorCommandBuilder;
+
+        public ICommand DepositCommand { get; }
+        public ICommand AddInvestorCommand { get; }
+
+
         public InvestorGroup InvestorGroup { get; set; }
-        public IList<Investor> Investors { get => new ObservableCollection<Investor>(InvestorGroup?.Investors); }
+        public IList<Investor> Investors { get => new List<Investor>(InvestorGroup?.Investors); }
 
         public MainAccountPieControlViewModel MainAccountPieViewModel { get; set; }
         public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; set; }
         public InvestorChartControlViewModel InvestorChartViewModel { get; set; }
 
-        public IFactory<Investor> InvestorFactory { get; set; }
+        public MainWindowViewModel(IFactory<InvestorGroup> investorGroupFactory, IFactory<Investor> investorFactory, IDataAccess<Investor> investorDataAccess, IDialogService<DepositDialog, DepositDialogViewModel> despositDialogService, IDialogService<InvestorDialog, InvestorDialogViewModel> investorDialogService) {
+            _investorGroupFactory = investorGroupFactory;
 
-        public IDataAccess<Investor> InvestorDataService { get; set; }
+            _investorDataAccess = investorDataAccess;
 
-        #region Command Properties
+            _depositCommandBuilder = new DepositCommandBuilder(this, despositDialogService).Build();
+            DepositCommand = _depositCommandBuilder.Get();
 
-        public ICommand DepositCommand { get; set; }
-        public ICommand AddInvestorCommand { get; set; }
+            _addInvestorCommandBuilder = new AddInvestorCommandBuilder(this, investorDialogService, investorFactory, investorDataAccess).Build();
+            AddInvestorCommand = _addInvestorCommandBuilder.Get();
 
-        #endregion
+            InvestorGroup = _investorGroupFactory.Create();
 
-        public MainWindowViewModel() {
-            AppDomain.CurrentDomain.SetData("DataDirectory", Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName);
-            var serviceProvider = ServiceProviderFactory.Create();
-            var investorGroupFactory = serviceProvider.GetRequiredService<IFactory<InvestorGroup>>();
+            MainAccountPieViewModel = new MainAccountPieControlViewModel(InvestorGroup);
+            MainAccountAreaViewModel = new MainAccountAreaControlViewModel(InvestorGroup) { AreaOpacity = 1 };
+            InvestorChartViewModel = new InvestorChartControlViewModel(InvestorGroup);
 
-            this.InvestorGroup = investorGroupFactory.Create();
-
-            this.MainAccountPieViewModel = new MainAccountPieControlViewModel(InvestorGroup);
-            this.MainAccountAreaViewModel = new MainAccountAreaControlViewModel(InvestorGroup) { AreaOpacity = 1 };
-            this.InvestorChartViewModel = new InvestorChartControlViewModel(InvestorGroup);
-
-            this.InvestorFactory = serviceProvider.GetRequiredService<IFactory<Investor>>();
-
-            this.InvestorDataService = serviceProvider.GetRequiredService<IDataAccess<Investor>>();
-
-            foreach(var investor in InvestorDataService.GetAllAsync().Result) {
+            foreach(var investor in _investorDataAccess.GetAllAsync().Result) {
                 InvestorGroup.AddInvestor(investor);
             }
 
             //Deposit(stefan, 15);
             //Deposit(aron, 85);
             //Deposit(stefan, 50);
-
-            #region Command Initializations
-
-            this.DepositCommand = new RelayCommand(DepositFromDialog);
-            this.AddInvestorCommand = new AsyncRelayCommand(AddInvestorFromDialogAsync);
-
-            #endregion
         }
-
-        private async Task<Investor> AddInvestorAsync(string name, Brush brush) {
-            var investor = InvestorFactory.Create();
-            investor.Name = name;
-            investor.Brush = brush;
-
-            var createdInvestor = await InvestorDataService.CreateAsync(investor);
-            InvestorGroup.AddInvestor(createdInvestor);
-
-            OnPropertyChanged(nameof(Investors));
-
-            return createdInvestor;
-        }
-
-        private void Deposit(Investor investor, float amount) {
-            InvestorGroup.Deposit(investor, amount);
-            MainAccountPieViewModel.DisplayedAccountIndex = InvestorGroup.AccountHistory.Count - 1;
-
-            OnPropertyChanged(nameof(Investors));
-        }
-
-        #region Commands
-
-        private void DepositFromDialog(object parameter) {
-            var dialogService = new DialogService<DepositDialog, DepositDialogViewModel>();
-
-            if(dialogService.ShowDialog() == true) {
-
-            }
-
-            Random random = new Random();
-            Deposit(Investors[random.Next(Investors.Count)], random.Next(20, 50));
-        }
-
-        private async Task AddInvestorFromDialogAsync(object parameter) {
-            var dialogService = new DialogService<InvestorDialog, InvestorDialogViewModel>();
-
-            if(dialogService.ShowDialog() == true) {
-                var viewModel = dialogService.ViewModel;
-                await AddInvestorAsync(viewModel.InvestorName, viewModel.InvestorBrush);
-            }
-        }
-
-        #endregion
-
     }
 }

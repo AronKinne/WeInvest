@@ -20,8 +20,8 @@ namespace WeInvest.Domain.Models {
             get => _brushStringConverter.StringToBrush(ColorHex);
             set => ColorHex = _brushStringConverter.BrushToString(value);
         }
-        public IList<float> ShareHistory { get; protected set; } = new List<float>() { 0 };
-        public float Share { get => ShareHistory == null ? -1 : ShareHistory[ShareHistory.Count - 1]; }
+        public IList<float> ShareHistory { get; set; } = new List<float>() { 0 };
+        public float Share { get => ShareHistory == null ? 0 : ShareHistory[ShareHistory.Count - 1]; }
 
         public Investor(IListStringConverter listStringConverter, IBrushStringConverter brushStringConverter) {
             _listStringConverter = listStringConverter;

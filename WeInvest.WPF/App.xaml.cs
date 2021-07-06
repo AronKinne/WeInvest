@@ -1,7 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
+using WeInvest.Domain.Models;
+using WeInvest.Domain.Services;
+using WeInvest.WPF.State.Accounts;
+using WeInvest.WPF.State.Investors;
 using WeInvest.WPF.Utilities;
 using WeInvest.WPF.Views;
 
@@ -15,6 +20,14 @@ namespace WeInvest.WPF {
 
             var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
+
+            var investorDataAccess = serviceProvider.GetRequiredService<IDataAccess<Investor>>();
+            var investorsStore = serviceProvider.GetRequiredService<IInvestorsStore>();
+            investorsStore.CurrentInvestors = new ObservableCollection<Investor>(investorDataAccess.GetAllAsync().Result);
+
+            var accountDataAccess = serviceProvider.GetRequiredService<IDataAccess<Account>>();
+            var accountsStore = serviceProvider.GetRequiredService<IAccountsStore>();
+            accountsStore.CurrentAccounts = new ObservableCollection<Account>(accountDataAccess.GetAllAsync().Result);
 
             base.OnStartup(e);
         }

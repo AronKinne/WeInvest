@@ -9,8 +9,9 @@ using WeInvest.SQLite.DataAccess;
 using WeInvest.SQLite.Factories;
 using WeInvest.SQLite.Services;
 using WeInvest.WPF.Commands;
-using WeInvest.WPF.Commands.Builders;
 using WeInvest.WPF.Services;
+using WeInvest.WPF.State.Accounts;
+using WeInvest.WPF.State.Investors;
 using WeInvest.WPF.ViewModels;
 using WeInvest.WPF.ViewModels.Dialogs;
 using WeInvest.WPF.Views;
@@ -23,14 +24,18 @@ namespace WeInvest.WPF.Utilities {
             IServiceCollection services = new ServiceCollection();
 
             // Views
-            services.AddScoped<MainWindow>(s => new MainWindow() { DataContext = s.GetRequiredService<MainWindowViewModel>() });
+            services.AddScoped<MainWindow>(s => new MainWindow() { DataContext = s.GetRequiredService<MainViewModel>() });
             services.AddTransient<DepositDialog>();
             services.AddTransient<InvestorDialog>();
 
             // ViewModels
-            services.AddScoped<MainWindowViewModel>();
+            services.AddScoped<MainViewModel>();
             services.AddScoped<DepositDialogViewModel>();
             services.AddScoped<InvestorDialogViewModel>();
+
+            // State
+            services.AddSingleton<IInvestorsStore, InvestorsStore>();
+            services.AddSingleton<IAccountsStore, AccountsStore>();
 
             // Converters
             services.AddSingleton<IListStringConverter, ListStringConverter>();
@@ -38,8 +43,8 @@ namespace WeInvest.WPF.Utilities {
             services.AddSingleton<IDictionaryStringConverter, DictionaryStringConverter>();
 
             // Services
-            services.AddSingleton<IDialogService<DepositDialog, DepositDialogViewModel>, DialogService<DepositDialog, DepositDialogViewModel>>();
-            services.AddSingleton<IDialogService<InvestorDialog, InvestorDialogViewModel>, DialogService<InvestorDialog, InvestorDialogViewModel>>();
+            services.AddTransient<IDialogService<DepositDialog, DepositDialogViewModel>, DialogService<DepositDialog, DepositDialogViewModel>>();
+            services.AddTransient<IDialogService<InvestorDialog, InvestorDialogViewModel>, DialogService<InvestorDialog, InvestorDialogViewModel>>();
             services.AddSingleton<ITransactionService, TransactionService>();
             services.AddSingleton<IQueryService, DapperQueryService>();
 
@@ -49,13 +54,12 @@ namespace WeInvest.WPF.Utilities {
 
             // Factories
             services.AddSingleton<IFactory<Investor>, InvestorFactory>();
-            services.AddSingleton<IFactory<InvestorGroup>, InvestorGroupFactory>();
             services.AddSingleton<IFactory<Account>, AccountFactory>();
             services.AddSingleton<IFactory<IDbConnection>, SQLiteConnectionFactory>();
 
-            // Builder
-            services.AddSingleton<IBuilder<DepositCommand>, DepositCommandBuilder>();
-            services.AddSingleton<IBuilder<AddInvestorCommand>, AddInvestorCommandBuilder>();
+            // Commands
+            services.AddScoped<AddInvestorCommand>();
+            services.AddScoped<DepositCommand>();
 
             return services.BuildServiceProvider();
         }

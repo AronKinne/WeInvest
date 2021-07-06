@@ -43,30 +43,9 @@
         <ContentPresenter Content="{Binding MainAccountPieViewModel}" Grid.Row="1" Grid.RowSpan="2" Margin="25,25,25,0"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-            <StackPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="FontSize" Value="12"/>
-                    <Setter Property="Padding" Value="15,4"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="Margin" Value="15,0"/>
-                    <Setter Property="Background" Value="{StaticResource PrimaryBrush1}"/>
-                    <Setter Property="FontFamily" Value="{StaticResource Font}"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border Width="100" Height="30" CornerRadius="12" Background="{TemplateBinding Background}">
-                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="Foreground" Value="White"/>
-                </Style>
-            </StackPanel.Resources>
-
-            <Button Content="Deposit" Command="{Binding DepositCommand}"/>
-            <Button Content="Add Investment" Grid.Column="1"/>
-            <Button Content="Withdraw" Grid.Column="2"/>
+            <Button Content="Deposit" Style="{StaticResource PrimaryButton}" Command="{Binding DepositCommand}"/>
+            <Button Content="Add Investment" Style="{StaticResource PrimaryButton}" Grid.Column="1" Margin="30,0"/>
+            <Button Content="Withdraw" Style="{StaticResource PrimaryButton}" Grid.Column="2"/>
         </StackPanel>
 
         <ContentPresenter Content="{Binding MainAccountAreaViewModel}" Grid.Column="1" Grid.Row="1" Margin="0,25"/>

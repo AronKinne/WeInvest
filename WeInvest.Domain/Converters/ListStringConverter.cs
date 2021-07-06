@@ -24,10 +24,10 @@ namespace WeInvest.Domain.Converters {
                 return new List<T>();
 
             string[] tokens = value.Split(Separator);
-            T[] items = new T[tokens.Length];
+            List<T> items = new List<T>();
 
-            for(int i = 0; i < tokens.Length; i++) {
-                items[i] = (T)Convert.ChangeType(tokens[i], typeof(T));
+            foreach(var token in tokens) {
+                items.Add((T)Convert.ChangeType(token, typeof(T)));
             }
 
             return items;

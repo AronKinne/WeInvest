@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using WeInvest.Domain.Converters;
 using WeInvest.Domain.Services;
 
@@ -60,10 +59,5 @@ namespace WeInvest.Domain.Models {
 
             ShareByInvestor.Add(investor, balance);
         }
-
-        public IList<KeyValuePair<Investor, float>> ToList() {
-            return ShareByInvestor.ToList();
-        }
-
     }
 }

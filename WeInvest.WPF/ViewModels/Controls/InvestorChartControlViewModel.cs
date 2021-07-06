@@ -1,32 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using WeInvest.Domain.Models;
 using WeInvest.WPF.Controls.Charts.Data;
+using WeInvest.WPF.State.Investors;
 
 namespace WeInvest.WPF.ViewModels.Controls {
-    public class InvestorChartControlViewModel : INotifyPropertyChanged {
+    public class InvestorChartControlViewModel : ViewModelBase {
 
-        #region INotifyPropertyChanged members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string name = null) {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
-        #endregion
-
-        public InvestorGroup InvestorGroup { get; set; }
+        public IInvestorsStore InvestorsStore { get; }
 
         public IList<InvestorData> DataSeries {
             get {
-                if(InvestorGroup == null)
+                if(InvestorsStore.CurrentInvestors == null)
                     return null;
 
                 var output = new ObservableCollection<InvestorData>();
 
-                foreach(var investor in InvestorGroup.Investors) {
+                foreach(var investor in InvestorsStore.CurrentInvestors) {
                     var shareData = new ObservableCollection<OrderedLineData>();
 
                     for(int i = 0; i < investor.ShareHistory.Count; i++) {
@@ -40,14 +30,13 @@ namespace WeInvest.WPF.ViewModels.Controls {
             }
         }
 
-        public InvestorChartControlViewModel(InvestorGroup investorGroup) {
-            this.InvestorGroup = investorGroup;
-            InvestorGroup.PropertyChanged += OnInvestorGroupPropertyChanged;
+        public InvestorChartControlViewModel(IInvestorsStore investorsStore) {
+            InvestorsStore = investorsStore;
+            InvestorsStore.StateChanged += InvestorsStore_StateChanged;
         }
 
-        private void OnInvestorGroupPropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if(e.PropertyName == nameof(InvestorGroup.Investors))
-                OnPropertyChanged(nameof(DataSeries));
+        private void InvestorsStore_StateChanged(object sender, System.EventArgs e) {
+            OnPropertyChanged(nameof(DataSeries));
         }
 
         public class InvestorData {

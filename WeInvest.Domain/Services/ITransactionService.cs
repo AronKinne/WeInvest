@@ -1,9 +1,10 @@
-﻿using WeInvest.Domain.Models;
+﻿using System.Threading.Tasks;
+using WeInvest.Domain.Models;
 
 namespace WeInvest.Domain.Services {
     public interface ITransactionService {
 
-        void Deposit(Investor investor, float amount);
+        Task<Investor> DepositAsync(Investor investor, float amount);
 
     }
 }

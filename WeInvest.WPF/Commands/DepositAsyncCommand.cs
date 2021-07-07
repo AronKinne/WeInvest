@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Windows.Input;
+using System.Threading.Tasks;
 using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
 using WeInvest.Domain.Services;
@@ -10,7 +10,7 @@ using WeInvest.WPF.ViewModels.Dialogs;
 using WeInvest.WPF.Views.Dialogs;
 
 namespace WeInvest.WPF.Commands {
-    public class DepositCommand : ICommand {
+    public class DepositAsyncCommand : AsyncCommandBase {
 
         private readonly IInvestorsStore _investorsStore;
         private readonly IAccountsStore _accountsStore;
@@ -19,7 +19,7 @@ namespace WeInvest.WPF.Commands {
         private readonly IFactory<Account> _accountFactory;
         private readonly IDataAccess<Account> _accountDataAccess;
 
-        public DepositCommand(IInvestorsStore investorsStore, DialogServiceFactory<DepositDialog, DepositDialogViewModel> dialogServiceFactory, IAccountsStore accountsStore, ITransactionService transactionService, IFactory<Account> accountFactory, IDataAccess<Account> accountDataAccess) {
+        public DepositAsyncCommand(IInvestorsStore investorsStore, IAccountsStore accountsStore, DialogServiceFactory<DepositDialog, DepositDialogViewModel> dialogServiceFactory, ITransactionService transactionService, IFactory<Account> accountFactory, IDataAccess<Account> accountDataAccess) {
             _investorsStore = investorsStore;
             _accountsStore = accountsStore;
             _dialogServiceFactory = dialogServiceFactory;
@@ -28,13 +28,7 @@ namespace WeInvest.WPF.Commands {
             _accountDataAccess = accountDataAccess;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter) {
-            return true;
-        }
-
-        public async void Execute(object parameter) {
+        protected override async Task ExecuteAsync(object parameter) {
             var dialogService = _dialogServiceFactory.CreateAndInitialize();
             if(dialogService.ShowDialog() == true) {
 
@@ -45,12 +39,12 @@ namespace WeInvest.WPF.Commands {
             var randomIndex = random.Next(_investorsStore.CurrentInvestors.Count);
             var selectedInvestor = _investorsStore.CurrentInvestors[randomIndex];
             var amount = random.Next(20, 50);
-            var updatedInvestor = await _transactionService.DepositAsync(selectedInvestor, amount);
+            var updatedInvestor = await Task.Run(() => _transactionService.DepositAsync(selectedInvestor, amount));
             _investorsStore.CurrentInvestors[randomIndex] = updatedInvestor;
 
             var account = _accountFactory.Create();
             account.AddOwners(_investorsStore.CurrentInvestors);
-            var dbAccount = await _accountDataAccess.CreateAsync(account);
+            var dbAccount = await Task.Run(() => _accountDataAccess.CreateAsync(account));
             _accountsStore.CurrentAccounts.Add(dbAccount);
         }
     }

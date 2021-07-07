@@ -60,8 +60,8 @@ namespace WeInvest.WPF.Utilities {
             services.AddSingleton<IFactory<IDbConnection>, SQLiteConnectionFactory>();
 
             // Commands
-            services.AddScoped<AddInvestorCommand>();
-            services.AddScoped<DepositCommand>();
+            services.AddScoped<AddInvestorAsyncCommand>();
+            services.AddScoped<DepositAsyncCommand>();
 
             return services.BuildServiceProvider();
         }

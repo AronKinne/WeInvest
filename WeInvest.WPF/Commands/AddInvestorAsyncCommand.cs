@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Threading.Tasks;
 using WeInvest.Domain.Factories;
 using WeInvest.Domain.Models;
 using WeInvest.Domain.Services;
@@ -10,7 +9,7 @@ using WeInvest.WPF.ViewModels.Dialogs;
 using WeInvest.WPF.Views.Dialogs;
 
 namespace WeInvest.WPF.Commands {
-    public class AddInvestorCommand : ICommand {
+    public class AddInvestorAsyncCommand : AsyncCommandBase {
 
         private readonly IInvestorsStore _investorsStore;
         private readonly DialogServiceFactory<InvestorDialog, InvestorDialogViewModel> _dialogServiceFactory;
@@ -19,9 +18,7 @@ namespace WeInvest.WPF.Commands {
         private readonly IAccountsStore _accountsStore;
         private readonly IDataAccess<Account> _accountDataAccess;
 
-        public event EventHandler CanExecuteChanged;
-
-        public AddInvestorCommand(IInvestorsStore investorsStore, DialogServiceFactory<InvestorDialog, InvestorDialogViewModel> dialogServiceFactory, IFactory<Investor> investorFactory, IDataAccess<Investor> investorDataAccess, IAccountsStore accountsStore, IDataAccess<Account> accountDataAccess) {
+        public AddInvestorAsyncCommand(IInvestorsStore investorsStore, DialogServiceFactory<InvestorDialog, InvestorDialogViewModel> dialogServiceFactory, IFactory<Investor> investorFactory, IDataAccess<Investor> investorDataAccess, IAccountsStore accountsStore, IDataAccess<Account> accountDataAccess) {
             _investorsStore = investorsStore;
             _dialogServiceFactory = dialogServiceFactory;
             _investorFactory = investorFactory;
@@ -30,11 +27,7 @@ namespace WeInvest.WPF.Commands {
             _accountDataAccess = accountDataAccess;
         }
 
-        public bool CanExecute(object parameter) {
-            return true;
-        }
-
-        public async void Execute(object parameter) {
+        protected override async Task ExecuteAsync(object parameter) {
             var dialogService = _dialogServiceFactory.CreateAndInitialize();
             if(dialogService.ShowDialog() == true) {
                 var viewModel = dialogService.ViewModel;
@@ -43,12 +36,12 @@ namespace WeInvest.WPF.Commands {
                 investor.Name = viewModel.InvestorName;
                 investor.Brush = viewModel.InvestorBrush;
 
-                var dbInvestor = await _investorDataAccess.CreateAsync(investor);
+                var dbInvestor = await Task.Run(() => _investorDataAccess.CreateAsync(investor));
                 _investorsStore.CurrentInvestors.Add(dbInvestor);
 
                 foreach(var account in _accountsStore.CurrentAccounts) {
                     account.AddOwner(dbInvestor, 0);
-                    await _accountDataAccess.UpdateAsync(account.Id, account);
+                    await Task.Run(() => _accountDataAccess.UpdateAsync(account.Id, account));
                 }
             }
         }

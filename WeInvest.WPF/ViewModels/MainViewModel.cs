@@ -19,12 +19,12 @@ namespace WeInvest.WPF.ViewModels {
         public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; set; }
         public InvestorChartControlViewModel InvestorChartViewModel { get; set; }
 
-        public MainViewModel(IInvestorsStore investorsStore, IAccountsStore accountsStore, DepositCommand depositCommand, AddInvestorCommand addInvestorCommand) {
+        public MainViewModel(IInvestorsStore investorsStore, IAccountsStore accountsStore, DepositAsyncCommand depositCommand, AddInvestorAsyncCommand addInvestorAsyncCommand) {
             _investorsStore = investorsStore;
             _investorsStore.StateChanged += _investorsStore_StateChanged;
 
             DepositCommand = depositCommand;
-            AddInvestorCommand = addInvestorCommand;
+            AddInvestorCommand = addInvestorAsyncCommand;
 
             MainAccountPieViewModel = new MainAccountPieControlViewModel(accountsStore);
             MainAccountAreaViewModel = new MainAccountAreaControlViewModel(_investorsStore, accountsStore) { AreaOpacity = 1 };

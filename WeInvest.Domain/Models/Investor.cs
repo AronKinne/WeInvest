@@ -39,6 +39,5 @@ namespace WeInvest.Domain.Models {
             return output;
         }
 
-
     }
 }

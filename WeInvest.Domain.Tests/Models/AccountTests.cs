@@ -42,8 +42,8 @@ namespace WeInvest.Domain.Tests.Models {
             float amount1 = 10;
             float amount2 = 20;
 
-            _investorList[0].Deposit(amount1);
-            _investorList[1].Deposit(amount2);
+            _investorList[0].ShareHistory = new List<float>() { amount1 };
+            _investorList[1].ShareHistory = new List<float>() { amount2 };
 
             var mockDictionaryStringConverter = new Mock<IDictionaryStringConverter>();
             mockDictionaryStringConverter
@@ -67,8 +67,8 @@ namespace WeInvest.Domain.Tests.Models {
         public void ShareByInvestorString_Set_ShouldSetShareByInvestorDictionary() {
             var amounts = new float[] { 10, 20 };
 
-            _investorList[0].Deposit(amounts[0]);
-            _investorList[1].Deposit(amounts[1]);
+            _investorList[0].ShareHistory = new List<float>() { amounts[0] };
+            _investorList[1].ShareHistory = new List<float>() { amounts[1] };
 
             string stringValue = $"0|{amounts[0]} 1|{amounts[1]}";
             
@@ -110,8 +110,8 @@ namespace WeInvest.Domain.Tests.Models {
             float amount1 = 10;
             float amount2 = 20;
 
-            _investorList[0].Deposit(amount1);
-            _investorList[1].Deposit(amount2);
+            _investorList[0].ShareHistory = new List<float>() { amount1 };
+            _investorList[1].ShareHistory = new List<float>() { amount2 };
 
             _emptyAccount.AddOwners(_investorList);
 
@@ -145,25 +145,6 @@ namespace WeInvest.Domain.Tests.Models {
 
             Assert.That(_emptyAccount.ShareByInvestor.Count, Is.EqualTo(1));
             Assert.That(_emptyAccount.ShareByInvestor[_investorTester], Is.EqualTo(balance));
-        }
-
-        [Test]
-        public void ToList_WithValidInput_ShouldReturnKeyValuePairList() {
-            _investor1.Deposit(10);
-            _investor2.Deposit(20);
-
-            var expected = new List<KeyValuePair<Investor, float>>();
-            expected.Add(new KeyValuePair<Investor, float>(_investor1, _investor1.Share));
-            expected.Add(new KeyValuePair<Investor, float>(_investor2, _investor2.Share));
-
-            _emptyAccount.AddOwners(new List<Investor>() {
-                _investor1,
-                _investor2
-            });
-
-            var actual = _emptyAccount.ToList();
-
-            Assert.That(actual, Is.EqualTo(expected));
         }
 
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows.Media;
 
 namespace WeInvest.WPF.Utilities {
@@ -14,16 +12,6 @@ namespace WeInvest.WPF.Utilities {
             get {
                 return typeof(Brushes).GetProperties().Select(p => p.GetValue(null) as Brush).ToArray();
             } 
-        }
-
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public static async void FireAndForget(this Task task) {
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-            try {
-                await task;
-            } catch(Exception e) {
-                Console.WriteLine(e.StackTrace);
-            }
         }
 
     }

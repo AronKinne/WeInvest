@@ -35,8 +35,7 @@ namespace WeInvest.Domain.Tests.Models {
 
             var investor = new Investor(mockListStringConverter.Object, _mockBrushStringConverter.Object);
 
-            investor.Deposit(amounts[0]);
-            investor.Deposit(amounts[1]);
+            investor.ShareHistory = new List<float>() { amounts[0], amounts[0] + amounts[1] };
 
             Assert.That(investor.ShareHistoryString, Is.EqualTo(expected));
 
@@ -103,28 +102,6 @@ namespace WeInvest.Domain.Tests.Models {
         }
 
         [Test]
-        public void Deposit_FirstTime_ShouldReplaceFirstShareHistoryValue() {
-            float amount = 10;
-
-            _emptyInvestor.Deposit(amount);
-
-            Assert.That(_emptyInvestor.ShareHistory.Count, Is.EqualTo(1));
-            Assert.That(_emptyInvestor.ShareHistory[0], Is.EqualTo(amount));
-        }
-
-        [Test]
-        public void Deposit_SecondTime_ShouldAddUp() {
-            float amount1 = 10;
-            float amount2 = 20;
-
-            _emptyInvestor.Deposit(amount1);
-            _emptyInvestor.Deposit(amount2);
-
-            Assert.That(_emptyInvestor.ShareHistory.Count, Is.EqualTo(2));
-            Assert.That(_emptyInvestor.ShareHistory[1], Is.EqualTo(amount1 + amount2));
-        }
-
-        [Test]
         public void Share_NoDeposit_ShouldReturnZero() {
             Assert.That(_emptyInvestor.Share, Is.EqualTo(0));
         }
@@ -134,8 +111,7 @@ namespace WeInvest.Domain.Tests.Models {
             float amount1 = 10;
             float amount2 = 20;
 
-            _emptyInvestor.Deposit(amount1);
-            _emptyInvestor.Deposit(amount2);
+            _emptyInvestor.ShareHistory = new List<float>() { amount1, amount1 + amount2 };
 
             Assert.That(_emptyInvestor.Share, Is.EqualTo(amount1 + amount2));
         }
@@ -147,8 +123,7 @@ namespace WeInvest.Domain.Tests.Models {
             float amount2 = 20;
             string expected = $"{name} ({amount1}, {amount1 + amount2})";
 
-            _emptyInvestor.Deposit(amount1);
-            _emptyInvestor.Deposit(amount2);
+            _emptyInvestor.ShareHistory = new List<float>() { amount1, amount1 + amount2 };
             string actual = _emptyInvestor.ToString();
 
             Assert.That(actual, Is.EqualTo(expected));

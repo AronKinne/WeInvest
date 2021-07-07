@@ -24,9 +24,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Grid Background="{StaticResource PrimaryBrush1}"
-            Grid.ColumnSpan="2">
-
+        <Grid Background="{StaticResource PrimaryBrush1}" Grid.ColumnSpan="2">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -62,27 +60,27 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
-                
             </Grid.RowDefinitions>
-
 
             <Label Content="Investor:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Label Content="Amount:" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-            <TextBox Style="{StaticResource PrimaryTextBox}"
-                     Grid.Column="1"
-                     Margin="0,0,10,0"/>
+            <ComboBox ItemsSource="{Binding InvestorPool}"
+                      SelectedItem="{Binding SelectedInvestor}"
+                      DisplayMemberPath="Name"
+                      VerticalAlignment="Center"
+                      Grid.Column="1"
+                      Margin="0,0,10,0"/>
 
             <TextBox Style="{StaticResource PrimaryTextBox}"
+                     Text="{Binding Amount, StringFormat=C, ConverterCulture=de_DE}"
                      Grid.Column="1" Grid.Row="1"
                      Margin="0,0,10,0"/>
-
-
-
         </Grid>
 
         <Button Content="Apply"
                 Style="{StaticResource PrimaryButton}"
+                Command="{Binding OkayButtonCommand}"
                 Grid.Row="2"/>
 
         <Button Content="Cancel"

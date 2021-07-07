@@ -31,21 +31,18 @@ namespace WeInvest.WPF.Commands {
         protected override async Task ExecuteAsync(object parameter) {
             var dialogService = _dialogServiceFactory.CreateAndInitialize();
             if(dialogService.ShowDialog() == true) {
+                var viewModel = dialogService.ViewModel;
 
+                var selectedInvestor = viewModel.SelectedInvestor;
+                var amount = viewModel.Amount;
+                var updatedInvestor = await Task.Run(() => _transactionService.DepositAsync(selectedInvestor, amount));
+                _investorsStore.CurrentInvestors[_investorsStore.CurrentInvestors.IndexOf(selectedInvestor)] = updatedInvestor;
+
+                var account = _accountFactory.Create();
+                account.AddOwners(_investorsStore.CurrentInvestors);
+                var dbAccount = await Task.Run(() => _accountDataAccess.CreateAsync(account));
+                _accountsStore.CurrentAccounts.Add(dbAccount);
             }
-
-            Random random = new Random();
-
-            var randomIndex = random.Next(_investorsStore.CurrentInvestors.Count);
-            var selectedInvestor = _investorsStore.CurrentInvestors[randomIndex];
-            var amount = random.Next(20, 50);
-            var updatedInvestor = await Task.Run(() => _transactionService.DepositAsync(selectedInvestor, amount));
-            _investorsStore.CurrentInvestors[randomIndex] = updatedInvestor;
-
-            var account = _accountFactory.Create();
-            account.AddOwners(_investorsStore.CurrentInvestors);
-            var dbAccount = await Task.Run(() => _accountDataAccess.CreateAsync(account));
-            _accountsStore.CurrentAccounts.Add(dbAccount);
         }
     }
 }

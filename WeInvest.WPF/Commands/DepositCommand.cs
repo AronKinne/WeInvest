@@ -14,15 +14,15 @@ namespace WeInvest.WPF.Commands {
 
         private readonly IInvestorsStore _investorsStore;
         private readonly IAccountsStore _accountsStore;
-        private readonly IDialogService<DepositDialog, DepositDialogViewModel> _dialogService;
+        private readonly DialogServiceFactory<DepositDialog, DepositDialogViewModel> _dialogServiceFactory;
         private readonly ITransactionService _transactionService;
         private readonly IFactory<Account> _accountFactory;
         private readonly IDataAccess<Account> _accountDataAccess;
 
-        public DepositCommand(IInvestorsStore investorsStore, IAccountsStore accountsStore, IDialogService<DepositDialog, DepositDialogViewModel> dialogService, ITransactionService transactionService, IFactory<Account> accountFactory, IDataAccess<Account> accountDataAccess) {
+        public DepositCommand(IInvestorsStore investorsStore, DialogServiceFactory<DepositDialog, DepositDialogViewModel> dialogServiceFactory, IAccountsStore accountsStore, ITransactionService transactionService, IFactory<Account> accountFactory, IDataAccess<Account> accountDataAccess) {
             _investorsStore = investorsStore;
             _accountsStore = accountsStore;
-            _dialogService = dialogService;
+            _dialogServiceFactory = dialogServiceFactory;
             _transactionService = transactionService;
             _accountFactory = accountFactory;
             _accountDataAccess = accountDataAccess;
@@ -35,9 +35,10 @@ namespace WeInvest.WPF.Commands {
         }
 
         public async void Execute(object parameter) {
-            //if(_dialogService.ShowDialog() == true) {
+            var dialogService = _dialogServiceFactory.CreateAndInitialize();
+            if(dialogService.ShowDialog() == true) {
 
-            //}
+            }
 
             Random random = new Random();
 

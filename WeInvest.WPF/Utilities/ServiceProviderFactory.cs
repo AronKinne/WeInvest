@@ -14,8 +14,10 @@ using WeInvest.WPF.State.Accounts;
 using WeInvest.WPF.State.Investors;
 using WeInvest.WPF.ViewModels;
 using WeInvest.WPF.ViewModels.Dialogs;
+using WeInvest.WPF.ViewModels.Dialogs.Factories;
 using WeInvest.WPF.Views;
 using WeInvest.WPF.Views.Dialogs;
+using WeInvest.WPF.Views.Dialogs.Factories;
 
 namespace WeInvest.WPF.Utilities {
     public static class ServiceProviderFactory {
@@ -25,13 +27,13 @@ namespace WeInvest.WPF.Utilities {
 
             // Views
             services.AddScoped<MainWindow>(s => new MainWindow() { DataContext = s.GetRequiredService<MainViewModel>() });
-            services.AddTransient<DepositDialog>();
-            services.AddTransient<InvestorDialog>();
+            services.AddSingleton<IFactory<InvestorDialog>, InvestorDialogFactory>();
+            services.AddSingleton<IFactory<DepositDialog>, DepositDialogFactory>();
 
             // ViewModels
             services.AddScoped<MainViewModel>();
-            services.AddScoped<DepositDialogViewModel>();
-            services.AddScoped<InvestorDialogViewModel>();
+            services.AddSingleton<IFactory<InvestorDialogViewModel>, InvestorDialogViewModelFactory>();
+            services.AddSingleton<IFactory<DepositDialogViewModel>, DepositDialogViewModelFactory>();
 
             // State
             services.AddSingleton<IInvestorsStore, InvestorsStore>();
@@ -43,8 +45,8 @@ namespace WeInvest.WPF.Utilities {
             services.AddSingleton<IDictionaryStringConverter, DictionaryStringConverter>();
 
             // Services
-            services.AddTransient<IDialogService<DepositDialog, DepositDialogViewModel>, DialogService<DepositDialog, DepositDialogViewModel>>();
-            services.AddTransient<IDialogService<InvestorDialog, InvestorDialogViewModel>, DialogService<InvestorDialog, InvestorDialogViewModel>>();
+            services.AddSingleton<DialogServiceFactory<InvestorDialog, InvestorDialogViewModel>>();
+            services.AddSingleton<DialogServiceFactory<DepositDialog, DepositDialogViewModel>>();
             services.AddSingleton<ITransactionService, TransactionService>();
             services.AddSingleton<IQueryService, DapperQueryService>();
 

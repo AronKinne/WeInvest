@@ -3,7 +3,7 @@ using System.Windows.Input;
 using WeInvest.WPF.Commands;
 
 namespace WeInvest.WPF.ViewModels.Dialogs {
-    public abstract class DialogViewModelBase {
+    public abstract class DialogViewModelBase : ViewModelBase {
 
         public event EventHandler RequestCloseDialog;
 

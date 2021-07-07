@@ -3,8 +3,8 @@ using WeInvest.WPF.ViewModels.Dialogs;
 
 namespace WeInvest.WPF.Services {
     public class DialogService<TDialog, TViewModel> : IDialogService<TDialog, TViewModel>
-        where TDialog : Window, new()
-        where TViewModel : DialogViewModelBase, new() {
+        where TDialog : Window
+        where TViewModel : DialogViewModelBase {
 
         public TDialog Dialog { get; set; }
         public TViewModel ViewModel { get; set; }
@@ -12,8 +12,6 @@ namespace WeInvest.WPF.Services {
         public DialogService(TDialog dialog, TViewModel viewModel) {
             Dialog = dialog;
             ViewModel = viewModel;
-
-            Initialize();
         }
 
         public void Initialize() {

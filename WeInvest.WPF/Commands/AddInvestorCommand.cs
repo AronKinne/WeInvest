@@ -13,7 +13,7 @@ namespace WeInvest.WPF.Commands {
     public class AddInvestorCommand : ICommand {
 
         private readonly IInvestorsStore _investorsStore;
-        private readonly IDialogService<InvestorDialog, InvestorDialogViewModel> _investorDialogService;
+        private readonly DialogServiceFactory<InvestorDialog, InvestorDialogViewModel> _dialogServiceFactory;
         private readonly IFactory<Investor> _investorFactory;
         private readonly IDataAccess<Investor> _investorDataAccess;
         private readonly IAccountsStore _accountsStore;
@@ -21,9 +21,9 @@ namespace WeInvest.WPF.Commands {
 
         public event EventHandler CanExecuteChanged;
 
-        public AddInvestorCommand(IInvestorsStore investorsStore, IDialogService<InvestorDialog, InvestorDialogViewModel> investorDialogService, IFactory<Investor> investorFactory, IDataAccess<Investor> investorDataAccess, IAccountsStore accountsStore, IDataAccess<Account> accountDataAccess) {
+        public AddInvestorCommand(IInvestorsStore investorsStore, DialogServiceFactory<InvestorDialog, InvestorDialogViewModel> dialogServiceFactory, IFactory<Investor> investorFactory, IDataAccess<Investor> investorDataAccess, IAccountsStore accountsStore, IDataAccess<Account> accountDataAccess) {
             _investorsStore = investorsStore;
-            _investorDialogService = investorDialogService;
+            _dialogServiceFactory = dialogServiceFactory;
             _investorFactory = investorFactory;
             _investorDataAccess = investorDataAccess;
             _accountsStore = accountsStore;
@@ -35,8 +35,9 @@ namespace WeInvest.WPF.Commands {
         }
 
         public async void Execute(object parameter) {
-            if(_investorDialogService.ShowDialog() == true) {
-                var viewModel = _investorDialogService.ViewModel;
+            var dialogService = _dialogServiceFactory.CreateAndInitialize();
+            if(dialogService.ShowDialog() == true) {
+                var viewModel = dialogService.ViewModel;
 
                 var investor = _investorFactory.Create();
                 investor.Name = viewModel.InvestorName;

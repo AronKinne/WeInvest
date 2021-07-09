@@ -24,13 +24,20 @@
                 <ContentPresenter Content="{TemplateBinding Content}" Grid.Row="1" Margin="30,20"/>
 
                 <Grid Grid.Row="2" Margin="50,0">
+                    <Grid.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                            <Setter Property="Margin" Value="0,0,0,20"/>
+                            <Setter Property="Width" Value="100"/>
+                        </Style>
+                    </Grid.Resources>
+                    
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Content="{Binding OkayButtonContent}" Style="{StaticResource PrimaryButton}" Command="{Binding OkayButtonCommand}" Margin="0,0,0,20"/>
-                    <Button Content="Cancel" Style="{StaticResource PrimaryButton}" Grid.Column="1" IsCancel="True" Margin="0,0,0,20"/>
+                    <Button Content="{Binding OkayButtonContent}" Command="{Binding OkayButtonCommand}"/>
+                    <Button Content="Cancel" Grid.Column="1" IsCancel="True"/>
                 </Grid>
             </Grid>
         </Border>

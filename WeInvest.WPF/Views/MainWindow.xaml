@@ -41,9 +41,16 @@
         <ContentPresenter Content="{Binding MainAccountPieViewModel}" Grid.Row="0" Grid.RowSpan="2" Margin="25,25,25,0"/>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Deposit" Style="{StaticResource PrimaryButton}" Command="{Binding DepositCommand}"/>
-            <Button Content="Add Investment" Style="{StaticResource PrimaryButton}" Grid.Column="1" Margin="30,0"/>
-            <Button Content="Withdraw" Style="{StaticResource PrimaryButton}" Grid.Column="2"/>
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                    <Setter Property="Width" Value="120"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </StackPanel.Resources>
+            
+            <Button Content="Deposit" Command="{Binding DepositCommand}"/>
+            <Button Content="Add Investment" Grid.Column="1" Margin="30,0"/>
+            <Button Content="Withdraw" Grid.Column="2"/>
         </StackPanel>
 
         <ContentPresenter Content="{Binding MainAccountAreaViewModel}" Grid.Column="1" Grid.Row="0" Margin="0,25"/>

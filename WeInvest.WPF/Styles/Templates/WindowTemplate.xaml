@@ -10,8 +10,21 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 
-                <controls:TitleBar Grid.Row="0"/>
-                
+                <controls:TitleBar x:Name="TitleBar"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Width" Value="{Binding ElementName=TitleBar, Path=ActualHeight}"/>
+                            <Setter Property="Height" Value="{Binding ElementName=TitleBar, Path=ActualHeight}"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <Button Content="_"/>
+                    <Button Content="X"/>
+                </StackPanel>
+
                 <ContentPresenter Content="{TemplateBinding Content}" Grid.Row="1"/>
             </Grid>
         </Border>

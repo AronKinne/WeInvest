@@ -1,0 +1,39 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:WeInvest.WPF.Views.Controls">
+
+    <ControlTemplate x:Key="DialogTemplate" TargetType="Window">
+        <Border Background="{StaticResource SecondaryBrush}" BorderThickness="2">
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="Width" Value="80"/>
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <controls:TitleBar Grid.Row="0"/>
+
+                <ContentPresenter Content="{TemplateBinding Content}" Grid.Row="1" Margin="30,20"/>
+
+                <Grid Grid.Row="2" Margin="50,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Content="{Binding OkayButtonContent}" Style="{StaticResource PrimaryButton}" Command="{Binding OkayButtonCommand}" Margin="0,0,0,20"/>
+                    <Button Content="Cancel" Style="{StaticResource PrimaryButton}" Grid.Column="1" IsCancel="True" Margin="0,0,0,20"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </ControlTemplate>
+
+</ResourceDictionary>

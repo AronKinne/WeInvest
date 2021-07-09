@@ -5,88 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WeInvest.WPF.Views.Dialogs"
         mc:Ignorable="d"
-        WindowStyle="None"
-        ResizeMode="NoResize"
-        Background="{StaticResource SecondaryBrush}"
-        WindowStartupLocation="CenterScreen"
-        BorderThickness="2"
-        Title="DepositDialog" Height="225" Width="600">
-        
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
-            <RowDefinition/>
-            <RowDefinition Height="60"/>
-        </Grid.RowDefinitions>
+        Title="Deposit"
+        Style="{StaticResource DialogStyle}"
+        Template="{StaticResource DialogTemplate}"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Height="100">
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Width" Value="150"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="{StaticResource PrimaryBrush1}"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontFamily" Value="{StaticResource Font}"/>
+            </Style>
+        </Grid.Resources>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Grid Background="{StaticResource PrimaryBrush1}" Grid.ColumnSpan="2">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        <Label Content="Investor:"/>
+        <Label Content="Amount:" Grid.Row="1"/>
 
-            <TextBlock Text="Deposit" 
-                       Foreground="White" 
-                       Grid.Column="0" 
-                       VerticalAlignment="Center" 
-                       FontFamily="dosis" 
-                       FontWeight="Medium"
-                       Margin="10,0,0,0"/>
-            
-        </Grid>
-        <Grid Grid.Row="1" Grid.ColumnSpan="2" Height="100" Margin="0,0,0,30">
+        <ComboBox ItemsSource="{Binding InvestorPool}"
+                  SelectedItem="{Binding SelectedInvestor}"
+                  DisplayMemberPath="Name"
+                  VerticalAlignment="Center"
+                  Grid.Column="1"/>
 
-            <Grid.Resources>
-                <Style TargetType="Label">
-                    <Setter Property="Foreground" Value="{StaticResource PrimaryBrush1}"/>
-                    <Setter Property="FontSize" Value="20"/>
-                    <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="FontFamily" Value="{StaticResource Font}"/>
-                </Style>
-            </Grid.Resources>
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <Label Content="Investor:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Label Content="Amount:" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-            <ComboBox ItemsSource="{Binding InvestorPool}"
-                      SelectedItem="{Binding SelectedInvestor}"
-                      DisplayMemberPath="Name"
-                      VerticalAlignment="Center"
-                      Grid.Column="1"
-                      Margin="0,0,10,0"/>
-
-            <TextBox Style="{StaticResource PrimaryTextBox}"
-                     Text="{Binding Amount, StringFormat=C, ConverterCulture=de_DE}"
-                     Grid.Column="1" Grid.Row="1"
-                     Margin="0,0,10,0"/>
-        </Grid>
-
-        <Button Content="Apply"
-                Style="{StaticResource PrimaryButton}"
-                Command="{Binding OkayButtonCommand}"
-                Grid.Row="2"/>
-
-        <Button Content="Cancel"
-                Style="{StaticResource PrimaryButton}"
-                IsCancel="True"
-                Grid.Column="1" Grid.Row="2"/>
-
+        <TextBox Style="{StaticResource PrimaryTextBox}"
+                 Text="{Binding Amount, StringFormat=C, ConverterCulture=de_DE}"
+                 Grid.Column="1" Grid.Row="1"/>
     </Grid>
 </Window>

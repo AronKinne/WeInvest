@@ -4,9 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WeInvest.WPF.Views.Controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Height="25" Background="{StaticResource PrimaryBrush0}">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseDown">
+                <i:InvokeCommandAction Command="{Binding DragCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        
         <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Title}"
                    FontFamily="{StaticResource Font}"
                    FontSize="16"

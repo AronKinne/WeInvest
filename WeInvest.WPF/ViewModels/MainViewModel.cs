@@ -7,7 +7,7 @@ using WeInvest.WPF.State.Investors;
 using WeInvest.WPF.ViewModels.Controls;
 
 namespace WeInvest.WPF.ViewModels {
-    public class MainViewModel : ViewModelBase {
+    public class MainViewModel : WindowViewModelBase {
 
         private readonly IInvestorsStore _investorsStore;
 
@@ -19,7 +19,7 @@ namespace WeInvest.WPF.ViewModels {
         public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; set; }
         public InvestorChartControlViewModel InvestorChartViewModel { get; set; }
 
-        public MainViewModel(IInvestorsStore investorsStore, IAccountsStore accountsStore, DepositAsyncCommand depositCommand, AddInvestorAsyncCommand addInvestorAsyncCommand) {
+        public MainViewModel(IInvestorsStore investorsStore, IAccountsStore accountsStore, DepositAsyncCommand depositCommand, AddInvestorAsyncCommand addInvestorAsyncCommand) : base() {
             _investorsStore = investorsStore;
             _investorsStore.StateChanged += _investorsStore_StateChanged;
 

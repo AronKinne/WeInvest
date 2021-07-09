@@ -21,8 +21,8 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <Button Content="_"/>
-                    <Button Content="X"/>
+                    <Button Content="_" Command="{Binding MinimizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    <Button Content="X" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
                 </StackPanel>
 
                 <ContentPresenter Content="{TemplateBinding Content}" Grid.Row="1"/>

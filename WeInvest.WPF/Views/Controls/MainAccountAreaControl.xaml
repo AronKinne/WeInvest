@@ -7,7 +7,7 @@
              xmlns:charts="clr-namespace:WeInvest.WPF.Controls.Charts"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="LightGoldenrodYellow">
+    <Grid Background="{StaticResource SecondaryBrush2}">
         <charts:AreaChart DataSeries="{Binding AreaDataSeries}"
                           OrderedBrushList="{Binding BrushList}"
                           Margin="20"/>

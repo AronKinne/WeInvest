@@ -13,6 +13,8 @@ namespace WeInvest.WPF.ViewModels.Dialogs {
 
         public DepositDialogViewModel(IInvestorsStore investorsStore) {
             _investorsStore = investorsStore;
+
+            OkayButtonContent = "Deposit";
         }
 
     }

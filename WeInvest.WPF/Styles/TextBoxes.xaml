@@ -2,14 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style x:Key="PrimaryTextBox" TargetType="TextBox">
-        <Setter Property="Background" Value="White"/>
+        <Setter Property="Background" Value="{StaticResource SecondaryBrush0}"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontFamily" Value="{StaticResource Font}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border HorizontalAlignment="Stretch" CornerRadius="12" Background="{TemplateBinding Background}" BorderBrush="DarkGray" BorderThickness="2">
+                    <Border HorizontalAlignment="Stretch" CornerRadius="12" Background="{TemplateBinding Background}" BorderBrush="{StaticResource SecondaryBrush3}" BorderThickness="2">
                         <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="3,0"/>
                     </Border>
                 </ControlTemplate>

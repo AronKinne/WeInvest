@@ -20,7 +20,7 @@
         <Label Content="Name:"
                FontSize="20"
                FontFamily="{StaticResource Font}"
-               Foreground="{StaticResource PrimaryBrush1}"
+               Foreground="{StaticResource PrimaryBrush0}"
                VerticalAlignment="Center"
                HorizontalAlignment="Center"
                FontWeight="Medium"/>

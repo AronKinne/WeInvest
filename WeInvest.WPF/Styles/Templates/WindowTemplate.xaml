@@ -3,7 +3,7 @@
                     xmlns:controls="clr-namespace:WeInvest.WPF.Views.Controls">
 
     <ControlTemplate x:Key="WindowTemplate" TargetType="Window">
-        <Border Background="{StaticResource SecondaryBrush}" BorderThickness="2">
+        <Border Background="{StaticResource SecondaryBrush1}" BorderBrush="{StaticResource SecondaryBrush4}" BorderThickness="2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

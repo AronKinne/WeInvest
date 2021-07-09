@@ -6,12 +6,12 @@
              xmlns:local="clr-namespace:WeInvest.WPF.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Height="25" Background="{StaticResource PrimaryBrush1}">
+    <Grid Height="25" Background="{StaticResource PrimaryBrush0}">
         <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Title}"
                    FontFamily="{StaticResource Font}"
                    FontSize="16"
                    Margin="5 0"
-                   Foreground="White"
+                   Foreground="{StaticResource SecondaryBrush0}"
                    VerticalAlignment="Center"
                    FontWeight="Medium"/>
     </Grid>

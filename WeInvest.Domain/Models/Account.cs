@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using WeInvest.Domain.Converters;
 using WeInvest.Domain.Services;
 
@@ -6,7 +8,7 @@ namespace WeInvest.Domain.Models {
     public class Account {
 
         private readonly IDictionaryStringConverter _dictionaryStringConverter;
-        private readonly IDataAccess<Investor> _investorService;
+        private readonly IDataAccess<Investor> _investorDataAccessService;
 
         public int Id { get; set; }
         public string ShareByInvestorString {
@@ -22,7 +24,7 @@ namespace WeInvest.Domain.Models {
 
                 var shareById = _dictionaryStringConverter.StringToDictionary<int, float>(value);
                 foreach(var entry in shareById) {
-                    var investor = _investorService.GetAsync(entry.Key).Result;
+                    var investor = _investorDataAccessService.GetAsync(entry.Key).Result;
                     ShareByInvestor.Add(investor, entry.Value);
                 }
             }
@@ -41,9 +43,9 @@ namespace WeInvest.Domain.Models {
             }
         }
 
-        public Account(IDictionaryStringConverter dictionaryStringConverter, IDataAccess<Investor> investorService) {
+        public Account(IDictionaryStringConverter dictionaryStringConverter, IDataAccess<Investor> investorDataAccess) {
             _dictionaryStringConverter = dictionaryStringConverter;
-            _investorService = investorService;
+            _investorDataAccessService = investorDataAccess;
         }
 
         public void AddOwners(IEnumerable<Investor> investors) {
@@ -58,6 +60,11 @@ namespace WeInvest.Domain.Models {
                 return;
 
             ShareByInvestor.Add(investor, balance);
+        }
+
+        public void RemoveOwner(int investorId) {
+            var investor = ShareByInvestor.Keys.Single(i => i.Id == investorId);
+            ShareByInvestor.Remove(investor);
         }
     }
 }

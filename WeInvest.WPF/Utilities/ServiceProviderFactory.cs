@@ -61,6 +61,7 @@ namespace WeInvest.WPF.Utilities {
 
             // Commands
             services.AddScoped<AddInvestorAsyncCommand>();
+            services.AddScoped<RemoveInvestorAsyncCommand>();
             services.AddScoped<DepositAsyncCommand>();
 
             return services.BuildServiceProvider();

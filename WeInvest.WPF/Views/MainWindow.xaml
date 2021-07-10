@@ -54,9 +54,21 @@
         </StackPanel>
 
         <ContentPresenter Content="{Binding MainAccountAreaViewModel}" Grid.Column="1" Grid.Row="0" Margin="0,25"/>
-        
-        <ListView Grid.Column="2" Grid.Row="0" ItemsSource="{Binding Investors}"
-                  Margin="25" BorderBrush="{StaticResource SecondaryBrush4}" BorderThickness="2">
+
+        <ListView Grid.Column="2"
+                  ItemsSource="{Binding Investors}"
+                  Margin="25"
+                  BorderBrush="{StaticResource SecondaryBrush4}"
+                  BorderThickness="2">
+            <ListView.Resources>
+                <ContextMenu x:Key="ItemContextMenu">
+                    <MenuItem Header="Edit"/>
+                    <MenuItem Header="Remove"
+                              Command="{Binding DataContext.RemoveInvestorCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                              CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListViewItem}}"/>
+                </ContextMenu>
+            </ListView.Resources>
+            
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Add..." Command="{Binding AddInvestorCommand}"/>
@@ -74,14 +86,7 @@
             
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
-                    <Setter Property="ContextMenu">
-                        <Setter.Value>
-                            <ContextMenu>
-                                <MenuItem Header="Edit"/>
-                                <MenuItem Header="Remove"/>
-                            </ContextMenu>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>

@@ -10,13 +10,17 @@ using WeInvest.Domain.Services;
 namespace WeInvest.Domain.Tests.Models {
     public class AccountTests {
 
-        private Account _emptyAccount;
+        private Mock<IDictionaryStringConverter> _mockDictionaryStringConverter;
+        private Mock<IDataAccess<Investor>> _mockInvestorDataAccess;
+        private Account _account;
         private Investor _investorTester, _investor1, _investor2;
         private IList<Investor> _investorList;
 
         [SetUp]
         public void SetUp() {
-            _emptyAccount = new Account(null, null);
+            _mockDictionaryStringConverter = new Mock<IDictionaryStringConverter>();
+            _mockInvestorDataAccess = new Mock<IDataAccess<Investor>>();
+            _account = new Account(_mockDictionaryStringConverter.Object, _mockInvestorDataAccess.Object);
 
             var mockBrushStringConverter = new Mock<IBrushStringConverter>();
             _investorTester = new Investor(null, mockBrushStringConverter.Object) {
@@ -25,12 +29,12 @@ namespace WeInvest.Domain.Tests.Models {
             };
             _investor1 = new Investor(null, mockBrushStringConverter.Object) {
                 Id = 0,
-                Name = "1",
+                Name = "Investor 1",
                 Brush = Brushes.Black
             };
             _investor2 = new Investor(null, mockBrushStringConverter.Object) {
                 Id = 1,
-                Name = "2",
+                Name = "Investor 2",
                 Brush = Brushes.White
             };
 
@@ -42,67 +46,58 @@ namespace WeInvest.Domain.Tests.Models {
             float amount1 = 10;
             float amount2 = 20;
 
-            _investorList[0].ShareHistory = new List<float>() { amount1 };
-            _investorList[1].ShareHistory = new List<float>() { amount2 };
+            DespositInvestorList(amount1, amount2);
 
-            var mockDictionaryStringConverter = new Mock<IDictionaryStringConverter>();
-            mockDictionaryStringConverter
+            _mockDictionaryStringConverter
                 .Setup(c => c.DictionaryToString<int, float>(new Dictionary<int, float>() {
                     { 0, amount1 },
                     { 1, amount2 }
                 }))
                 .Returns($"0|{amount1} 1|{amount2}");
 
-            var account = new Account(mockDictionaryStringConverter.Object, null);
-
-            account.AddOwners(_investorList);
+            _account.AddOwners(_investorList);
 
             var expected = $"0|{amount1} 1|{amount2}";
 
-            Assert.That(account.ShareByInvestorString, Is.EqualTo(expected));
-            mockDictionaryStringConverter.VerifyAll();
+            Assert.That(_account.ShareByInvestorString, Is.EqualTo(expected));
+            _mockDictionaryStringConverter.VerifyAll();
         }
 
         [Test]
         public void ShareByInvestorString_Set_ShouldSetShareByInvestorDictionary() {
             var amounts = new float[] { 10, 20 };
 
-            _investorList[0].ShareHistory = new List<float>() { amounts[0] };
-            _investorList[1].ShareHistory = new List<float>() { amounts[1] };
+            DespositInvestorList(amounts[0], amounts[1]);
 
             string stringValue = $"0|{amounts[0]} 1|{amounts[1]}";
             
-            var mockDictionaryStringConverter = new Mock<IDictionaryStringConverter>();
-            mockDictionaryStringConverter
+            _mockDictionaryStringConverter
                 .Setup(c => c.StringToDictionary<int, float>(stringValue))
                 .Returns(new Dictionary<int, float>() {
                     { 0, amounts[0] },
                     { 1, amounts[1] }
                 });
 
-            var mockInvestorService = new Mock<IDataAccess<Investor>>();
-            mockInvestorService
+            _mockInvestorDataAccess
                 .Setup(s => s.GetAsync(It.IsAny<int>()))
                 .Returns<int>(i => Task.FromResult(_investorList[i]));
 
-            var account = new Account(mockDictionaryStringConverter.Object, mockInvestorService.Object);
+            _account.ShareByInvestorString = stringValue;
 
-            account.ShareByInvestorString = stringValue;
-
-            for(int i = 0; i < account.ShareByInvestor.Count; i++) {
-                Assert.That(account.ShareByInvestor.ContainsKey(_investorList[i]));
-                Assert.That(account.ShareByInvestor[_investorList[i]], Is.EqualTo(amounts[i]));
+            for(int i = 0; i < _account.ShareByInvestor.Count; i++) {
+                Assert.That(_account.ShareByInvestor.ContainsKey(_investorList[i]));
+                Assert.That(_account.ShareByInvestor[_investorList[i]], Is.EqualTo(amounts[i]));
             }
 
-            mockDictionaryStringConverter.VerifyAll();
-            mockInvestorService.VerifyAll();
+            _mockDictionaryStringConverter.VerifyAll();
+            _mockInvestorDataAccess.VerifyAll();
         }
 
         [Test]
         public void Balance_WithShareByInvestorBeeingNull_ShouldReturnZero() {
-            _emptyAccount.ShareByInvestor = null;
+            _account.ShareByInvestor = null;
 
-            Assert.That(_emptyAccount.Balance, Is.EqualTo(0));
+            Assert.That(_account.Balance, Is.EqualTo(0));
         }
 
         [Test]
@@ -110,41 +105,66 @@ namespace WeInvest.Domain.Tests.Models {
             float amount1 = 10;
             float amount2 = 20;
 
-            _investorList[0].ShareHistory = new List<float>() { amount1 };
-            _investorList[1].ShareHistory = new List<float>() { amount2 };
+            DespositInvestorList(amount1, amount2);
 
-            _emptyAccount.AddOwners(_investorList);
+            _account.AddOwners(_investorList);
 
-            Assert.That(_emptyAccount.Balance, Is.EqualTo(amount1 + amount2));
+            Assert.That(_account.Balance, Is.EqualTo(amount1 + amount2));
         }
 
         [Test]
         public void AddOwners_ShouldAdd() {
-            Assert.That(_emptyAccount.ShareByInvestor.Count, Is.EqualTo(0));
+            Assert.That(_account.ShareByInvestor.Count, Is.EqualTo(0));
 
-            _emptyAccount.AddOwners(_investorList);
+            _account.AddOwners(_investorList);
 
-            Assert.That(_emptyAccount.ShareByInvestor.Count, Is.EqualTo(_investorList.Count));
+            Assert.That(_account.ShareByInvestor.Count, Is.EqualTo(_investorList.Count));
         }
 
         [Test]
         public void AddOwner_WithExistingInvestor_ShouldNotAdd() {
-            _emptyAccount.AddOwners(new List<Investor>() { _investorTester });
+            _account.AddOwners(new List<Investor>() { _investorTester });
 
-            _emptyAccount.AddOwner(_investorTester, 10);
+            _account.AddOwner(_investorTester, 10);
 
-            Assert.That(_emptyAccount.ShareByInvestor.Count, Is.EqualTo(1));
-            Assert.That(_emptyAccount.ShareByInvestor.ContainsKey(_investorTester));
+            Assert.That(_account.ShareByInvestor.Count, Is.EqualTo(1));
+            Assert.That(_account.ShareByInvestor.ContainsKey(_investorTester));
         }
 
         [Test]
         public void AddOwner_WithNewInvestor_ShouldAdd() {
             float balance = 10;
 
-            _emptyAccount.AddOwner(_investorTester, balance);
+            _account.AddOwner(_investorTester, balance);
 
-            Assert.That(_emptyAccount.ShareByInvestor.Count, Is.EqualTo(1));
-            Assert.That(_emptyAccount.ShareByInvestor[_investorTester], Is.EqualTo(balance));
+            Assert.That(_account.ShareByInvestor.Count, Is.EqualTo(1));
+            Assert.That(_account.ShareByInvestor[_investorTester], Is.EqualTo(balance));
+        }
+
+        [Test]
+        public void RemoveOwner_WithExistingInvester_ShouldRemove() {
+            float amount1 = 10;
+            float amount2 = 20;
+
+            DespositInvestorList(amount1, amount2);
+            _account.AddOwners(_investorList);
+
+            _mockDictionaryStringConverter
+                .Setup(c => c.DictionaryToString(new Dictionary<int, float>() {
+                    { _investorList[0].Id, amount1 }
+                }))
+                .Returns($"{_investorList[0].Id}|{amount1}");
+
+            _account.RemoveOwner(_investorList[1].Id);
+
+            Assert.That(_account.ShareByInvestor.Count, Is.EqualTo(1));
+            Assert.That(_account.ShareByInvestor[_investorList[0]], Is.EqualTo(amount1));
+            Assert.That(_account.ShareByInvestorString, Is.EqualTo($"{_investorList[0].Id}|{amount1}"));
+        }
+
+        private void DespositInvestorList(float amount1, float amount2) {
+            _investorList[0].ShareHistory = new List<float>() { amount1 };
+            _investorList[1].ShareHistory = new List<float>() { amount2 };
         }
 
     }

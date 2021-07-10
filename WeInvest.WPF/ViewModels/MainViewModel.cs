@@ -13,21 +13,23 @@ namespace WeInvest.WPF.ViewModels {
         private readonly IInvestorsStore _investorsStore;
 
         public ObservableCollection<Investor> Investors => _investorsStore.CurrentInvestors;
+        public ICommand MinimizeCommand { get; }
         public ICommand DepositCommand { get; }
         public ICommand AddInvestorCommand { get; }
-        public ICommand MinimizeCommand { get; }
+        public ICommand RemoveInvestorCommand { get; }
 
-        public MainAccountPieControlViewModel MainAccountPieViewModel { get; set; }
-        public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; set; }
-        public InvestorChartControlViewModel InvestorChartViewModel { get; set; }
+        public MainAccountPieControlViewModel MainAccountPieViewModel { get; }
+        public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; }
+        public InvestorChartControlViewModel InvestorChartViewModel { get; }
 
-        public MainViewModel(IInvestorsStore investorsStore, IAccountsStore accountsStore, DepositAsyncCommand depositCommand, AddInvestorAsyncCommand addInvestorAsyncCommand) : base() {
+        public MainViewModel(IInvestorsStore investorsStore, IAccountsStore accountsStore, DepositAsyncCommand depositAsyncCommand, AddInvestorAsyncCommand addInvestorAsyncCommand, RemoveInvestorAsyncCommand removeInvestorAsyncCommand) : base() {
             _investorsStore = investorsStore;
             _investorsStore.StateChanged += _investorsStore_StateChanged;
 
-            DepositCommand = depositCommand;
-            AddInvestorCommand = addInvestorAsyncCommand;
             MinimizeCommand = new RelayCommand(p => ((Window)p).WindowState = WindowState.Minimized);
+            DepositCommand = depositAsyncCommand;
+            AddInvestorCommand = addInvestorAsyncCommand;
+            RemoveInvestorCommand = removeInvestorAsyncCommand;
 
             MainAccountPieViewModel = new MainAccountPieControlViewModel(accountsStore);
             MainAccountAreaViewModel = new MainAccountAreaControlViewModel(_investorsStore, accountsStore) { AreaOpacity = 1 };

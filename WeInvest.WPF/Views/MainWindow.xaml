@@ -11,7 +11,7 @@
         Title="WeInvest"
         Height="720" Width="1280"
         Style="{StaticResource WindowStyle}"
-        Template="{StaticResource WindowTemplate}"
+        Template="{StaticResource MainWindowTemplate}"
         WindowStartupLocation="CenterScreen">
     
     <Grid>

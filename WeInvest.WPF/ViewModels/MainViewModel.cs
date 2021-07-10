@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using WeInvest.Domain.Models;
 using WeInvest.WPF.Commands;
@@ -14,6 +15,7 @@ namespace WeInvest.WPF.ViewModels {
         public ObservableCollection<Investor> Investors => _investorsStore.CurrentInvestors;
         public ICommand DepositCommand { get; }
         public ICommand AddInvestorCommand { get; }
+        public ICommand MinimizeCommand { get; }
 
         public MainAccountPieControlViewModel MainAccountPieViewModel { get; set; }
         public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; set; }
@@ -25,6 +27,7 @@ namespace WeInvest.WPF.ViewModels {
 
             DepositCommand = depositCommand;
             AddInvestorCommand = addInvestorAsyncCommand;
+            MinimizeCommand = new RelayCommand(p => ((Window)p).WindowState = WindowState.Minimized);
 
             MainAccountPieViewModel = new MainAccountPieControlViewModel(accountsStore);
             MainAccountAreaViewModel = new MainAccountAreaControlViewModel(_investorsStore, accountsStore) { AreaOpacity = 1 };

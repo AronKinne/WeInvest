@@ -11,7 +11,7 @@
                 <ResourceDictionary Source="Styles/TextBoxes.xaml"/>
                 <ResourceDictionary Source="Styles/Windows.xaml"/>
 
-                <ResourceDictionary Source="Styles/Templates/WindowTemplate.xaml"/>
+                <ResourceDictionary Source="Styles/Templates/MainWindowTemplate.xaml"/>
                 <ResourceDictionary Source="Styles/Templates/DialogTemplate.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

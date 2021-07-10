@@ -1,7 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Windows;
-using System.Windows.Input;
-using WeInvest.WPF.Commands;
 
 namespace WeInvest.WPF.ViewModels {
     public class ViewModelBase : INotifyPropertyChanged {
@@ -15,12 +12,6 @@ namespace WeInvest.WPF.ViewModels {
         }
 
         #endregion
-
-        public ICommand DragCommand { get; }
-
-        public ViewModelBase() {
-            DragCommand = new RelayCommand(p => ((Window)p).DragMove());
-        }
 
     }
 }

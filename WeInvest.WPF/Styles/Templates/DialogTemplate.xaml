@@ -19,7 +19,15 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <controls:TitleBar Grid.Row="0"/>
+                <controls:TitleBar x:Name="TitleBar"/>
+                <Button Content="X"
+                        Command="{Binding CloseCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                        Style="{StaticResource PrimaryButton}"
+                        HorizontalAlignment="Right"
+                        Padding="0"
+                        Width="{Binding ElementName=TitleBar, Path=ActualHeight}"
+                        Height="{Binding ElementName=TitleBar, Path=ActualHeight}"/>
 
                 <ContentPresenter Content="{TemplateBinding Content}" Grid.Row="1" Margin="30,20"/>
 

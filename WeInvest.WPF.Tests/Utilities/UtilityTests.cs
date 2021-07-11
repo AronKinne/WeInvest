@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
 using System.Windows.Media;
 using WeInvest.WPF.Utilities;
 
@@ -21,6 +22,16 @@ namespace WeInvest.WPF.Tests.Utilities {
 
             Assert.That(array.Length, Is.EqualTo(141));
             Assert.That(array[7], Is.EqualTo(Brushes.Black));
+        }
+
+        [TestCase(2, new double[] { 0, 1, 2, 3, 4, 5 }, 2)]
+        [TestCase(1.2, new double[] { 0, 1, 2, 3, 4, 5 }, 1)]
+        [TestCase(3.5, new double[] { 0, 1, 2, 3, 4, 5 }, 3)]
+        [TestCase(8, new double[] { 0, 1, 2, 3, 4, 5 }, 5)]
+        public void GetClosest_ShouldWork(double value, IEnumerable<double> numberPool, double expected) {
+            double actual = Utility.GetClosest(value, numberPool);
+
+            Assert.That(actual, Is.EqualTo(expected));
         }
     }
 }

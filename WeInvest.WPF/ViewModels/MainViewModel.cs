@@ -22,21 +22,21 @@ namespace WeInvest.WPF.ViewModels {
         public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; }
         public InvestorChartControlViewModel InvestorChartViewModel { get; }
 
-        public MainViewModel(IInvestorsStore investorsStore, IAccountsStore accountsStore, IDisplayedAccountStore displayedAccountStore, DepositAsyncCommand depositAsyncCommand, AddInvestorAsyncCommand addInvestorAsyncCommand, RemoveInvestorAsyncCommand removeInvestorAsyncCommand) : base() {
+        public MainViewModel(IInvestorsStore investorsStore, DepositAsyncCommand depositAsyncCommand, AddInvestorAsyncCommand addInvestorAsyncCommand, RemoveInvestorAsyncCommand removeInvestorAsyncCommand, MainAccountPieControlViewModel mainAccountPieViewModel, MainAccountAreaControlViewModel mainAccountAreaViewModel, InvestorChartControlViewModel investorChartViewModel) : base() {
             _investorsStore = investorsStore;
-            _investorsStore.StateChanged += _investorsStore_StateChanged;
+            _investorsStore.StateChanged += InvestorsStore_StateChanged;
 
             MinimizeCommand = new RelayCommand(p => ((Window)p).WindowState = WindowState.Minimized);
             DepositCommand = depositAsyncCommand;
             AddInvestorCommand = addInvestorAsyncCommand;
             RemoveInvestorCommand = removeInvestorAsyncCommand;
 
-            MainAccountPieViewModel = new MainAccountPieControlViewModel(accountsStore, displayedAccountStore);
-            MainAccountAreaViewModel = new MainAccountAreaControlViewModel(_investorsStore, accountsStore) { AreaOpacity = 1 };
-            InvestorChartViewModel = new InvestorChartControlViewModel(_investorsStore);
+            MainAccountPieViewModel = mainAccountPieViewModel;
+            MainAccountAreaViewModel = mainAccountAreaViewModel;
+            InvestorChartViewModel = investorChartViewModel;
         }
 
-        private void _investorsStore_StateChanged(object sender, System.EventArgs e) {
+        private void InvestorsStore_StateChanged(object sender, System.EventArgs e) {
             OnPropertyChanged(nameof(Investors));
         }
     }

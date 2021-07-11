@@ -13,6 +13,7 @@ using WeInvest.WPF.Services;
 using WeInvest.WPF.State.Accounts;
 using WeInvest.WPF.State.Investors;
 using WeInvest.WPF.ViewModels;
+using WeInvest.WPF.ViewModels.Controls;
 using WeInvest.WPF.ViewModels.Dialogs;
 using WeInvest.WPF.ViewModels.Dialogs.Factories;
 using WeInvest.WPF.Views;
@@ -32,6 +33,9 @@ namespace WeInvest.WPF.Utilities {
 
             // ViewModels
             services.AddScoped<MainViewModel>();
+            services.AddScoped<MainAccountPieControlViewModel>();
+            services.AddScoped<MainAccountAreaControlViewModel>();
+            services.AddScoped<InvestorChartControlViewModel>();
             services.AddSingleton<IFactory<InvestorDialogViewModel>, InvestorDialogViewModelFactory>();
             services.AddSingleton<IFactory<DepositDialogViewModel>, DepositDialogViewModelFactory>();
 
@@ -64,6 +68,7 @@ namespace WeInvest.WPF.Utilities {
             services.AddScoped<AddInvestorAsyncCommand>();
             services.AddScoped<RemoveInvestorAsyncCommand>();
             services.AddScoped<DepositAsyncCommand>();
+            services.AddScoped<SetDisplayedAccountCommand>();
 
             return services.BuildServiceProvider();
         }

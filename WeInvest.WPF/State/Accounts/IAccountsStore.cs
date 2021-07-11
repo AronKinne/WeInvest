@@ -6,5 +6,7 @@ namespace WeInvest.WPF.State.Accounts {
 
         ObservableCollection<Account> Accounts { get; set; }
 
+        Account Last { get; }
+
     }
 }

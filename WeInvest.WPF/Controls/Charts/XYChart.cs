@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -7,7 +8,17 @@ using System.Windows.Shapes;
 using WeInvest.WPF.Controls.Charts.Data;
 
 namespace WeInvest.WPF.Controls.Charts {
-    public abstract class XYChart<TData> : Canvas where TData : IChartData {
+    public abstract class XYChart<TData> : Canvas, INotifyPropertyChanged where TData : IChartData {
+
+        #region INotifyPropertyChanged members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string name = null) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        #endregion
 
         public IList<TData> DataSeries {
             get { return (IList<TData>)GetValue(DataSeriesProperty); }

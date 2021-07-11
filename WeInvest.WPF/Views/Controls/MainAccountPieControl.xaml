@@ -8,12 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <DockPanel Background="{StaticResource SecondaryBrush2}">
-        <Slider DockPanel.Dock="Bottom" Margin="100,20"
-                Minimum="0" Maximum="{Binding MaxAccountIndex}"
-                Value="{Binding DisplayedAccountIndex}"
-                TickPlacement="BottomRight" IsSnapToTickEnabled="True"/>
-
-        <charts:PieChart PieSeries="{Binding PieSeries}" Margin="75"/>
-    </DockPanel>
+    <Grid Background="{StaticResource SecondaryBrush2}">
+        <charts:PieChart PieSeries="{Binding PieSeries}" Margin="50"/>
+    </Grid>
 </UserControl>

@@ -19,6 +19,8 @@ namespace WeInvest.WPF.State.Accounts {
             }
         }
 
+        public Account Last => Accounts != null && Accounts.Count > 0 ? Accounts[Accounts.Count - 1] : null;
+
         private void Accounts_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             OnStateChanged(e);
         }

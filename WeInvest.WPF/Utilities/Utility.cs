@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 
 namespace WeInvest.WPF.Utilities {
@@ -12,6 +14,10 @@ namespace WeInvest.WPF.Utilities {
             get {
                 return typeof(Brushes).GetProperties().Select(p => p.GetValue(null) as Brush).ToArray();
             } 
+        }
+
+        public static double GetClosest(double value, IEnumerable<double> numberPool) {
+            return numberPool.OrderBy(x => Math.Abs(x - value)).First();
         }
 
     }

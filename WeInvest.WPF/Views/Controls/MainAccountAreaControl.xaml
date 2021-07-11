@@ -10,6 +10,8 @@
     <Grid Background="{StaticResource SecondaryBrush2}">
         <charts:AreaChart DataSeries="{Binding AreaDataSeries}"
                           OrderedBrushList="{Binding BrushList}"
+                          SelectionChangedCommand="{Binding SelectionChangedCommand}"
+                          SelectionChangedCommandParameter="{Binding SelectedDataIndex, RelativeSource={RelativeSource Self}}"
                           Margin="20"/>
     </Grid>
 </UserControl>

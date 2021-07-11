@@ -15,10 +15,10 @@ using System.Windows.Shapes;
 
 namespace WeInvest.WPF.Views.Controls {
     /// <summary>
-    /// Interaktionslogik für MainAccountControl.xaml
+    /// Interaktionslogik für DisplayedAccountPieChartControl.xaml
     /// </summary>
-    public partial class MainAccountPieControl : UserControl {
-        public MainAccountPieControl() {
+    public partial class DisplayedAccountPieChartControl : UserControl {
+        public DisplayedAccountPieChartControl() {
             InitializeComponent();
         }
     }

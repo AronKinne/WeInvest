@@ -6,14 +6,14 @@ using WeInvest.WPF.Controls.Charts.Data;
 using WeInvest.WPF.State.Accounts;
 
 namespace WeInvest.WPF.ViewModels.Controls {
-    public class MainAccountPieControlViewModel : ViewModelBase {
+    public class DisplayedAccountPieChartViewModel : ViewModelBase {
 
         private readonly IAccountsStore _accountsStore;
         private readonly IDisplayedAccountStore _displayedAccountStore;
 
         public IList<PieData> PieSeries { get; private set; } = new ObservableCollection<PieData>();
 
-        public MainAccountPieControlViewModel(IAccountsStore accountsStore, IDisplayedAccountStore displayedAccountStore) {
+        public DisplayedAccountPieChartViewModel(IAccountsStore accountsStore, IDisplayedAccountStore displayedAccountStore) {
             _accountsStore = accountsStore;
             _accountsStore.StateChanged += AccountsStore_StateChanged;
 

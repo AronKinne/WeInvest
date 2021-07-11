@@ -16,14 +16,14 @@
     
     <Grid>
         <Grid.Resources>
-            <DataTemplate DataType="{x:Type vmc:MainAccountPieControlViewModel}">
-                <vc:MainAccountPieControl/>
+            <DataTemplate DataType="{x:Type vmc:DisplayedAccountPieChartViewModel}">
+                <vc:DisplayedAccountPieChartControl/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type vmc:MainAccountAreaControlViewModel}">
-                <vc:MainAccountAreaControl/>
+            <DataTemplate DataType="{x:Type vmc:AccountsAreaChartViewModel}">
+                <vc:AccountsAreaChartControl/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type vmc:InvestorChartControlViewModel}">
-                <vc:InvestorChartControl/>
+            <DataTemplate DataType="{x:Type vmc:InvestorLineChartsViewModel}">
+                <vc:InvestorLineChartsControl/>
             </DataTemplate>
         </Grid.Resources>
         

@@ -18,11 +18,11 @@ namespace WeInvest.WPF.ViewModels {
         public ICommand AddInvestorCommand { get; }
         public ICommand RemoveInvestorCommand { get; }
 
-        public MainAccountPieControlViewModel MainAccountPieViewModel { get; }
-        public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; }
-        public InvestorChartControlViewModel InvestorChartViewModel { get; }
+        public DisplayedAccountPieChartViewModel MainAccountPieViewModel { get; }
+        public AccountsAreaChartViewModel MainAccountAreaViewModel { get; }
+        public InvestorLineChartsViewModel InvestorChartViewModel { get; }
 
-        public MainViewModel(IInvestorsStore investorsStore, DepositAsyncCommand depositAsyncCommand, AddInvestorAsyncCommand addInvestorAsyncCommand, RemoveInvestorAsyncCommand removeInvestorAsyncCommand, MainAccountPieControlViewModel mainAccountPieViewModel, MainAccountAreaControlViewModel mainAccountAreaViewModel, InvestorChartControlViewModel investorChartViewModel) : base() {
+        public MainViewModel(IInvestorsStore investorsStore, DepositAsyncCommand depositAsyncCommand, AddInvestorAsyncCommand addInvestorAsyncCommand, RemoveInvestorAsyncCommand removeInvestorAsyncCommand, DisplayedAccountPieChartViewModel mainAccountPieViewModel, AccountsAreaChartViewModel mainAccountAreaViewModel, InvestorLineChartsViewModel investorChartViewModel) : base() {
             _investorsStore = investorsStore;
             _investorsStore.StateChanged += InvestorsStore_StateChanged;
 

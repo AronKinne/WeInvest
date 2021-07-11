@@ -33,9 +33,9 @@ namespace WeInvest.WPF.Utilities {
 
             // ViewModels
             services.AddScoped<MainViewModel>();
-            services.AddScoped<MainAccountPieControlViewModel>();
-            services.AddScoped<MainAccountAreaControlViewModel>();
-            services.AddScoped<InvestorChartControlViewModel>();
+            services.AddScoped<DisplayedAccountPieChartViewModel>();
+            services.AddScoped<AccountsAreaChartViewModel>();
+            services.AddScoped<InvestorLineChartsViewModel>();
             services.AddSingleton<IFactory<InvestorDialogViewModel>, InvestorDialogViewModelFactory>();
             services.AddSingleton<IFactory<DepositDialogViewModel>, DepositDialogViewModelFactory>();
 

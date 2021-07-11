@@ -9,7 +9,7 @@ using WeInvest.WPF.State.Accounts;
 using WeInvest.WPF.State.Investors;
 
 namespace WeInvest.WPF.ViewModels.Controls {
-    public class MainAccountAreaControlViewModel : ViewModelBase {
+    public class AccountsAreaChartViewModel : ViewModelBase {
 
         private readonly IInvestorsStore _investorsStore;
         private readonly IAccountsStore _accountsStore;
@@ -21,7 +21,7 @@ namespace WeInvest.WPF.ViewModels.Controls {
 
         public double AreaOpacity { get; set; } = 1;
 
-        public MainAccountAreaControlViewModel(IInvestorsStore investorsStore, IAccountsStore accountsStore, SetDisplayedAccountCommand setDisplayedAccountCommand) {
+        public AccountsAreaChartViewModel(IInvestorsStore investorsStore, IAccountsStore accountsStore, SetDisplayedAccountCommand setDisplayedAccountCommand) {
             _investorsStore = investorsStore;
             _investorsStore.StateChanged += InvestorsStore_StateChanged;
 

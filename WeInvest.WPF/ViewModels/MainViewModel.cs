@@ -12,7 +12,7 @@ namespace WeInvest.WPF.ViewModels {
 
         private readonly IInvestorsStore _investorsStore;
 
-        public ObservableCollection<Investor> Investors => _investorsStore.CurrentInvestors;
+        public ObservableCollection<Investor> Investors => _investorsStore.Investors;
         public ICommand MinimizeCommand { get; }
         public ICommand DepositCommand { get; }
         public ICommand AddInvestorCommand { get; }
@@ -22,7 +22,7 @@ namespace WeInvest.WPF.ViewModels {
         public MainAccountAreaControlViewModel MainAccountAreaViewModel { get; }
         public InvestorChartControlViewModel InvestorChartViewModel { get; }
 
-        public MainViewModel(IInvestorsStore investorsStore, IAccountsStore accountsStore, DepositAsyncCommand depositAsyncCommand, AddInvestorAsyncCommand addInvestorAsyncCommand, RemoveInvestorAsyncCommand removeInvestorAsyncCommand) : base() {
+        public MainViewModel(IInvestorsStore investorsStore, IAccountsStore accountsStore, IDisplayedAccountStore displayedAccountStore, DepositAsyncCommand depositAsyncCommand, AddInvestorAsyncCommand addInvestorAsyncCommand, RemoveInvestorAsyncCommand removeInvestorAsyncCommand) : base() {
             _investorsStore = investorsStore;
             _investorsStore.StateChanged += _investorsStore_StateChanged;
 
@@ -31,7 +31,7 @@ namespace WeInvest.WPF.ViewModels {
             AddInvestorCommand = addInvestorAsyncCommand;
             RemoveInvestorCommand = removeInvestorAsyncCommand;
 
-            MainAccountPieViewModel = new MainAccountPieControlViewModel(accountsStore);
+            MainAccountPieViewModel = new MainAccountPieControlViewModel(accountsStore, displayedAccountStore);
             MainAccountAreaViewModel = new MainAccountAreaControlViewModel(_investorsStore, accountsStore) { AreaOpacity = 1 };
             InvestorChartViewModel = new InvestorChartControlViewModel(_investorsStore);
         }

@@ -40,7 +40,7 @@ namespace WeInvest.WPF.ViewModels.Controls {
         private void UpdateAreaDataSeries() {
             AreaDataSeries = new ObservableCollection<OrderedAreaData>();
 
-            foreach(var account in AccountsStore.CurrentAccounts) {
+            foreach(var account in AccountsStore.Accounts) {
                 var doubleList = account.ShareByInvestor.ToList().Select(p => (double)p.Value).ToList();
                 AreaDataSeries.Add(new OrderedAreaData(AreaDataSeries.Count + 1, doubleList));
             }
@@ -51,7 +51,7 @@ namespace WeInvest.WPF.ViewModels.Controls {
         private void UpdateBrushList() {
             BrushList = new ObservableCollection<Brush>();
 
-            foreach(var investor in InvestorsStore.CurrentInvestors) {
+            foreach(var investor in InvestorsStore.Investors) {
                 var brush = investor.Brush.Clone();
                 brush.Opacity = AreaOpacity;
                 BrushList.Add(brush);

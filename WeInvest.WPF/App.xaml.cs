@@ -23,11 +23,11 @@ namespace WeInvest.WPF {
 
             var investorDataAccess = serviceProvider.GetRequiredService<IDataAccess<Investor>>();
             var investorsStore = serviceProvider.GetRequiredService<IInvestorsStore>();
-            investorsStore.CurrentInvestors = new ObservableCollection<Investor>(investorDataAccess.GetAllAsync().Result);
+            investorsStore.Investors = new ObservableCollection<Investor>(investorDataAccess.GetAllAsync().Result);
 
             var accountDataAccess = serviceProvider.GetRequiredService<IDataAccess<Account>>();
             var accountsStore = serviceProvider.GetRequiredService<IAccountsStore>();
-            accountsStore.CurrentAccounts = new ObservableCollection<Account>(accountDataAccess.GetAllAsync().Result);
+            accountsStore.Accounts = new ObservableCollection<Account>(accountDataAccess.GetAllAsync().Result);
 
             base.OnStartup(e);
         }

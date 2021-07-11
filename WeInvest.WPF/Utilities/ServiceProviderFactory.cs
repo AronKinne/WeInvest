@@ -38,6 +38,7 @@ namespace WeInvest.WPF.Utilities {
             // State
             services.AddSingleton<IInvestorsStore, InvestorsStore>();
             services.AddSingleton<IAccountsStore, AccountsStore>();
+            services.AddSingleton<IDisplayedAccountStore, DisplayedAccountStore>();
 
             // Converters
             services.AddSingleton<IListStringConverter, ListStringConverter>();

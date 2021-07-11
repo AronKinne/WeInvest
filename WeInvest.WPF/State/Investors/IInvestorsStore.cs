@@ -4,7 +4,7 @@ using WeInvest.Domain.Models;
 namespace WeInvest.WPF.State.Investors {
     public interface IInvestorsStore : IStore {
 
-        ObservableCollection<Investor> CurrentInvestors { get; set; }
+        ObservableCollection<Investor> Investors { get; set; }
 
     }
 }

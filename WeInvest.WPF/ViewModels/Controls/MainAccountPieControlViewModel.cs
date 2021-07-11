@@ -9,38 +9,38 @@ using WeInvest.WPF.State.Accounts;
 namespace WeInvest.WPF.ViewModels.Controls {
     public class MainAccountPieControlViewModel : ViewModelBase {
 
+        private readonly IAccountsStore _accountsStore;
+        private readonly IDisplayedAccountStore _displayedAccountStore;
+
         private int _displayedAccountIndex;
-        private Account _displayedAccount;
 
-        public IAccountsStore AccountsStore { get; }
-
-        public int MaxAccountIndex { get => AccountsStore.CurrentAccounts?.Count - 1 ?? -1; }
+        public int MaxAccountIndex { get => _accountsStore.Accounts?.Count - 1 ?? -1; }
         public int DisplayedAccountIndex {
             get => _displayedAccountIndex;
             set {
-                _displayedAccountIndex = Math.Max(0, Math.Min(value, AccountsStore.CurrentAccounts.Count - 1));
-                if(AccountsStore.CurrentAccounts?.Count > 0)
-                    DisplayedAccount = AccountsStore.CurrentAccounts[DisplayedAccountIndex];
+                _displayedAccountIndex = Math.Max(0, Math.Min(value, _accountsStore.Accounts.Count - 1));
+                if(_accountsStore.Accounts?.Count > 0)
+                    _displayedAccountStore.DisplayedAccount = _accountsStore.Accounts[DisplayedAccountIndex];
                 OnPropertyChanged();
             }
         }
-        public Account DisplayedAccount {
-            get => _displayedAccount;
-            set {
-                _displayedAccount = value;
-                UpdatePieSeries();
-            }
-        }
+        public Account DisplayedAccount => _displayedAccountStore.DisplayedAccount;
         public IList<PieData> PieSeries { get; set; } = new ObservableCollection<PieData>();
 
-        public MainAccountPieControlViewModel(IAccountsStore accountsStore) {
-            AccountsStore = accountsStore;
-            AccountsStore.StateChanged += AccountsStore_StateChanged;
+        public MainAccountPieControlViewModel(IAccountsStore accountsStore, IDisplayedAccountStore displayedAccountStore) {
+            _accountsStore = accountsStore;
+            _accountsStore.StateChanged += AccountsStore_StateChanged;
+
+            _displayedAccountStore = displayedAccountStore;
+            _displayedAccountStore.StateChanged += DisplayedAccountStore_StateChanged;
         }
 
         private void AccountsStore_StateChanged(object sender, EventArgs e) {
             OnPropertyChanged(nameof(MaxAccountIndex));
             DisplayedAccountIndex = MaxAccountIndex;
+        }
+
+        private void DisplayedAccountStore_StateChanged(object sender, EventArgs e) {
             UpdatePieSeries();
         }
 

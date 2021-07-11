@@ -36,12 +36,12 @@ namespace WeInvest.WPF.Commands {
                 var selectedInvestor = viewModel.SelectedInvestor;
                 var amount = viewModel.Amount;
                 var updatedInvestor = await Task.Run(() => _transactionService.DepositAsync(selectedInvestor, amount));
-                _investorsStore.CurrentInvestors[_investorsStore.CurrentInvestors.IndexOf(selectedInvestor)] = updatedInvestor;
+                _investorsStore.Investors[_investorsStore.Investors.IndexOf(selectedInvestor)] = updatedInvestor;
 
                 var account = _accountFactory.Create();
-                account.AddOwners(_investorsStore.CurrentInvestors);
+                account.AddOwners(_investorsStore.Investors);
                 var dbAccount = await Task.Run(() => _accountDataAccess.CreateAsync(account));
-                _accountsStore.CurrentAccounts.Add(dbAccount);
+                _accountsStore.Accounts.Add(dbAccount);
             }
         }
     }

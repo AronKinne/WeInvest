@@ -6,20 +6,20 @@ using WeInvest.Domain.Models;
 namespace WeInvest.WPF.State.Investors {
     public class InvestorsStore : IInvestorsStore {
 
-        private ObservableCollection<Investor> _currentInvestors;
+        private ObservableCollection<Investor> _investors;
 
         public event EventHandler StateChanged;
 
-        public ObservableCollection<Investor> CurrentInvestors {
-            get => _currentInvestors; 
+        public ObservableCollection<Investor> Investors {
+            get => _investors; 
             set {
-                _currentInvestors = value;
+                _investors = value;
                 OnStateChanged(EventArgs.Empty);
-                CurrentInvestors.CollectionChanged += CurrentInvestors_CollectionChanged;
+                Investors.CollectionChanged += Investors_CollectionChanged;
             }
         }
 
-        private void CurrentInvestors_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
+        private void Investors_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             OnStateChanged(e);
         }
 

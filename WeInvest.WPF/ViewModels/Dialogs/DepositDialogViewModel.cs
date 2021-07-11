@@ -8,7 +8,7 @@ namespace WeInvest.WPF.ViewModels.Dialogs {
         private readonly IInvestorsStore _investorsStore;
 
         public Investor SelectedInvestor { get; set; }
-        public IEnumerable<Investor> InvestorPool => _investorsStore.CurrentInvestors;
+        public IEnumerable<Investor> InvestorPool => _investorsStore.Investors;
         public float Amount { get; set; }
 
         public DepositDialogViewModel(IInvestorsStore investorsStore) {

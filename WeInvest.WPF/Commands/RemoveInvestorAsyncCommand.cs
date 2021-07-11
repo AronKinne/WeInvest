@@ -24,14 +24,14 @@ namespace WeInvest.WPF.Commands {
             var investor = parameter as Investor;
 
             var updatedAccounts = new ObservableCollection<Account>();
-            foreach(var account in _accountsStore.CurrentAccounts) {
+            foreach(var account in _accountsStore.Accounts) {
                 account.RemoveOwner(investor.Id);
                 await Task.Run(() => _accountDataAccess.UpdateAsync(account.Id, account));
                 updatedAccounts.Add(account);
             }
-            _accountsStore.CurrentAccounts = updatedAccounts;
+            _accountsStore.Accounts = updatedAccounts;
 
-            _investorsStore.CurrentInvestors.Remove(investor);
+            _investorsStore.Investors.Remove(investor);
             await _investorDataAccess.DeleteAsync(investor.Id);
         }
 

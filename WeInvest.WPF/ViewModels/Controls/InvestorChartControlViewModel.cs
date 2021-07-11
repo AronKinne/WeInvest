@@ -11,12 +11,12 @@ namespace WeInvest.WPF.ViewModels.Controls {
 
         public IList<InvestorData> DataSeries {
             get {
-                if(InvestorsStore.CurrentInvestors == null)
+                if(InvestorsStore.Investors == null)
                     return null;
 
                 var output = new ObservableCollection<InvestorData>();
 
-                foreach(var investor in InvestorsStore.CurrentInvestors) {
+                foreach(var investor in InvestorsStore.Investors) {
                     var shareData = new ObservableCollection<OrderedLineData>();
 
                     for(int i = 0; i < investor.ShareHistory.Count; i++) {

@@ -38,15 +38,15 @@ namespace WeInvest.WPF.Commands {
                 investor.Brush = viewModel.InvestorBrush;
 
                 var dbInvestor = await Task.Run(() => _investorDataAccess.CreateAsync(investor));
-                _investorsStore.CurrentInvestors.Add(dbInvestor);
+                _investorsStore.Investors.Add(dbInvestor);
 
                 var updatedAccounts = new ObservableCollection<Account>();
-                foreach(var account in _accountsStore.CurrentAccounts) {
+                foreach(var account in _accountsStore.Accounts) {
                     account.AddOwner(dbInvestor, 0);
                     await Task.Run(() => _accountDataAccess.UpdateAsync(account.Id, account));
                     updatedAccounts.Add(account);
                 }
-                _accountsStore.CurrentAccounts = updatedAccounts;
+                _accountsStore.Accounts = updatedAccounts;
             }
         }
 

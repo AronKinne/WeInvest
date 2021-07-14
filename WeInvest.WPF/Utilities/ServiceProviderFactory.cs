@@ -12,6 +12,7 @@ using WeInvest.WPF.Commands;
 using WeInvest.WPF.Services;
 using WeInvest.WPF.State.Accounts;
 using WeInvest.WPF.State.Investors;
+using WeInvest.WPF.State.Navigators;
 using WeInvest.WPF.ViewModels;
 using WeInvest.WPF.ViewModels.Controls;
 using WeInvest.WPF.ViewModels.Dialogs;
@@ -33,6 +34,7 @@ namespace WeInvest.WPF.Utilities {
 
             // ViewModels
             services.AddScoped<MainViewModel>();
+            services.AddScoped<HomeViewModel>();
             services.AddScoped<DisplayedAccountPieChartViewModel>();
             services.AddScoped<AccountsAreaChartViewModel>();
             services.AddScoped<InvestorLineChartsViewModel>();
@@ -43,6 +45,7 @@ namespace WeInvest.WPF.Utilities {
             services.AddSingleton<IInvestorsStore, InvestorsStore>();
             services.AddSingleton<IAccountsStore, AccountsStore>();
             services.AddSingleton<IDisplayedAccountStore, DisplayedAccountStore>();
+            services.AddSingleton<INavigator, Navigator>();
 
             // Converters
             services.AddSingleton<IListStringConverter, ListStringConverter>();

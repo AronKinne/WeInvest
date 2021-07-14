@@ -18,6 +18,9 @@
                     <DataTemplate DataType="{x:Type vm:HomeViewModel}">
                         <v:HomeView/>
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:StockViewModel}">
+                        <v:StockView/>
+                    </DataTemplate>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

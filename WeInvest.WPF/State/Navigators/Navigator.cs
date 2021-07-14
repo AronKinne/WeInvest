@@ -1,9 +1,22 @@
-﻿using WeInvest.WPF.ViewModels;
+﻿using System;
+using WeInvest.WPF.ViewModels;
 
 namespace WeInvest.WPF.State.Navigators {
     public class Navigator : INavigator {
 
-        public ViewModelBase CurrentViewModel { get; set; }
+        private ViewModelBase _currentViewModel;
+        public ViewModelBase CurrentViewModel {
+            get => _currentViewModel;
+            set {
+                _currentViewModel = value;
+                OnStateChanged();
+            }
+        }
 
+        public event EventHandler StateChanged;
+
+        private void OnStateChanged() {
+            StateChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WeInvest.WPF"
+        xmlns:controls="clr-namespace:WeInvest.WPF.Views.Controls"
         mc:Ignorable="d"
         Title="WeInvest"
         Height="720" Width="1280"
@@ -17,5 +18,7 @@
         </Grid.RowDefinitions>
 
         <ContentControl Content="{Binding CurrentViewModel}"/>
+
+        <controls:TabBar Grid.Row="1" DataContext="{Binding TabBarViewModel}"/>
     </Grid>
 </Window>

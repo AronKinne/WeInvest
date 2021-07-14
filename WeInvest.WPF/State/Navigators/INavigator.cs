@@ -1,7 +1,7 @@
 ﻿using WeInvest.WPF.ViewModels;
 
 namespace WeInvest.WPF.State.Navigators {
-    public interface INavigator {
+    public interface INavigator : IStore {
 
         ViewModelBase CurrentViewModel { get; set; }
 

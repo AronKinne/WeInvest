@@ -10,10 +10,9 @@
                 <ResourceDictionary Source="Styles/Common.xaml"/>
                 <ResourceDictionary Source="Styles/Buttons.xaml"/>
                 <ResourceDictionary Source="Styles/TextBoxes.xaml"/>
-                <ResourceDictionary Source="Styles/Windows.xaml"/>
 
-                <ResourceDictionary Source="Styles/Templates/MainWindowTemplate.xaml"/>
-                <ResourceDictionary Source="Styles/Templates/DialogTemplate.xaml"/>
+                <ResourceDictionary Source="Styles/Dialogs.xaml"/>
+                <ResourceDictionary Source="Styles/MainWindowTemplate.xaml"/>
 
                 <ResourceDictionary>
                     <DataTemplate DataType="{x:Type vm:HomeViewModel}">

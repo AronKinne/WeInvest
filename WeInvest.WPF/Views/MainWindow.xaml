@@ -7,8 +7,7 @@
         mc:Ignorable="d"
         Title="WeInvest"
         Height="720" Width="1280"
-        Style="{StaticResource WindowStyle}"
-        Template="{StaticResource MainWindowTemplate}"
+        Style="{StaticResource MainWindowStyle}"
         WindowStartupLocation="CenterScreen">
     
     <Grid>

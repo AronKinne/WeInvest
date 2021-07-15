@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="Styles/Common.xaml"/>
                 <ResourceDictionary Source="Styles/Buttons.xaml"/>
                 <ResourceDictionary Source="Styles/TextBoxes.xaml"/>
+                <ResourceDictionary Source="Styles/RadioButtons.xaml"/>
 
                 <ResourceDictionary Source="Styles/Dialogs.xaml"/>
                 <ResourceDictionary Source="Styles/MainWindowTemplate.xaml"/>

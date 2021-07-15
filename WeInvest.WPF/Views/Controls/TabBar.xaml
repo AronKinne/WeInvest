@@ -12,6 +12,15 @@
         <ItemsControl.Resources>
             <CollectionViewSource x:Key="StockViewModelsCVS" Source="{Binding StockViewModels}"/>
             <converter:ValueIsTypeConverter x:Key="ValueIsTypeConverter"/>
+
+            <DataTemplate DataType="{x:Type vm:StockViewModel}">
+                <RadioButton
+                        Content="{Binding StockSymbol}"
+                        Style="{StaticResource RadioButtonTab}"
+                        GroupName="Tab"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.NavigateCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
+            </DataTemplate>
         </ItemsControl.Resources>
 
         <ItemsControl.ItemsSource>
@@ -36,16 +45,5 @@
                 <WrapPanel IsItemsHost="True"/>
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
-
-        <ItemsControl.ItemTemplate>
-            <DataTemplate DataType="{x:Type vm:StockViewModel}">
-                <RadioButton
-                        Content="{Binding StockSymbol}"
-                        Style="{StaticResource RadioButtonTab}"
-                        GroupName="Tab"
-                        Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.NavigateCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
     </ItemsControl>
 </UserControl>

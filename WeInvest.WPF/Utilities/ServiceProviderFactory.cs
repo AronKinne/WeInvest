@@ -26,52 +26,68 @@ namespace WeInvest.WPF.Utilities {
         public static IServiceProvider Create() {
             IServiceCollection services = new ServiceCollection();
 
-            // Views
-            services.AddScoped<MainWindow>(s => new MainWindow() { DataContext = s.GetRequiredService<MainViewModel>() });
-            services.AddSingleton<IFactory<InvestorDialog>, InvestorDialogFactory>();
-            services.AddSingleton<IFactory<DepositDialog>, DepositDialogFactory>();
+            AddViews(services);
+            AddViewModels(services);
+            AddStates(services);
+            AddConverters(services);
+            AddServices(services);
+            AddDataAccesses(services);
+            AddFactories(services);
+            AddCommands(services);
 
-            // ViewModels
+            return services.BuildServiceProvider();
+        }
+
+        private static void AddCommands(IServiceCollection services) {
+            services.AddScoped<AddInvestorAsyncCommand>();
+            services.AddScoped<RemoveInvestorAsyncCommand>();
+            services.AddScoped<DepositAsyncCommand>();
+            services.AddScoped<SetDisplayedAccountCommand>();
+        }
+
+        private static void AddFactories(IServiceCollection services) {
+            services.AddSingleton<IFactory<Investor>, InvestorFactory>();
+            services.AddSingleton<IFactory<Account>, AccountFactory>();
+            services.AddSingleton<IFactory<IDbConnection>, SQLiteConnectionFactory>();
+        }
+
+        private static void AddDataAccesses(IServiceCollection services) {
+            services.AddSingleton<IDataAccess<Investor>, InvestorDataAccess>();
+            services.AddSingleton<IDataAccess<Account>, AccountDataAccess>();
+        }
+
+        private static void AddServices(IServiceCollection services) {
+            services.AddSingleton<DialogServiceFactory<InvestorDialog, InvestorDialogViewModel>>();
+            services.AddSingleton<DialogServiceFactory<DepositDialog, DepositDialogViewModel>>();
+            services.AddSingleton<ITransactionService, TransactionService>();
+            services.AddSingleton<IQueryService, DapperQueryService>();
+        }
+
+        private static void AddConverters(IServiceCollection services) {
+            services.AddSingleton<IListStringConverter, ListStringConverter>();
+            services.AddSingleton<IBrushStringConverter, BrushStringConverter>();
+            services.AddSingleton<IDictionaryStringConverter, DictionaryStringConverter>();
+        }
+
+        private static void AddStates(IServiceCollection services) {
+            services.AddSingleton<IInvestorsStore, InvestorsStore>();
+            services.AddSingleton<IAccountsStore, AccountsStore>();
+            services.AddSingleton<IDisplayedAccountStore, DisplayedAccountStore>();
+        }
+
+        private static void AddViewModels(IServiceCollection services) {
             services.AddScoped<MainViewModel>();
             services.AddScoped<DisplayedAccountPieChartViewModel>();
             services.AddScoped<AccountsAreaChartViewModel>();
             services.AddScoped<InvestorLineChartsViewModel>();
             services.AddSingleton<IFactory<InvestorDialogViewModel>, InvestorDialogViewModelFactory>();
             services.AddSingleton<IFactory<DepositDialogViewModel>, DepositDialogViewModelFactory>();
-
-            // State
-            services.AddSingleton<IInvestorsStore, InvestorsStore>();
-            services.AddSingleton<IAccountsStore, AccountsStore>();
-            services.AddSingleton<IDisplayedAccountStore, DisplayedAccountStore>();
-
-            // Converters
-            services.AddSingleton<IListStringConverter, ListStringConverter>();
-            services.AddSingleton<IBrushStringConverter, BrushStringConverter>();
-            services.AddSingleton<IDictionaryStringConverter, DictionaryStringConverter>();
-
-            // Services
-            services.AddSingleton<DialogServiceFactory<InvestorDialog, InvestorDialogViewModel>>();
-            services.AddSingleton<DialogServiceFactory<DepositDialog, DepositDialogViewModel>>();
-            services.AddSingleton<ITransactionService, TransactionService>();
-            services.AddSingleton<IQueryService, DapperQueryService>();
-
-            // Data Access
-            services.AddSingleton<IDataAccess<Investor>, InvestorDataAccess>();
-            services.AddSingleton<IDataAccess<Account>, AccountDataAccess>();
-
-            // Factories
-            services.AddSingleton<IFactory<Investor>, InvestorFactory>();
-            services.AddSingleton<IFactory<Account>, AccountFactory>();
-            services.AddSingleton<IFactory<IDbConnection>, SQLiteConnectionFactory>();
-
-            // Commands
-            services.AddScoped<AddInvestorAsyncCommand>();
-            services.AddScoped<RemoveInvestorAsyncCommand>();
-            services.AddScoped<DepositAsyncCommand>();
-            services.AddScoped<SetDisplayedAccountCommand>();
-
-            return services.BuildServiceProvider();
         }
 
+        private static void AddViews(IServiceCollection services) {
+            services.AddScoped<MainWindow>(s => new MainWindow() { DataContext = s.GetRequiredService<MainViewModel>() });
+            services.AddSingleton<IFactory<InvestorDialog>, InvestorDialogFactory>();
+            services.AddSingleton<IFactory<DepositDialog>, DepositDialogFactory>();
+        }
     }
 }

@@ -12,20 +12,25 @@ namespace WeInvest.WPF.ViewModels.Controls {
         private readonly IStocksStore _stocksStore;
         private readonly IFactory<StockViewModel> _stockViewModelFactory;
 
-        public ObservableCollection<StockViewModel> StockViewModels { get; private set; }
+        public ObservableCollection<StockViewModel> StockViewModels { get; private set; } = new ObservableCollection<StockViewModel>();
         public ICommand NavigateCommand { get; }
         public ViewModelBase HomeViewModel { get; }
 
+        public ViewModelBase CurrentViewModel => _navigator.CurrentViewModel;
+
         public TabBarViewModel(INavigator navigator, HomeViewModel homeViewModel, IStocksStore stocksStore, IFactory<StockViewModel> stockViewModelFactory) {
             _navigator = navigator;
+            _navigator.StateChanged += Navigator_StateChanged;
             _stocksStore = stocksStore;
             _stocksStore.StateChanged += StocksStore_StateChanged;
             _stockViewModelFactory = stockViewModelFactory;
 
             NavigateCommand = new NavigateCommand(_navigator);
             HomeViewModel = homeViewModel;
+        }
 
-            _navigator.CurrentViewModel = HomeViewModel;
+        private void Navigator_StateChanged(object sender, System.EventArgs e) {
+            OnPropertyChanged(nameof(CurrentViewModel));
         }
 
         private void StocksStore_StateChanged(object sender, System.EventArgs e) {

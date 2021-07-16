@@ -12,10 +12,13 @@ using WeInvest.WPF.Commands;
 using WeInvest.WPF.Services;
 using WeInvest.WPF.State.Accounts;
 using WeInvest.WPF.State.Investors;
+using WeInvest.WPF.State.Navigators;
+using WeInvest.WPF.State.Stocks;
 using WeInvest.WPF.ViewModels;
 using WeInvest.WPF.ViewModels.Controls;
 using WeInvest.WPF.ViewModels.Dialogs;
 using WeInvest.WPF.ViewModels.Dialogs.Factories;
+using WeInvest.WPF.ViewModels.Factories;
 using WeInvest.WPF.Views;
 using WeInvest.WPF.Views.Dialogs;
 using WeInvest.WPF.Views.Dialogs.Factories;
@@ -48,12 +51,14 @@ namespace WeInvest.WPF.Utilities {
         private static void AddFactories(IServiceCollection services) {
             services.AddSingleton<IFactory<Investor>, InvestorFactory>();
             services.AddSingleton<IFactory<Account>, AccountFactory>();
+            services.AddSingleton<IFactory<Stock>, StockFactory>();
             services.AddSingleton<IFactory<IDbConnection>, SQLiteConnectionFactory>();
         }
 
         private static void AddDataAccesses(IServiceCollection services) {
             services.AddSingleton<IDataAccess<Investor>, InvestorDataAccess>();
             services.AddSingleton<IDataAccess<Account>, AccountDataAccess>();
+            services.AddSingleton<IDataAccess<Stock>, StockDataAccess>();
         }
 
         private static void AddServices(IServiceCollection services) {
@@ -73,15 +78,20 @@ namespace WeInvest.WPF.Utilities {
             services.AddSingleton<IInvestorsStore, InvestorsStore>();
             services.AddSingleton<IAccountsStore, AccountsStore>();
             services.AddSingleton<IDisplayedAccountStore, DisplayedAccountStore>();
+            services.AddSingleton<IStocksStore, StocksStore>();
+            services.AddSingleton<INavigator, Navigator>();
         }
 
         private static void AddViewModels(IServiceCollection services) {
             services.AddScoped<MainViewModel>();
+            services.AddScoped<HomeViewModel>();
+            services.AddScoped<TabBarViewModel>();
             services.AddScoped<DisplayedAccountPieChartViewModel>();
             services.AddScoped<AccountsAreaChartViewModel>();
             services.AddScoped<InvestorLineChartsViewModel>();
             services.AddSingleton<IFactory<InvestorDialogViewModel>, InvestorDialogViewModelFactory>();
             services.AddSingleton<IFactory<DepositDialogViewModel>, DepositDialogViewModelFactory>();
+            services.AddSingleton<IFactory<StockViewModel>, StockViewModelFactory>();
         }
 
         private static void AddViews(IServiceCollection services) {

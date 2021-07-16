@@ -29,5 +29,11 @@
             </Grid>
         </Border>
     </ControlTemplate>
+
+    <Style x:Key="MainWindowStyle" TargetType="Window">
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="ResizeMode" Value="NoResize"/>
+        <Setter Property="Template" Value="{StaticResource MainWindowTemplate}"/>
+    </Style>
     
 </ResourceDictionary>

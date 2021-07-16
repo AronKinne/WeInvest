@@ -60,6 +60,28 @@ namespace WeInvest.SQLite.TestsConsole {
             //accountService.DeleteAsync(1).Wait();
 
             #endregion
+
+            #region Stock
+
+            var stockFactory = new StockFactory();
+            IDataAccess<Stock> stockDataAccess = new StockDataAccess(connectionFactory, queryService, stockFactory);
+
+            // CREATE
+            //Console.WriteLine(stockDataAccess.CreateAsync(stockFactory.Create()).Result.Id);
+
+            // UPDATE
+            //stockDataAccess.UpdateAsync(1, stockFactory.Create(new { Symbol = "AAPL" })).Wait();
+
+            // GET
+            //Console.WriteLine(stockDataAccess.GetAsync(1).Result.Symbol);
+
+            // GETALL
+            //Console.WriteLine(stockDataAccess.GetAllAsync().Result.Count());
+
+            // DELETE
+            //stockDataAccess.DeleteAsync(1).Wait();
+
+            #endregion
         }
     }
 }

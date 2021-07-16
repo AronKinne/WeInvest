@@ -14,39 +14,39 @@ namespace WeInvest.SQLite.DataAccess {
 
         protected readonly IFactory<IDbConnection> _connectionFactory;
         protected readonly IQueryService _queryService;
-        protected readonly string _connectionString;
+        protected readonly string _connectionStringId;
         protected readonly string _tableName;
         protected readonly IEnumerable<PropertyInfo> _usedProperties;
 
         protected GenericDataAccess(
             IFactory<IDbConnection> connectionFactory,
             IQueryService queryService,
-            string connectionString,
+            string connectionStringId,
             string tableName,
             IEnumerable<PropertyInfo> usedProperties) {
 
             _connectionFactory = connectionFactory;
             _queryService = queryService;
-            _connectionString = connectionString;
+            _connectionStringId = connectionStringId;
             _tableName = tableName;
             _usedProperties = usedProperties;
         }
 
         public async Task<T> CreateAsync(T entity) {
-            using(var connection = _connectionFactory.Create(_connectionString)) {
+            using(var connection = _connectionFactory.Create(_connectionStringId)) {
                 var created = await _queryService.QuerySingleAsync(connection, $"{GenerateCreateQuery()}; SELECT * FROM {_tableName} WHERE Id = last_insert_rowid();", entity);
                 return CreateEntity(created);
             }
         }
 
         public async Task DeleteAsync(int id) {
-            using(var connection = _connectionFactory.Create(_connectionString)) {
+            using(var connection = _connectionFactory.Create(_connectionStringId)) {
                 await _queryService.ExecuteAsync(connection, $"DELETE FROM {_tableName} WHERE Id = @Id", new { Id = id });
             }
         }
 
         public async Task<T> GetAsync(int id) {
-            using(var connection = _connectionFactory.Create(_connectionString)) {
+            using(var connection = _connectionFactory.Create(_connectionStringId)) {
                 var result = await _queryService.QueryFirstOrDefaultAsync(connection, $"SELECT * FROM {_tableName} WHERE Id = @Id", new { Id = id });
 
                 if(result == null)
@@ -57,14 +57,14 @@ namespace WeInvest.SQLite.DataAccess {
         }
 
         public async Task<IEnumerable<T>> GetAllAsync() {
-            using(var connection = _connectionFactory.Create(_connectionString)) {
+            using(var connection = _connectionFactory.Create(_connectionStringId)) {
                 var rows = await _queryService.QueryAsync(connection, $"SELECT * FROM {_tableName}");
                 return CreateEntityEnumerable(rows);
             }
         }
 
         public async Task<T> UpdateAsync(int id, T entity) {
-            using(var connection = _connectionFactory.Create(_connectionString)) {
+            using(var connection = _connectionFactory.Create(_connectionStringId)) {
                 var result = await _queryService.QuerySingleAsync(connection, $"{GenerateUpdateQuery(id)}; SELECT * FROM {_tableName} WHERE Id = {id}", entity);
                 return CreateEntity(result);
             }

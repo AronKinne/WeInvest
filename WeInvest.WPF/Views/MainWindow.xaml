@@ -4,98 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WeInvest.WPF"
-        xmlns:charts="clr-namespace:WeInvest.WPF.Controls.Charts"
-        xmlns:vmc="clr-namespace:WeInvest.WPF.ViewModels.Controls"
-        xmlns:vc="clr-namespace:WeInvest.WPF.Views.Controls"
+        xmlns:controls="clr-namespace:WeInvest.WPF.Views.Controls"
         mc:Ignorable="d"
         Title="WeInvest"
         Height="720" Width="1280"
-        Style="{StaticResource WindowStyle}"
-        Template="{StaticResource MainWindowTemplate}"
+        Style="{StaticResource MainWindowStyle}"
         WindowStartupLocation="CenterScreen">
     
     <Grid>
-        <Grid.Resources>
-            <DataTemplate DataType="{x:Type vmc:DisplayedAccountPieChartViewModel}">
-                <vc:DisplayedAccountPieChartControl/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vmc:AccountsAreaChartViewModel}">
-                <vc:AccountsAreaChartControl/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vmc:InvestorLineChartsViewModel}">
-                <vc:InvestorLineChartsControl/>
-            </DataTemplate>
-        </Grid.Resources>
-        
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.5*" MinWidth="400"/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ContentPresenter Content="{Binding MainAccountPieViewModel}" Grid.Row="0" Grid.RowSpan="2" Margin="25,25,25,0"/>
+        <ContentControl Content="{Binding CurrentViewModel}"/>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <StackPanel.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
-                    <Setter Property="Width" Value="120"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                </Style>
-            </StackPanel.Resources>
-            
-            <Button Content="Deposit" Command="{Binding DepositCommand}"/>
-            <Button Content="Add Investment" Grid.Column="1" Margin="30,0"/>
-            <Button Content="Withdraw" Grid.Column="2"/>
-        </StackPanel>
-
-        <ContentPresenter Content="{Binding MainAccountAreaViewModel}" Grid.Column="1" Grid.Row="0" Margin="0,25"/>
-
-        <ListView Grid.Column="2"
-                  ItemsSource="{Binding Investors}"
-                  Margin="25"
-                  BorderBrush="{StaticResource SecondaryBrush4}"
-                  BorderThickness="2">
-            <ListView.Resources>
-                <ContextMenu x:Key="ItemContextMenu">
-                    <MenuItem Header="Edit"/>
-                    <MenuItem Header="Remove"
-                              Command="{Binding DataContext.RemoveInvestorCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
-                              CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListViewItem}}"/>
-                </ContextMenu>
-            </ListView.Resources>
-            
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Add..." Command="{Binding AddInvestorCommand}"/>
-                </ContextMenu>
-            </ListView.ContextMenu>
-            
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="10" Height="10" Fill="{Binding Brush}" Margin="0,0,5,0"/>
-                        <TextBlock Text="{Binding}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
-
-        <ScrollViewer Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="1"
-                      VerticalScrollBarVisibility="Hidden"
-                      HorizontalScrollBarVisibility="Auto" Margin="0,0,25,0">
-            <ContentControl Content="{Binding InvestorChartViewModel}"/>
-        </ScrollViewer>
-
+        <controls:TabBar Grid.Row="1" DataContext="{Binding TabBarViewModel}"/>
     </Grid>
 </Window>

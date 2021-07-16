@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using WeInvest.WPF.Commands;
 
@@ -9,9 +10,11 @@ namespace WeInvest.WPF.ViewModels.Dialogs {
 
         public string OkayButtonContent { get; set; } = "Okay";
         public ICommand OkayButtonCommand { get; protected set; }
+        public ICommand FocusElementCommand { get; protected set; }
 
         public DialogViewModelBase() {
-            this.OkayButtonCommand = new RelayCommand(Okay, CanOkay);
+            OkayButtonCommand = new RelayCommand(Okay, CanOkay);
+            FocusElementCommand = new RelayCommand(p => ((UIElement)p).Focus());
         }
 
         protected virtual void OnRequestCloseDialog() {

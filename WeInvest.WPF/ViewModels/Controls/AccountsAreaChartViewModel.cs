@@ -7,15 +7,16 @@ using WeInvest.WPF.Commands;
 using WeInvest.WPF.Controls.Charts.Data;
 using WeInvest.WPF.State.Accounts;
 using WeInvest.WPF.State.Investors;
+using WeInvest.WPF.Views.Controls.ViewModelInterfaces;
 
 namespace WeInvest.WPF.ViewModels.Controls {
-    public class AccountsAreaChartViewModel : ViewModelBase {
+    public class AccountsAreaChartViewModel : ViewModelBase, IAreaChartViewModel {
 
         private readonly IInvestorsStore _investorsStore;
         private readonly IAccountsStore _accountsStore;
 
-        public IList<OrderedAreaData> AreaDataSeries { get; set; } = new ObservableCollection<OrderedAreaData>();
-        public IList<Brush> BrushList { get; set; } = new ObservableCollection<Brush>();
+        public IList<OrderedAreaData> AreaDataSeries { get; private set; } = new ObservableCollection<OrderedAreaData>();
+        public IList<Brush> OrderedBrushList { get; private set; } = new ObservableCollection<Brush>();
 
         public ICommand SelectionChangedCommand { get; }
 
@@ -32,15 +33,15 @@ namespace WeInvest.WPF.ViewModels.Controls {
         }
 
         private void InvestorsStore_StateChanged(object sender, System.EventArgs e) {
-            BrushList = new ObservableCollection<Brush>();
+            OrderedBrushList = new ObservableCollection<Brush>();
 
             foreach(var investor in _investorsStore.Investors) {
                 var brush = investor.Brush.Clone();
                 brush.Opacity = AreaOpacity;
-                BrushList.Add(brush);
+                OrderedBrushList.Add(brush);
             }
 
-            OnPropertyChanged(nameof(BrushList));
+            OnPropertyChanged(nameof(OrderedBrushList));
         }
 
         private void AccountsStore_StateChanged(object sender, System.EventArgs e) {

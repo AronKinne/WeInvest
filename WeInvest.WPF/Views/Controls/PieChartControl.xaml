@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WeInvest.WPF.Views.Controls.AccountsAreaChartControl"
+﻿<UserControl x:Class="WeInvest.WPF.Views.Controls.PieChartControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,11 +7,8 @@
              xmlns:charts="clr-namespace:WeInvest.WPF.Controls.Charts"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid Background="{StaticResource SecondaryBrush2}">
-        <charts:AreaChart DataSeries="{Binding AreaDataSeries}"
-                          OrderedBrushList="{Binding BrushList}"
-                          SelectionChangedCommand="{Binding SelectionChangedCommand}"
-                          SelectionChangedCommandParameter="{Binding SelectedDataIndex, RelativeSource={RelativeSource Self}}"
-                          Margin="20"/>
+        <charts:PieChart PieSeries="{Binding PieSeries}" Margin="50"/>
     </Grid>
 </UserControl>

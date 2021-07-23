@@ -15,10 +15,10 @@ using System.Windows.Shapes;
 
 namespace WeInvest.WPF.Views.Controls {
     /// <summary>
-    /// Interaktionslogik für AccountsAreaChartControl.xaml
+    /// Interaktionslogik für AreaChartControl.xaml
     /// </summary>
-    public partial class AccountsAreaChartControl : UserControl {
-        public AccountsAreaChartControl() {
+    public partial class AreaChartControl : UserControl {
+        public AreaChartControl() {
             InitializeComponent();
         }
     }

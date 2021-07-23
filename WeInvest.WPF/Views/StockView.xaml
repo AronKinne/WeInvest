@@ -4,9 +4,55 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WeInvest.WPF.Views"
+             xmlns:vmc="clr-namespace:WeInvest.WPF.ViewModels.Controls"
+             xmlns:vc="clr-namespace:WeInvest.WPF.Views.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="620" d:DesignWidth="1080">
     <Grid>
-        <TextBlock Text="{Binding StockName}"/>
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type vmc:StockPieChartViewModel}">
+                <vc:PieChartControl/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vmc:StockAreaChartViewModel}">
+                <vc:AreaChartControl/>
+            </DataTemplate>
+        </Grid.Resources>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Content="Anteile" HorizontalAlignment="Center" FontSize="36" Margin="0,20"/>
+            <ContentPresenter Content="{Binding StockPieChartViewModel}" Grid.Row="1" Margin="50,0,50,50"/>
+        </Grid>
+
+        <Grid Grid.Column="1" Margin="50">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel HorizontalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="FontSize" Value="20"/>
+                    </Style>
+                </StackPanel.Resources>
+
+                <Label Content="{Binding StockName}"/>
+                <Label Content="{Binding StockSymbol}"/>
+                <Label Content="Amount Shares"/>
+            </StackPanel>
+
+            <ContentPresenter Content="{Binding StockAreaChartViewModel}" Grid.Row="1"/>
+        </Grid>
+
     </Grid>
 </UserControl>

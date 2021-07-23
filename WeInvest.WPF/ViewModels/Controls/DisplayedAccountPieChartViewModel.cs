@@ -4,9 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using WeInvest.WPF.Controls.Charts.Data;
 using WeInvest.WPF.State.Accounts;
+using WeInvest.WPF.Views.Controls.ViewModelInterfaces;
 
 namespace WeInvest.WPF.ViewModels.Controls {
-    public class DisplayedAccountPieChartViewModel : ViewModelBase {
+    public class DisplayedAccountPieChartViewModel : ViewModelBase, IPieChartViewModel {
 
         private readonly IAccountsStore _accountsStore;
         private readonly IDisplayedAccountStore _displayedAccountStore;

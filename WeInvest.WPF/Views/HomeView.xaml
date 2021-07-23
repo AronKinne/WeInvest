@@ -11,10 +11,10 @@
     <Grid>
         <Grid.Resources>
             <DataTemplate DataType="{x:Type vmc:DisplayedAccountPieChartViewModel}">
-                <vc:DisplayedAccountPieChartControl/>
+                <vc:PieChartControl/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type vmc:AccountsAreaChartViewModel}">
-                <vc:AccountsAreaChartControl/>
+                <vc:AreaChartControl/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type vmc:InvestorLineChartsViewModel}">
                 <vc:InvestorLineChartsControl/>
